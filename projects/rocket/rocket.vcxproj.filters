@@ -21,6 +21,9 @@
     <ClCompile Include="src\ds\rocket\ciLibRocketRenderInterface.cpp">
       <Filter>ds\rocket</Filter>
     </ClCompile>
+    <ClCompile Include="src\ds\ui\rocket.cpp">
+      <Filter>ds\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ds\rocket\ciLibRocket.h">
@@ -37,6 +40,9 @@
     </ClInclude>
     <ClInclude Include="src\ds\rocket\ciLibRocketSystemInterface.h">
       <Filter>ds\rocket</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds\ui\rocket.h">
+      <Filter>ds\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,6 +8,8 @@
 
 #include <cinder/Function.h>
 
+#include <ds/ui/sprite/sprite.h>
+
 namespace Rocket {
 namespace Core {
 template<typename T>
@@ -26,7 +28,7 @@ class FileInterface;
 
 class LibRocket : public Rocket::Core::Plugin {
 public:
-    LibRocket();
+    LibRocket(ds::ui::Sprite& holder);
     virtual ~LibRocket();
 
     void setup();
@@ -42,7 +44,7 @@ public:
     void hideDebugger();
     void showDebugger();
 
-private:
+public:
     bool mouseDown(const cinder::app::MouseEvent& event);
     bool mouseUp(const cinder::app::MouseEvent& event);
     bool mouseMove(const cinder::app::MouseEvent& event);
@@ -52,8 +54,7 @@ private:
     bool keyUp(const cinder::app::KeyEvent& event);
     void resize();
 
-    int getMouseButton(const cinder::app::MouseEvent& event);
-
+private:
     virtual int GetEventClasses() override;
     virtual void OnInitialise() override;
     virtual void OnShutdown() override;
@@ -66,6 +67,7 @@ private:
     virtual void OnElementDestroy(Rocket::Core::Element* element) override;
 
 private:
+    ds::ui::Sprite&                 mHolder;
     std::shared_ptr<RenderInterface>    mRenderer;
     std::shared_ptr<SystemInterface>    mSystem;
     std::shared_ptr<FileInterface>      mFileSystem;

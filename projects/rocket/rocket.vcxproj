@@ -14,6 +14,7 @@
     <ClCompile Include="src\ds\rocket\ciLibRocket.cpp" />
     <ClCompile Include="src\ds\rocket\ciLibRocketFileInterface.cpp" />
     <ClCompile Include="src\ds\rocket\ciLibRocketRenderInterface.cpp" />
+    <ClCompile Include="src\ds\ui\rocket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ds\rocket\ciLibRocket.h" />
@@ -21,6 +22,7 @@
     <ClInclude Include="src\ds\rocket\ciLibRocketKeyMaps.h" />
     <ClInclude Include="src\ds\rocket\ciLibRocketRenderInterface.h" />
     <ClInclude Include="src\ds\rocket\ciLibRocketSystemInterface.h" />
+    <ClInclude Include="src\ds\ui\rocket.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DCAADA41-4FC6-4F11-871B-C09EE3F13EB7}</ProjectGuid>

@@ -13,10 +13,10 @@ using namespace std;
 namespace cinder {
 namespace librocket {
 
-RenderInterface::RenderInterface()
+RenderInterface::RenderInterface(ds::ui::Sprite& holder)
 {
-    mWidth = ci::app::getWindowWidth();
-    mHeight = ci::app::getWindowHeight();
+    mWidth = static_cast<int>(holder.getWidth());
+    mHeight = static_cast<int>(holder.getHeight());
 }
 
 void RenderInterface::SetViewport(int width, int height)

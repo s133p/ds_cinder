@@ -2,6 +2,7 @@
 #define CI_LIBROCKET_RENDERER_RENDER_INTERFACE_H_
 
 #include <Rocket/Core/RenderInterface.h>
+#include <ds/ui/sprite/sprite.h>
 
 namespace cinder {
 namespace librocket {
@@ -9,7 +10,7 @@ namespace librocket {
 class RenderInterface : public Rocket::Core::RenderInterface
 {
 public:
-    RenderInterface();
+    RenderInterface(ds::ui::Sprite& holder);
 
     void SetViewport(int width, int height);
 

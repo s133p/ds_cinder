@@ -68,15 +68,23 @@ Rocket::Core::word getCharacterCode(Rocket::Core::Input::KeyIdentifier key_ident
         return '\n';
 
     return 0;
+}
+
+int getMouseButton(const ci::app::MouseEvent& event)
+{
+    if (event.isLeftDown())       return 0;
+    else if (event.isRightDown()) return 1;
+    else                            return 2;
 }}
 
 namespace cinder {
 namespace librocket {
 
-LibRocket::LibRocket()
+LibRocket::LibRocket(ds::ui::Sprite& holder)
     : mContext(nullptr)
     , mDocument(nullptr)
     , mFileSystem(nullptr)
+    , mHolder(holder)
 {}
 
 LibRocket::~LibRocket()
@@ -91,7 +99,7 @@ LibRocket::~LibRocket()
 
 void LibRocket::setup()
 {
-    mRenderer = std::make_shared<RenderInterface>();
+    mRenderer = std::make_shared<RenderInterface>(mHolder);
     mSystem = std::make_shared<SystemInterface>();
     mFileSystem = std::make_shared<FileInterface>(ci::app::getAssetPath("/").generic_string().c_str());
 
@@ -223,14 +231,7 @@ bool LibRocket::keyUp(const ci::app::KeyEvent& event)
 
 void LibRocket::resize()
 {
-    mContext->SetDimensions(Rocket::Core::Vector2i(getWindowWidth(), getWindowHeight()));
-}
-
-int LibRocket::getMouseButton( const ci::app::MouseEvent& event )
-{
-    if (event.isLeftDown())       return 0;
-    else if (event.isRightDown()) return 1;
-    else                            return 2;
+    mContext->SetDimensions(Rocket::Core::Vector2i(static_cast<int>(mHolder.getWidth()), static_cast<int>(mHolder.getHeight())));
 }
 
 void LibRocket::toggleDebugger()
