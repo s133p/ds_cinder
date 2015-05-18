@@ -5,12 +5,12 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ROCKET_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(DS_PLATFORM_086)\projects\rocket\src;$(DS_PLATFORM_086)\projects\rocket\LibRocket\vc2013\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies);</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>rocket_d.lib;RocketControlsd.lib;RocketCored.lib;RocketDebuggerd.lib;%(AdditionalDependencies);</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(DS_PLATFORM_086)\projects\rocket\build;$(DS_PLATFORM_086)\projects\rocket\LibRocket\vc2013\lib\RocketControls;$(DS_PLATFORM_086)\projects\rocket\LibRocket\vc2013\lib\RocketCore;$(DS_PLATFORM_086)\projects\rocket\LibRocket\vc2013\lib\RocketDebugger;$(DS_PLATFORM_086)\projects\rocket\LibRocket\vc2013\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

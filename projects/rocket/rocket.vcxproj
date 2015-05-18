@@ -10,6 +10,18 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ds\rocket\ciLibRocket.cpp" />
+    <ClCompile Include="src\ds\rocket\ciLibRocketFileInterface.cpp" />
+    <ClCompile Include="src\ds\rocket\ciLibRocketRenderInterface.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ds\rocket\ciLibRocket.h" />
+    <ClInclude Include="src\ds\rocket\ciLibRocketFileInterface.h" />
+    <ClInclude Include="src\ds\rocket\ciLibRocketKeyMaps.h" />
+    <ClInclude Include="src\ds\rocket\ciLibRocketRenderInterface.h" />
+    <ClInclude Include="src\ds\rocket\ciLibRocketSystemInterface.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DCAADA41-4FC6-4F11-871B-C09EE3F13EB7}</ProjectGuid>
   </PropertyGroup>
@@ -31,10 +43,12 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(DS_PLATFORM_086)\vs2013\PropertySheets\Platform.props" />
+    <Import Project="props\rocket.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(DS_PLATFORM_086)\vs2013\PropertySheets\Platform_d.props" />
+    <Import Project="props\rocket_d.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>

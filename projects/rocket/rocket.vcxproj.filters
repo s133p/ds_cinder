@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ds">
+      <UniqueIdentifier>{4117d1aa-a5dd-4f34-b9cb-b576391b627c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ds\ui">
+      <UniqueIdentifier>{a1962a98-5d9d-409b-a870-7202b77d470c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ds\rocket">
+      <UniqueIdentifier>{1f3d5c78-2b49-4264-a33c-099a3ec95811}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ds\rocket\ciLibRocket.cpp">
+      <Filter>ds\rocket</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds\rocket\ciLibRocketFileInterface.cpp">
+      <Filter>ds\rocket</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds\rocket\ciLibRocketRenderInterface.cpp">
+      <Filter>ds\rocket</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ds\rocket\ciLibRocket.h">
+      <Filter>ds\rocket</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds\rocket\ciLibRocketFileInterface.h">
+      <Filter>ds\rocket</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds\rocket\ciLibRocketKeyMaps.h">
+      <Filter>ds\rocket</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds\rocket\ciLibRocketRenderInterface.h">
+      <Filter>ds\rocket</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds\rocket\ciLibRocketSystemInterface.h">
+      <Filter>ds\rocket</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
