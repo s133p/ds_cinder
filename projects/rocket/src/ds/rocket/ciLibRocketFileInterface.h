@@ -4,6 +4,8 @@
 #include <Rocket/Core/FileInterface.h>
 #include <Rocket/Core/String.h>
 
+#include <string>
+
 namespace cinder {
 namespace librocket {
 
@@ -29,7 +31,7 @@ public:
 	virtual size_t Tell(Rocket::Core::FileHandle file);
 
 private:
-	Rocket::Core::String mRoot;
+	std::string mRoot;
 };
 
 }} //!ci::librocket

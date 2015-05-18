@@ -2,11 +2,15 @@
 
 #include <cstdio>
 
+#include <ds/app/environment.h>
+
+#include <cinder/Filesystem.h>
+
 namespace cinder {
 namespace librocket {
 
 FileInterface::FileInterface(const Rocket::Core::String& root)
-    : mRoot(root)
+    : mRoot(root.CString())
 {}
 
 FileInterface::~FileInterface()
@@ -15,14 +19,16 @@ FileInterface::~FileInterface()
 // Opens a file.
 Rocket::Core::FileHandle FileInterface::Open(const Rocket::Core::String& path)
 {
-    // Attempt to open the file relative to the application's root.
-    FILE* fp = ::fopen((mRoot + path).CString(), "rb");
-    if (fp)
-        return (Rocket::Core::FileHandle) fp;
+    std::string _path(path.CString());
+    _path = ds::Environment::expand(_path);
+        
+    ci::fs::path _boost_path(_path);
 
-    // Attempt to open the file relative to the current working directory.
-    fp = ::fopen(path.CString(), "rb");
-    return (Rocket::Core::FileHandle) fp;
+    if (_boost_path.is_absolute()) {
+        return (Rocket::Core::FileHandle)::fopen(_path.c_str(), "rb");
+    } else {
+        return (Rocket::Core::FileHandle)::fopen((mRoot + _path).c_str(), "rb");
+    }
 }
 
 // Closes a previously opened file.
