@@ -8,8 +8,11 @@ Installation
 ------------
 This version of DS Cinder requires **Visual Studio 2010 + SP1 installed.**
 
+Download [cinder 0.8.4](libcinder.org/release/cinder_0.8.4_vs2010.zip)
+Backup download [mirror](http://update.downstreamdev.com/ds/cinder/cinder_0.8.4_vc2010.zip)
+
  -  You'll need **two** environment variables set:
-   - `CINDER` should point to the current cinder dist ([Version 0.8.4 for VC 2010](http://libcinder.org/releases/cinder_0.8.4_vc2010.zip) as of this writing). e.g:
+   - `CINDER` should point to the 0.8.4 cinder expanded distributable. e.g:
 
      ```Batchfile
      setx CINDER %USERPROFILE%\code\cinder_0.8.4_vc2010
