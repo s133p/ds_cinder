@@ -92,8 +92,8 @@ void Layer::setScale(const ScaleMode& mode, const double amount)
 		mScaleMode = SCALE_FIT;
 		// The fit mode acounts for my current offset.
 		mScaleFn = [this](const RenderCircleParams& p, const ci::Vec2d& offset)->double{
-			const double	cenx = p.mCenX - (abs(offset.x)),
-							ceny = p.mCenY - (abs(offset.y));
+			const double	cenx = p.mCenX - (std::abs(offset.x)),
+                            ceny = p.mCenY - (std::abs(offset.y));
 			const double	max_dist = ds::math::dist(cenx, ceny, cenx, 0.0);
 			return max_dist * this->mScale;
 		};

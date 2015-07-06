@@ -135,7 +135,9 @@ Result::RowIterator Result::rowAt(const size_t index) const {
 
 bool Result::addRows(const Result& src)
 {
+#ifdef CINDER_MSW
 	_ASSERT(mCol.size() == src.mCol.size());
+#endif
 	try {
 		RowIterator			it(src);
 		bool				ans = true;

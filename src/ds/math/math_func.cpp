@@ -65,9 +65,9 @@ bool isEqual( float a, float b )
 
 bool isEqual( double a, double b )
 {
-  if (abs(a - b) < math::EPSILON)
+  if (std::abs(a - b) < math::EPSILON)
     return true;
-  else if ((abs(a - b)) / max(abs(a), abs(b)) < math::EPSILON)
+  else if ((std::abs(a - b)) / std::max(std::abs(a), std::abs(b)) < math::EPSILON)
     return true;
   return false;
 }
@@ -75,9 +75,9 @@ bool isEqual( double a, double b )
 bool isEqual( float a, double b )
 {
   double da = static_cast<double>(a);
-  if (abs(da - b) < math::EPSILON)
+  if (std::abs(da - b) < math::EPSILON)
     return true;
-  else if ((abs(da - b)) / max(abs(da), abs(b)) < math::EPSILON)
+  else if ((std::abs(da - b)) / std::max(std::abs(da), std::abs(b)) < math::EPSILON)
     return true;
   return false;
 }
@@ -85,9 +85,9 @@ bool isEqual( float a, double b )
 bool isEqual( double a, float b )
 {
   double db = static_cast<double>(b);
-  if (abs(a - db) < math::EPSILON)
+  if (std::abs(a - db) < math::EPSILON)
     return true;
-  else if ((abs(a - db)) / max(abs(a), abs(db)) < math::EPSILON)
+  else if ((std::abs(a - db)) / std::max(std::abs(a), std::abs(db)) < math::EPSILON)
     return true;
   return false;
 }

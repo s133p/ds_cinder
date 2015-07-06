@@ -37,7 +37,32 @@ void EngineStatsView::installAsServer(ds::BlobRegistry& registry) {
 }
 
 void EngineStatsView::installAsClient(ds::BlobRegistry& registry) {
-	BLOB_TYPE = registry.add([](BlobReader& r) {ds::ui::Sprite::handleBlobFromServer<EngineStatsView>(r);});
+    
+    BLOB_TYPE = registry.add([](BlobReader& r) {
+        
+        // Some weird compile/linking errors on mac with the template stuff
+#if defined(CINDER_MAC)
+        ds::DataBuffer&       buf(r.mDataBuffer);
+        if(buf.read<char>() != ds::ui::SPRITE_ID_ATTRIBUTE) return;
+        ds::sprite_id_t       id = buf.read<ds::sprite_id_t>();
+        Sprite*               s = r.mSpriteEngine.findSprite(id);
+        if(s) {
+            s->readFrom(r);
+        } else if((s = new EngineStatsView(r.mSpriteEngine)) != nullptr) {
+            s->setSpriteId(id);
+            s->readFrom(r);
+            // If it didn't get assigned to a parent, something is wrong,
+            // and it would disappear forever from memory management if I didn't
+            // clean up here.
+            if(!s->getParent()) {
+                assert(false);
+                delete s;
+            }
+        }
+#elif defined(CINDER_MSW)
+        Sprite::handleBlobFromServer<NinePatch>(r);
+#endif
+    });
 }
 
 /**

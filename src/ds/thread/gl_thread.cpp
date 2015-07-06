@@ -4,6 +4,12 @@
 #include "ds/debug/debug_defines.h"
 #include "ds/debug/logger.h"
 
+#if defined (CINDER_MAC)
+#include <OpenGL/gl.h>
+#include <OpenGL/OpenGL.h>
+#include <OpengL/glext.h>
+#endif
+
 using namespace ds;
 
 namespace {
@@ -84,43 +90,62 @@ void GlThread::waitForNoInput()
  ******************************************************************/
 GlThread::Loop::Loop()
 	  : mAbort(false)
+#if defined(CINDER_MSW)
 	  , mThreadContext(NULL)
+#endif
 	  , mError(true)
 {
 }
 
 GlThread::Loop::~Loop()
 {
+#if defined(CINDER_MSW)
 	if (mThreadContext) {
 		wglDeleteContext(mThreadContext);
 	}
+#endif
 }
 
 bool GlThread::Loop::start(const bool makeGlCalls)
 {
-  if (makeGlCalls) {
-    DS_REPORT_GL_ERRORS();
-    mCurHDC = wglGetCurrentDC();
-    DS_REPORT_GL_ERRORS();
-    if (!mCurHDC) DS_LOG_WARNING_M("ds::GlThread::Loop() unable to create mCurHDC", GLTHREAD_LOG_M);
-    HGLRC			mainContext = wglGetCurrentContext();
-    DS_REPORT_GL_ERRORS();
-    mThreadContext = wglCreateContext(mCurHDC);
-    DS_REPORT_GL_ERRORS();
-    if (!mThreadContext) DS_LOG_WARNING_M("ds::GlThread::Loop() unable to create mThreadContext", GLTHREAD_LOG_M);
-    if (mThreadContext && wglShareLists(mainContext, mThreadContext)) {
-      mError = false;
+    if (makeGlCalls) {
+        
+#if defined(CINDER_MSW)
+        DS_REPORT_GL_ERRORS();
+        mCurHDC = wglGetCurrentDC();
+        DS_REPORT_GL_ERRORS();
+        if (!mCurHDC) DS_LOG_WARNING_M("ds::GlThread::Loop() unable to create mCurHDC", GLTHREAD_LOG_M);
+        HGLRC			mainContext = wglGetCurrentContext();
+        DS_REPORT_GL_ERRORS();
+        mThreadContext = wglCreateContext(mCurHDC);
+        DS_REPORT_GL_ERRORS();
+        if (!mThreadContext) DS_LOG_WARNING_M("ds::GlThread::Loop() unable to create mThreadContext", GLTHREAD_LOG_M);
+        if (mThreadContext && wglShareLists(mainContext, mThreadContext)) {
+          mError = false;
+        }
+        DS_REPORT_GL_ERRORS();
+        
+#elif defined(CINDER_MAC)
+        CGLContextObj mThreadContext = CGLGetCurrentContext();
+        CGLError err = CGLEnable(mThreadContext, kCGLCEMPEngine);
+        if(err != kCGLNoError){
+            mError = false;
+        }
+#endif
+      
+    } else {
+        mError = false;
     }
-    DS_REPORT_GL_ERRORS();
-  } else {
-    mError = false;
-  }
-  return !mError;
+    return !mError;
 }
 
 bool GlThread::Loop::makesGlCalls() const
 {
+#if defined(CINDER_MAC)
+    return true;
+#else
 	return mThreadContext != NULL;
+#endif
 }
 
 bool GlThread::Loop::addInput(GlThreadCallback* cb)
@@ -146,8 +171,10 @@ bool GlThread::Loop::addInput(GlThreadCallback* cb)
 
 void GlThread::Loop::run()
 {
-	// Set the GL context, if this is actually a GL thread
-	const bool							glCalls = makesGlCalls();
+    
+    // Set the GL context, if this is actually a GL thread
+    const bool							glCalls = makesGlCalls();
+#if defined(CINDER_MSW)
 	if (glCalls) {
 		// When setting the GL context you need to make sure this call
 		// is synchronized with the main thread, or else weird things can happen.
@@ -156,7 +183,21 @@ void GlThread::Loop::run()
 		}
 		DS_REPORT_GL_ERRORS();
 	}
+    
+#elif defined(CINDER_MAC)
 
+    bool doLooping = true;
+    if(glCalls){
+        CGLContextObj mThreadContext = CGLGetCurrentContext();
+        CGLError err = CGLEnable(mThreadContext, kCGLCEMPEngine);
+        if(err != kCGLNoError){
+            doLooping = true;
+        } else {
+            doLooping = false;
+        }
+    }
+    if(doLooping){
+#endif
 	// I want to stay locked for as little time as possible, so I pop off
 	// the active inputs, then pop them back on as retired for reuse.
 	std::vector<GlThreadCallback*>			ins;
@@ -194,12 +235,16 @@ void GlThread::Loop::run()
 		mMutex.unlock();
 	}
 
+#if defined(CINDER_MAC)
+    } // end of "do looping"
+#elif defined(CINDER_MSW)
 	if (glCalls) {
 		wglMakeCurrent(NULL, NULL);
 	}
+#endif
 }
 
-void GlThread::Loop::consume(std::vector<GlThreadCallback*>& ins) 
+void GlThread::Loop::consume(std::vector<GlThreadCallback*>& ins)
 {
 	// Perform each callback.  There's one special case:  Callbacks of matching runs
 	// are considered a batch, and only the final one will be performed.

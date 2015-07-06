@@ -21,7 +21,7 @@ public:
 	// This is used for external projects to perform some initialization
 	// on app startup time. It's intended to be called by clients from a
 	// static initializer.
-	// Note that throwing an exception in the function will exit the app.
+	// Note that throwing an exception in the function wi	ll exit the app.
 	static void AddStartup(const std::function<void(ds::Engine&)>&);
 
 	// Apps can provide a list of root sprites by chaining commands to a RootList.

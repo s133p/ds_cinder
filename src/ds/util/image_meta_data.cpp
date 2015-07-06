@@ -1,6 +1,12 @@
 #include "image_meta_data.h"
 
+#if defined(CINDER_MSW)
 #include <intrin.h>
+#endif
+
+#include <ios>
+#include <istream>
+#include <fstream>
 #include <unordered_map>
 #include <cinder/ImageIo.h>
 #include <cinder/Surface.h>
@@ -54,15 +60,24 @@ bool						get_format_png(const std::string& filename, ci::Vec2f& outSize) {
 	// Skip Chunk Type
 	file.seekg(4, std::ios_base::cur);
 
-	__int32 width, height;
+#if defined(CINDER_MAC)
+	int width, height;
+#elif defined(CINDER_MSW)
+    __int32 width, height;
+#endif
 
 	file.read((char*)&width, 4);
 	file.read((char*)&height, 4);
 
 	// PNG format stores as big endian, convert to little
 	if (is_little_endian()) {
+#if defined(CINDER_MAC)
+        width = __builtin_bswap32(width);
+        height = __builtin_bswap32(height);
+#elif defined(CINDER_MSW)
 		width = _byteswap_ulong(width);
 		height = _byteswap_ulong(height);
+#endif
 	}
 
 	outSize.x = static_cast<float>(width);

@@ -1,7 +1,7 @@
 #include "udp_connection.h"
 #include <iostream>
 #include <Poco/Net/NetException.h>
-#include "ds\util\string_util.h"
+#include "ds/util/string_util.h"
 
 const unsigned int		ds::NET_MAX_UDP_PACKET_SIZE = 2000000;
 
@@ -14,7 +14,7 @@ class BadIpException: public std::exception
     {
       mMsg = ip + " is outside of the Multicast range. Please choose an address between 224.0.0.0 and 239.255.255.255.";
     }
-    const char *what() const
+    virtual const char *what() const throw()
     {
       return mMsg.c_str();
     }
@@ -83,8 +83,8 @@ bool UdpConnection::initialize( bool server, const std::string &ip, const std::s
 		  mSocket.setReceiveTimeout(1000);
 
 	    mReceiveBufferMaxSize = mSocket.getReceiveBufferSize();
-      if (mReceiveBufferMaxSize <= 0) throw std::exception("UdpConnection::initialize() Couldn't determine a receive buffer size");
-      if (!mReceiveBuffer.setSize(mReceiveBufferMaxSize)) throw std::exception("UdpConnection::initialize() Can't allocate receive buffer");
+      if (mReceiveBufferMaxSize <= 0) throw std::runtime_error("UdpConnection::initialize() Couldn't determine a receive buffer size");
+      if (!mReceiveBuffer.setSize(mReceiveBufferMaxSize)) throw std::runtime_error("UdpConnection::initialize() Can't allocate receive buffer");
     }
 
     mInitialized = true;

@@ -356,9 +356,9 @@ void TouchProcess::updateDragDestination( const TouchInfo &touchInfo ) {
 	if (!mSprite.getDragDestination() && dragDestinationSprite) {
 		dragInfo.mPhase = DragDestinationInfo::Entered;
 		mSprite.setDragDestination(dragDestinationSprite);
-	} else if (false) {
+	} else if (mSprite.getDragDestination() && dragDestinationSprite == mSprite.getDragDestination()) {
 		dragInfo.mPhase = DragDestinationInfo::Updated;
-	} else if (false) {
+	} else if (mSprite.getDragDestination() && dragDestinationSprite != mSprite.getDragDestination()) {
 		dragInfo.mPhase = DragDestinationInfo::Exited;
 	}
 

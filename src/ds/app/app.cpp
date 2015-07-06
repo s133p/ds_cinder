@@ -134,7 +134,9 @@ App::App(const RootList& roots)
 
 	// Verify that the application has included the framework resources.
 	try {
+#if defined(CINDER_MSW)
 		ci::DataSourceRef ds = loadResource(RES_ARC_DROPSHADOW);
+#endif
 	} catch (std::exception&) {
 		std::cout << "ERROR Failed to load framework resource -- did you include FrameworkResources.rc in your application project?" << std::endl;
 	}
@@ -371,7 +373,14 @@ static std::string app_folder_from(const Poco::Path& path){
 
 ds::App::Initializer::Initializer(const std::string& appPath){
 	APP_PATH = appPath;
-
+    
+#if defined(CINDER_MAC)
+    APP_PATH = "/Users/gordonn/Documents/ds_cinder/example/animation/xcode/build/Debug/"; //HAHAHAHAHAAH
+    APP_DATA_PATH = "/Users/gordonn/Documents/ds_cinder/example/animation/";
+   // throw std::runtime_error("farts");
+    return;
+#endif
+    
 	Poco::Path      p(appPath);
 	std::string     ans;
 	// A couple things limit the search -- the directory can't get too

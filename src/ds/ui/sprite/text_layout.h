@@ -6,10 +6,17 @@
 #include <vector>
 #include <cinder/Vector.h>
 #include <cinder/gl/TextureFont.h>
-#include <OGLFT.h>
+
 #include <ds/ui/sprite/text_defs.h>
 
+#if defined(CINDER_MSW)
+#include <OGLFT.h>
 typedef std::shared_ptr<OGLFT::Translucent> FontPtr;
+#elif defined(CINDER_MAC)
+//TODO MAC: whatever this is gonna be
+typedef std::shared_ptr<std::string> FontPtr;
+#endif
+
 
 namespace ds {
 class DataBuffer;

@@ -12,7 +12,9 @@
 #include <exception>
 // DS includes
 #include "ds/app/app_defs.h"
+#include "ds/app/blob_reader.h"
 #include "ds/data/user_data.h"
+#include "ds/data/data_buffer.h"
 #include "ds/gl/uniform.h"
 #include "ds/util/bit_mask.h"
 #include "ds/ui/sprite/dirty_state.h"
@@ -63,7 +65,7 @@ namespace ui {
 			\param parent An optional parent for the new sprite to be added to as a child.
 			\param args Parameter arguments that are passed to your custom sprite type, in order, on construction		*/
 		template <typename T, typename... Args>
-		static T&				make(SpriteEngine& engine, Sprite* parent = nullptr, Args... args);
+        static T&				make(SpriteEngine& engine, Sprite* parent = nullptr, Args... args = nullptr);
 
 		/** Sprite creation convenience, throw on failure.
 			\param allocFn A function to be called to create the sprite. See makeSprite() for an example.
@@ -590,6 +592,10 @@ namespace ui {
 		// A hack needed by the engine, which constructs root types
 		// before the blobs are assigned
 		void					postAppSetup();
+        
+        
+        /** For framework use only. Only call if you are absolutely sure you know what this is doing. */
+        void				setSpriteId(const ds::sprite_id_t&);
 
 	protected:
 		friend class        TouchManager;
@@ -643,7 +649,6 @@ namespace ui {
 		const ci::Rectf&	getClippingBounds();
 		void				computeClippingBounds();
 
-		void				setSpriteId(const ds::sprite_id_t&);
 		// Helper utility to set a flag
 		void				setFlag(const int newBit, const bool on, const DirtyState&, int& oldFlags);
 		bool				getFlag(const int bit, const int flags) const;
@@ -744,7 +749,7 @@ namespace ui {
 		void				setSpriteOrder(const std::vector<sprite_id_t>&);
 
 		friend class Engine;
-		friend class EngineRoot;
+        friend class ds::EngineRoot;
 		// Disable copy constructor; sprites are managed by their parent and
 		// must be allocated
 		Sprite(const Sprite&);
@@ -789,7 +794,7 @@ namespace ui {
 		// Store a CueRef from the cinder timeline to clear the callAfterDelay() function
 		// Cleared automatically on destruction
 		ci::CueRef			mDelayedCallCueRef;
-
+	
 	public:
 		// This is a bit of a hack so I can temporarily set a scale value
 		// without causing the whole editing mechanism to kick in.
@@ -817,11 +822,12 @@ namespace ui {
 
 		template <typename T>
 		static void			handleBlobFromServer(ds::BlobReader&);
+        
 		static void			handleBlobFromClient(ds::BlobReader&);
 	};
 
 	template <typename T, typename... Args>
-	static T& Sprite::make(SpriteEngine& e, Sprite* parent, Args... args)
+    T& Sprite::make(SpriteEngine& e, Sprite* parent, Args... args)
 	{
 		T*                    s = new T(e, args...);
 		if(!s) throw std::runtime_error("Can't create sprite");
@@ -830,34 +836,12 @@ namespace ui {
 	}
 
 	template <typename T>
-	static T& Sprite::makeAlloc(const std::function<T*(void)>& allocFn, Sprite* parent)
+	T& Sprite::makeAlloc(const std::function<T*(void)>& allocFn, Sprite* parent)
 	{
 		T*                    s = allocFn();
 		if(!s) throw std::runtime_error("Can't create sprite");
 		if(parent) parent->addChild(*s);
 		return *s;
-	}
-
-	template <typename T>
-	static void Sprite::handleBlobFromServer(ds::BlobReader& r)
-	{
-		ds::DataBuffer&       buf(r.mDataBuffer);
-		if(buf.read<char>() != SPRITE_ID_ATTRIBUTE) return;
-		ds::sprite_id_t       id = buf.read<ds::sprite_id_t>();
-		Sprite*               s = r.mSpriteEngine.findSprite(id);
-		if(s) {
-			s->readFrom(r);
-		} else if((s = new T(r.mSpriteEngine)) != nullptr) {
-			s->setSpriteId(id);
-			s->readFrom(r);
-			// If it didn't get assigned to a parent, something is wrong,
-			// and it would disappear forever from memory management if I didn't
-			// clean up here.
-			if(!s->mParent) {
-				assert(false);
-				delete s;
-			}
-		}
 	}
 
 } // namespace ui

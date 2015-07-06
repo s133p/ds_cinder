@@ -109,7 +109,15 @@ bool HttpClient::sendHttp(	const int opt, const std::string &verb, const std::ws
 	r->mPostFn = postFn;
 	r->mRequestFn = requestFn;
 	r->mReply.clear();
-	return mManager.sendRequest(ds::unique_dynamic_cast<WorkRequest, Request>(r));
+    
+//#if defined(CINDER_MAC)
+    auto workRequest = ds::unique_dynamic_cast<WorkRequest, Request>(r);
+ //   Request* p = r.release();
+//    std::unique_ptr<WorkRequest> wr(dynamic_cast<WorkRequest*>(p));
+//    return mManager.sendRequest(wr);
+//#else
+	return mManager.sendRequest(workRequest);
+//#endif
 }
 
 bool HttpClient::httpAndReply(const int opt, const std::wstring& url, const std::string& body,

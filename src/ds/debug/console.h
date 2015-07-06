@@ -2,10 +2,12 @@
 #ifndef DS_DEBUG_CONSOLE_H_
 #define DS_DEBUG_CONSOLE_H_
 
+#ifdef CINDER_MSW
 #include <WinSock2.h>
 #include <Windows.h>
 #include <io.h>
 #include <fcntl.h>
+#endif
 
 namespace ds {
 
@@ -26,11 +28,12 @@ public:
 	{
 		if ( mConsoleCreated )
 			return;
-
-    // The app writes to the output before any console has been allocated, which puts
-    // it in an error state, so that needs to be cleared out before you'll see any output.
-    std::cout.clear();
-    std::cin.clear();
+        
+#ifdef CINDER_MSW
+        // The app writes to the output before any console has been allocated, which puts
+        // it in an error state, so that needs to be cleared out before you'll see any output.
+        std::cout.clear();
+        std::cin.clear();
 
 		AllocConsole();
 
@@ -45,6 +48,7 @@ public:
 		FILE* hf_in = _fdopen(hCrt, "r");
 		setvbuf(hf_in, NULL, _IONBF, 128);
 		*stdin = *hf_in;
+#endif
 
 		mConsoleCreated = true;
 	}
@@ -53,8 +57,10 @@ public:
 	{
 		if ( !mConsoleCreated )
 			return;
-
+        
+#ifdef CINDER_MSW
 		FreeConsole();
+#endif
 		mConsoleCreated = false;
 	}
 

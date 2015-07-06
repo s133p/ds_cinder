@@ -8,7 +8,11 @@
 #include "ds/debug/logger.h"
 #include "ds/ui/sprite/sprite_engine.h"
 
+#if defined(CINDER_MAC)
+#include <OpenGL/GL.h>
+#else
 #include <gl/GL.h>
+#endif
 
 using namespace ci;
 
@@ -30,9 +34,33 @@ const ds::BitMask   SPRITE_LOG			= ds::Logger::newModule("mesh sprite");
 void Mesh::installAsServer(ds::BlobRegistry& registry) {
 	BLOB_TYPE = registry.add([](BlobReader& r) {Sprite::handleBlobFromClient(r);});
 }
-
+    
 void Mesh::installAsClient(ds::BlobRegistry& registry) {
-	BLOB_TYPE = registry.add([](BlobReader& r) {Sprite::handleBlobFromServer<Mesh>(r);});
+        BLOB_TYPE = registry.add([](BlobReader& r) {
+            
+            // Some weird compile/linking errors on mac with the template stuff
+#if defined(CINDER_MAC)
+            ds::DataBuffer&       buf(r.mDataBuffer);
+            if(buf.read<char>() != SPRITE_ID_ATTRIBUTE) return;
+            ds::sprite_id_t       id = buf.read<ds::sprite_id_t>();
+            Sprite*               s = r.mSpriteEngine.findSprite(id);
+            if(s) {
+                s->readFrom(r);
+            } else if((s = new Mesh(r.mSpriteEngine)) != nullptr) {
+                s->setSpriteId(id);
+                s->readFrom(r);
+                // If it didn't get assigned to a parent, something is wrong,
+                // and it would disappear forever from memory management if I didn't
+                // clean up here.
+                if(!s->getParent()) {
+                    assert(false);
+                    delete s;
+                }
+            }
+#elif defined(CINDER_MSW)
+            Sprite::handleBlobFromServer<NinePatch>(r);
+#endif
+        });
 }
 
 Mesh& Mesh::makeMesh(SpriteEngine& e, const std::string& fn, Sprite* parent) {

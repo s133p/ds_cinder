@@ -261,7 +261,6 @@ std::vector<std::string> ds::partition( const std::string &str, const std::strin
         partitions.push_back(std::string(str.data() + lastPos, pos-lastPos));
       break;
     }
-    lastPos += 1;
   }
 
   return partitions;
@@ -484,7 +483,6 @@ void ds::replace( std::string &str, const std::string &oldToken, const std::stri
             continue;
         }
 
-        lastPos = pos + 1;
     }
 }
 

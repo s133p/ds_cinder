@@ -1,5 +1,7 @@
 #include "ds/app/environment.h"
 
+#include <stdlib.h>
+
 #include <boost/algorithm/string.hpp>
 #include <Poco/File.h>
 #include <Poco/Path.h>
@@ -133,7 +135,12 @@ void Environment::addToEnvironmentVariable(const std::string& variable, const st
 		}
 	}
 	new_path += value;
+#if defined(CINDER_MAC)
+    // TODO MAC whatever the fuck is going on here.
+    //putenv(new_path.c_str());
+#else
 	_putenv(new_path.c_str());
+#endif
 }
 
 void Environment::addToFrontEnvironmentVariable(const std::string& variable, const std::string& value) {
@@ -143,8 +150,13 @@ void Environment::addToFrontEnvironmentVariable(const std::string& variable, con
 	new_path += ";";
 	if (path_env) {
 		new_path += path_env;
-	}
-	_putenv(new_path.c_str());
+    }
+#if defined(CINDER_MAC)
+    // TODO MAC whatever the fuck is going on here.
+    //putenv(new_path.c_str());
+#else
+    _putenv(new_path.c_str());
+#endif
 }
 
 } // namespace ds

@@ -66,7 +66,7 @@ public:
 	T&								getService(const std::string&);
 
 	/** Access to the current engine configuration info. */
-	void SpriteEngine::loadSettings(const std::string& name, const std::string& filename);
+	void loadSettings(const std::string& name, const std::string& filename);
 	
 	const ds::EngineCfg&			getEngineCfg() const;
 	// Shortcuts

@@ -35,7 +35,8 @@ std::map<std::string, std::map<float, FontPtr>> mFontCache;
 static const ds::BitMask   SPRITE_LOG        = ds::Logger::newModule("text sprite");
 //static ci::gl::TextureFontRef get_font(const std::string& filename, const float size);
 
-FontPtr get_font(const std::string& filename, const float size);
+static FontPtr get_font(const std::string& filename, const float size);
+
 
 namespace ds {
 namespace ui {
@@ -69,9 +70,32 @@ void Text::installAsServer(ds::BlobRegistry& registry)
 	BLOB_TYPE = registry.add([](BlobReader& r) {Sprite::handleBlobFromClient(r);});
 }
 
-void Text::installAsClient(ds::BlobRegistry& registry)
-{
-	BLOB_TYPE = registry.add([](BlobReader& r) {Sprite::handleBlobFromServer<Text>(r);});
+void Text::installAsClient(ds::BlobRegistry& registry){
+    BLOB_TYPE = registry.add([](BlobReader& r) {
+        
+// Some weird compile/linking errors on mac with the template stuff
+#if defined(CINDER_MAC)
+        ds::DataBuffer&       buf(r.mDataBuffer);
+        if(buf.read<char>() != SPRITE_ID_ATTRIBUTE) return;
+        ds::sprite_id_t       id = buf.read<ds::sprite_id_t>();
+        Sprite*               s = r.mSpriteEngine.findSprite(id);
+        if(s) {
+            s->readFrom(r);
+        } else if((s = new Text(r.mSpriteEngine)) != nullptr) {
+            s->setSpriteId(id);
+            s->readFrom(r);
+            // If it didn't get assigned to a parent, something is wrong,
+            // and it would disappear forever from memory management if I didn't
+            // clean up here.
+            if(!s->getParent()) {
+                assert(false);
+                delete s;
+            }
+        }
+#elif defined(CINDER_MSW)
+        Sprite::handleBlobFromServer<NinePatch>(r);
+#endif
+    });
 }
 
 Text::Text(SpriteEngine& engine)
@@ -356,19 +380,33 @@ Text& Text::setLayoutFunction(const TextLayout::MAKE_FUNC& f)
 float Text::getFontAscent() const
 {
 	if (!mFont) return 0;
+#if defined(CINDER_MSW)
 	return getFontAscender(mFont) * mFont->pointSize();
+#elif defined(CINDER_MAC)
+    return 0.0f;
+#endif
 }
 
 float Text::getFontDescent() const
 {
-	if (!mFont) return 0;
-	return getFontDescender(mFont) * mFont->pointSize();
+    if (!mFont) return 0;
+    
+#if defined(CINDER_MSW)
+    return getFontDescender(mFont) * mFont->pointSize();
+#elif defined(CINDER_MAC)
+    return 0.0f;
+#endif
 }
 
 float Text::getFontHeight() const
 {
-	if (!mFont) return 0;
-	return getFontAscent() + getFontDescent();
+    if (!mFont) return 0;
+    
+#if defined(CINDER_MSW)
+    return getFontAscent() + getFontDescent();
+#elif defined(CINDER_MAC)
+    return 0.0f;
+#endif
 }
 
 float Text::getFontLeading() const
@@ -377,16 +415,25 @@ float Text::getFontLeading() const
 	// Come back to this.
 	//////////////////////////////////////////////////////////////////////////
 
-	if (!mFont) return 0;
-	return static_cast<float>(mFont->height());
+    if (!mFont) return 0;
+#if defined(CINDER_MSW)
+    return static_cast<float>(mFont->height());
+#elif defined(CINDER_MAC)
+    return 0.0f;
+#endif
 }
 
 float Text::getPixelFontHeight() const
 {
-	if (!mFont) return 0;
+    if (!mFont) return 0;
+    
+#if defined(CINDER_MSW)
 	float y = ceilf((1.0f - getFontAscender(mFont)) * mFont->pointSize());
 	auto p = mFont->pointSize();
-	return p + y - (getFontDescender(mFont) * p);
+    return p + y - (getFontDescender(mFont) * p);
+#elif defined(CINDER_MAC)
+    return 0.0f;
+#endif
 }
 
 float Text::getFontFullHeight() const
@@ -499,9 +546,14 @@ void Text::calculateFrame(const int flags)
 {
 	if(!mFont) return;
 
-	//const float	descent = mFont->descender();
+    //const float	descent = mFont->descender();
+#if defined(CINDER_MSW)
 	const float		lineHeight = static_cast<float>(mFont->height());
 	const float		height = mFont->pointSize();
+#elif defined(CINDER_MAC)
+    const float lineHeight = 0.0f;
+    const float height = 0.0f;
+#endif
 	float			w = 0, h = 0;
 	auto&			lines = mLayout.getLines();
 
@@ -513,9 +565,11 @@ void Text::calculateFrame(const int flags)
 		if(it + 1 != lines.end()) {
 			lineH += lineHeight;
 		} else {
+#if defined(CINDER_MSW)
 			OGLFT::BBox box = mFont->measureRaw(line.mText.c_str());
 			lineH += -box.y_min_;
-		}
+#endif
+        }
 		if(lineW > w) w = lineW;
 		if(lineH > h) h = lineH;
 	}
@@ -587,7 +641,7 @@ std::cout << "START=" << ds::utf8_from_wstr(mTextString) << std::endl;
 
 			ci::gl::clear(ColorA(1.0f, 1.0f, 1.0f, 0.0f));
 			ci::gl::color(ColorA(1.0f, 1.0f, 1.0f, 1.0f));
-
+#if defined(CINDER_MSW)
 			mFont->setForegroundColor( 1.0f, 1.0f, 1.0f, 1.0f );
 			mFont->setBackgroundColor( 1.0f, 1.0f, 1.0f, 0.0f );
 			//std::cout << "Size: " << lines.size() << std::endl;
@@ -611,11 +665,19 @@ std::cout << "START=" << ds::utf8_from_wstr(mTextString) << std::endl;
 				if(xPos < 0.0f) xPos = 0.0f;
 				if(yPos < 0.0f) yPos = 0.0f;
 				mFont->draw(xPos, yPos, line.mText);
-			}
+            }
+#endif
 
 			fbo->end();
 			fbo->detach();
-			mEngine.giveBackFbo(std::move(fbo));
+            
+#if defined(CINDER_MAC)
+            //TODO MAC: is this still valid?
+            mEngine.giveBackFbo(fbo);
+#else
+            mEngine.giveBackFbo(std::move(fbo));
+#endif
+
 		}
 	}
 }
@@ -668,26 +730,32 @@ if (mTextString == L"2012") {
 //	return tf;
 //}
 
+
+
 /**
  * miscellaneous
  */
-static FontPtr get_font(const std::string& filename, const float size)
+FontPtr get_font(const std::string& filename, const float size)
 {
-	auto found = mFontCache.find(filename);
-	if(found != mFontCache.end())
-	{
-		auto found2 = found->second.find(size);
-		if(found2 != found->second.end())
-			return found2->second;
-	}
-
-	FontPtr font = FontPtr(new OGLFT::Translucent(filename.c_str(), size));
-
-	if(!font->isValid())
-		throw std::runtime_error("Font: " + filename + " was unable to load.");
-
-	font->setCompileMode(OGLFT::Face::COMPILE);
-
-	mFontCache[filename][size] = font;
-	return font;
+#if defined(CINDER_MSW)
+    auto found = mFontCache.find(filename);
+    if(found != mFontCache.end())
+    {
+        auto found2 = found->second.find(size);
+        if(found2 != found->second.end())
+            return found2->second;
+    }
+    
+    FontPtr font = FontPtr(new OGLFT::Translucent(filename.c_str(), size));
+    
+    if(!font->isValid())
+        throw std::runtime_error("Font: " + filename + " was unable to load.");
+    
+    font->setCompileMode(OGLFT::Face::COMPILE);
+    
+    mFontCache[filename][size] = font;
+    return font;
+#elif defined(CINDER_MAC)
+    return nullptr;
+#endif
 }

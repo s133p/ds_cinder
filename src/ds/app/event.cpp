@@ -1,7 +1,6 @@
 #include <ds/app/event.h>
 
 #include <assert.h>
-#include <unordered_map>
 #include <Poco/Mutex.h>
 #include <ds/debug/debug_defines.h>
 

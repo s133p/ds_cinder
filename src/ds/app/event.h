@@ -3,6 +3,7 @@
 #define DS_APP_EVENT_H_
 
 #include "event_registry.h"
+#include <typeinfo>
 
 namespace ds {
 

@@ -25,7 +25,7 @@ char ImageRegistry::addGenerator(const std::function<ds::ui::ImageGenerator*(ds:
 ds::ui::ImageGenerator* ImageRegistry::makeGenerator(const char n, ds::ui::SpriteEngine& se)
 {
 	const size_t				idx = static_cast<int>(n);
-	if (idx < 0 || idx >= mFactory.size()) return nullptr;
+	if (idx >= mFactory.size()) return nullptr;
 	if (mFactory[idx] == nullptr) return nullptr;
 	return mFactory[idx](se);
 }

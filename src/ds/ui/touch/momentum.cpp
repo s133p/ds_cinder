@@ -36,7 +36,7 @@ void Momentum::update(const ds::UpdateParams&) {
 	mMoved = false;
 	if (mActive) {
 		bool leftwards = mVelocity.x < 0;
-		mVelocity.x = abs(mVelocity.x);
+        mVelocity.x = std::abs(mVelocity.x);
 
 		if(mVelocity.x == 0){
 			if(mVelocity.y > 0){

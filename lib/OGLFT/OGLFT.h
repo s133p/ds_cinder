@@ -39,7 +39,12 @@
 #endif
 //#include <GL/gl.h>
 #include <cinder/gl/gl.h>
+
+#if defined(CINDER_MAC)
+#include <OpenGL/glu.h>
+#else
 #include <GL/glu.h>
+#endif
 
 #ifndef OGLFT_NO_SOLID
 #include <GL/gle.h>

@@ -28,7 +28,8 @@ bool RunnableClient::run(std::unique_ptr<Poco::Runnable>& payload)
 	if (!r) return false;
 
 	r.get()->mPayload = std::move(payload);
-	return mManager.sendRequest(ds::unique_dynamic_cast<WorkRequest, Request>(r));
+    auto workR = ds::unique_dynamic_cast<WorkRequest, Request>(r);
+	return mManager.sendRequest(workR);
 }
 
 void RunnableClient::handleResult(std::unique_ptr<WorkRequest>& wr)

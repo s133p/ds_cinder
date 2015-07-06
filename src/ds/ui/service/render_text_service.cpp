@@ -65,7 +65,8 @@ RenderTextClient::~RenderTextClient()
 void RenderTextClient::start(	const std::string& fontFilename, const float fontSize,
 								std::weak_ptr<RenderTextShared> shared, int code)
 {
-	mService.start(std::unique_ptr<RenderTextWorker>(new RenderTextWorker(this, shared, fontFilename, fontSize, code)));
+    auto ptr = std::unique_ptr<RenderTextWorker>(new RenderTextWorker(this, shared, fontFilename, fontSize, code));
+	mService.start(ptr);
 }
 
 /**
@@ -160,7 +161,7 @@ void RenderTextService::_run()
 	}
 
 	DS_REPORT_GL_ERRORS();
-#if 1
+#if defined(CINDER_MSW)
 	static FontPtr	TMP_FONT = FontPtr(new OGLFT::Translucent("C:\\Users\\erich\\Documents\\downstream\\resources\\jci\\table\\ui\\fonts\\FRUTIGER45LIGHT.otf", 14));
 	if (TMP_FONT->isValid()) {
 		TMP_FONT->setCompileMode(OGLFT::Face::COMPILE);
@@ -198,7 +199,7 @@ void RenderTextService::_run()
 					ci::gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, size, size));
 					glPopAttrib();
 					#endif
-#if 1
+#if defined (CINDER_MSW)
 //					FontPtr font = FontPtr(new OGLFT::Translucent(worker->mFontFilename.c_str(), worker->mFontSize));
 					if (TMP_FONT->isValid()) {
 //						font->setCompileMode(OGLFT::Face::COMPILE);

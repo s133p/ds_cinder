@@ -1,11 +1,15 @@
 #include "directory_watcher.h"
 
 #include <iostream>
+
+#ifdef CINDER_MSW
 #include <Windows.h>
+#endif
 
 using namespace std;
 using namespace ds;
 
+#ifdef CINDER_MSW
 static VOID CALLBACK empty_func(ULONG_PTR dwParam)	{ }
 
 namespace {
@@ -26,12 +30,16 @@ void				signalWakeup() {
 
 }
 
+#endif
+
 /**
  * \class ds::DirectoryWatcher
  */
 void DirectoryWatcher::wakeup()
 {
+#ifdef CINDER_MSW
 	signalWakeup();
+#endif
 }
 
 /**
@@ -39,6 +47,7 @@ void DirectoryWatcher::wakeup()
  */
 void DirectoryWatcher::Waiter::run()
 {
+#ifdef CINDER_MSW
 //	cout << "START DIRECTORY WATCHER" << endl;
 	DWORD				ans;
 	HANDLE*				handle;
@@ -93,4 +102,5 @@ cleanup:
 			FindCloseChangeNotification(handle[k]);
 	}
 	delete[] handle;
+#endif
 }

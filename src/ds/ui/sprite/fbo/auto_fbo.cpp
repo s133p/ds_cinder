@@ -31,7 +31,11 @@ AutoFbo::~AutoFbo()
 		mFbo->end();
 		mFbo->detach();
 	}
-	mEngine.giveBackFbo(std::move(mFbo));
+#if defined(CINDER_MAC)
+    mEngine.giveBackFbo(mFbo);
+#else
+    mEngine.giveBackFbo(std::move(mFbo));
+#endif
 }
 
 } // namespace ui

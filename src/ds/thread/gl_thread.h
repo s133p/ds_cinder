@@ -13,6 +13,11 @@
 #include <Poco/Debugger.h>
 #endif
 
+
+#if defined(CINDER_MAC)
+#include <OpenGL/OpenGL.h>
+#endif
+
 /* DS::GL-THREAD
  * Utility for any clients that want to render to a GL texture in
  * a separate thread.  There are two pieces to be aware of:
@@ -225,13 +230,15 @@ private:
 		Poco::Mutex				mMutex;
 		Poco::Condition			mCondition;
 		bool			    	mAbort;
+#if defined(CINDER_MSW)
 		HDC					    mCurHDC;
 		HGLRC			    	mThreadContext;
+#endif
 		bool			    	mError;
 
 	public:
 		Loop();
-		~Loop();
+		virtual ~Loop();
 
 		bool					start(const bool makeGlCalls);
 		bool			    	makesGlCalls() const;

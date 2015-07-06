@@ -83,11 +83,11 @@ void ImageToken::setTo(const ImageKey& key) {
 }
 
 ci::gl::Texture ImageToken::getImage(float& fade) {
-	if (mKey.empty()) return nullptr;
+    if (mKey.empty()) return ci::gl::Texture();
 
 	if (!mAcquired) {
 		mAcquired = mSrv.acquire(mKey);
-		if (!mAcquired) return nullptr;
+        if (!mAcquired) return ci::gl::Texture();
 	}
 
 	if (!mTexture) {

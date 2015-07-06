@@ -19,6 +19,8 @@
  *
  */
 
+#define OGLFT_NO_QT
+
 #include <iostream>
 #include <iomanip>
 #ifdef HAVE_CONFIG_H
@@ -28,6 +30,7 @@
 #include <qregexp.h>
 #endif
 #include "OGLFT.h"
+#include <OpenGL/gluContext.h>
 
 namespace OGLFT {
 
@@ -3520,7 +3523,7 @@ namespace OGLFT {
   Filled::Filled ( FT_Face face, float point_size, FT_UInt resolution )
     : Polygonal( face, point_size, resolution )
   {
-    init();
+    init();	
   }
 
   void Filled::init ( void )
@@ -3536,11 +3539,14 @@ namespace OGLFT {
 
     tess_obj_ = gluNewTess();
 
+      //TODO MAC find the header or whatever for this
+#if defined (CINDER_MSW)
     gluTessCallback( tess_obj_, GLU_TESS_VERTEX, (GLUTessCallback)vertexCallback );
     gluTessCallback( tess_obj_, GLU_TESS_BEGIN, (GLUTessCallback)beginCallback );
     gluTessCallback( tess_obj_, GLU_TESS_END, (GLUTessCallback)endCallback );
     gluTessCallback( tess_obj_, GLU_TESS_COMBINE_DATA, (GLUTessCallback)combineCallback );
     gluTessCallback( tess_obj_, GLU_TESS_ERROR, (GLUTessCallback)errorCallback );
+#endif
   }
 
   Filled::~Filled ( void )

@@ -449,14 +449,14 @@ int Engine::getRootCount() const {
 }
 
 ui::Sprite& Engine::getRootSprite(const size_t index) {
-	if (index < 0 || index >= mRoots.size()) throw std::runtime_error("Engine::getRootSprite() on invalid index");
+	if (index >= mRoots.size()) throw std::runtime_error("Engine::getRootSprite() on invalid index");
 	ui::Sprite*		s = mRoots[index]->getSprite();
 	if (!s) throw std::runtime_error("Engine::getRootSprite() on null sprite");
 	return *s;
 }
 
 const RootList::Root& Engine::getRootBuilder(const size_t index){
-	if(index < 0 || index >= mRoots.size()) throw std::runtime_error("Engine::getRootBuilder() on invalid index");
+	if(index >= mRoots.size()) throw std::runtime_error("Engine::getRootBuilder() on invalid index");
 	return mRoots[index]->getBuilder();
 }
 

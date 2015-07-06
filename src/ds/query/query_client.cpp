@@ -77,7 +77,9 @@ bool Client::runAsync(	const std::string& database, const std::string& query,
 	r->mResult.clear();
 	r->mTalkback.clear();
 	if (id) *id = r->mRunId;
-	return mManager.sendRequest(ds::unique_dynamic_cast<WorkRequest, Request>(r), sendTime);
+    
+    auto workR = ds::unique_dynamic_cast<WorkRequest, Request>(r);
+	return mManager.sendRequest(workR, sendTime);
 }
 
 void Client::handleResult(std::unique_ptr<WorkRequest>& wr)

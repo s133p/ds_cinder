@@ -123,7 +123,7 @@ void FboGeneral::offsetViewport(int offsetX, int offsetY)
 
 void FboGeneral::pushTransformation()
 {
-  mOldViewport[4];
+ // mOldViewport[4];
   glGetIntegerv(GL_VIEWPORT, mOldViewport);
 
   glMatrixMode(GL_PROJECTION);

@@ -6,6 +6,11 @@
 
 #include <cinder/gl/gl.h>
 
+#if defined(CINDER_MAC)
+// for GL_RGBA32F call
+#include <OpenGL/gl3.h>
+#endif
+
 namespace ds
 {
 

@@ -1,7 +1,6 @@
 #include "sprite.h"
 #include <cinder/Camera.h>
 #include <cinder/gl/gl.h>
-#include "gl/GL.h"
 #include "ds/app/blob_reader.h"
 #include "ds/app/blob_registry.h"
 #include "ds/app/camera_utils.h"
@@ -84,6 +83,29 @@ void Sprite::handleBlobFromClient(ds::BlobReader& r) {
 	ds::sprite_id_t       id = buf.read<ds::sprite_id_t>();
 	Sprite*               s = r.mSpriteEngine.findSprite(id);
 	if(s) s->readFrom(r);
+}
+    
+    
+template <typename T>
+void Sprite::handleBlobFromServer(ds::BlobReader& r)
+{
+    ds::DataBuffer&       buf(r.mDataBuffer);
+    if(buf.read<char>() != SPRITE_ID_ATTRIBUTE) return;
+    ds::sprite_id_t       id = buf.read<ds::sprite_id_t>();
+    Sprite*               s = r.mSpriteEngine.findSprite(id);
+    if(s) {
+        s->readFrom(r);
+    } else if((s = new T(r.mSpriteEngine)) != nullptr) {
+        s->setSpriteId(id);
+        s->readFrom(r);
+        // If it didn't get assigned to a parent, something is wrong,
+        // and it would disappear forever from memory management if I didn't
+        // clean up here.
+        if(!s->mParent) {
+            assert(false);
+            delete s;
+        }
+    }
 }
 
 Sprite::Sprite(SpriteEngine& engine, float width /*= 0.0f*/, float height /*= 0.0f*/)

@@ -31,7 +31,9 @@ class FboGeneral
     int              getHeight() const;
   private:
     FboGeneral(const FboGeneral &rhs){}
+#if defined(CINDER_MSW)
     FboGeneral &operator =(const FboGeneral &rhs){}
+#endif
 
     void             activate();
     void             deactivate();

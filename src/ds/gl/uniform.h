@@ -4,6 +4,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include <cinder/Matrix.h>
 #include <cinder/Vector.h>

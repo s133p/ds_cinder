@@ -10,6 +10,14 @@ void DataBuffer::add<std::string>( const std::string &s )
   add(size);
   mStream.write(s.c_str(), size);
 }
+    
+template <>
+void DataBuffer::add<std::wstring>( const std::wstring &ws )
+{
+    unsigned size = (ws.size())*sizeof(wchar_t);
+    add(size);
+    mStream.write((const char *)(ws.c_str()), size);
+}
 
 void DataBuffer::add(const char *cs)
 {
@@ -19,14 +27,6 @@ void DataBuffer::add(const char *cs)
 void DataBuffer::add(const wchar_t *cs)
 {
   add<std::wstring>(cs);
-}
-
-template <>
-void DataBuffer::add<std::wstring>( const std::wstring &ws )
-{
-  unsigned size = (ws.size())*sizeof(wchar_t);
-  add(size);
-  mStream.write((const char *)(ws.c_str()), size);
 }
 
 void DataBuffer::add( const char *b, unsigned size )

@@ -12,6 +12,30 @@ static void tokenize(const std::string& ws, std::vector<std::string>& tokens);
 
 namespace ds {
 namespace ui {
+    
+#if defined(CINDER_MAC)
+    
+    int getFontSize(  )
+    {
+        return 1.0f;
+    }
+    
+    float getFontAscender( const FontPtr &font )
+    {
+        return 1.0f;
+    }
+    
+    float getFontDescender( const FontPtr &font )
+    {
+        return 1.0f;
+    }
+    
+    float getFontHeight( const FontPtr &font, const float leading )
+    {
+        return 1.0f;
+    }
+    
+#elif defined(CINDER_MSW)
 
 int getFontSize( const FontPtr &font )
 {
@@ -33,6 +57,8 @@ float getFontHeight( const FontPtr &font, const float leading )
 	if (!font) return 0.0f;
 	return font->pointSize()*leading + font->pointSize();
 }
+    
+#endif
 
 namespace {
   
@@ -150,7 +176,11 @@ void TextLayout::debugPrint() const
 
 const TextLayout::MAKE_FUNC& TextLayout::SINGLE_LINE()
 {
-	static const MAKE_FUNC ANS = [](const TextLayout::Input& i, TextLayout& l) { l.addLine(ci::Vec2f(0, ceilf((1.0f - getFontAscender(i.mFont)) * i.mFont->pointSize())), i.mText); };
+	static const MAKE_FUNC ANS = [](const TextLayout::Input& i, TextLayout& l) {
+#if defined(CINDER_MSW)
+        l.addLine(ci::Vec2f(0, ceilf((1.0f - getFontAscender(i.mFont)) * i.mFont->pointSize())), i.mText);
+#endif
+    };
 	return ANS;
 }
 
@@ -174,16 +204,24 @@ void TextLayoutVertical::installOn(Text& t) {
 }
 
 ci::Vec2f getSizeFromString(const FontPtr &font, const std::string &str) {
+#if defined(CINDER_MSW)
 	OGLFT::BBox box = font->measureRaw(str);
 	ci::Vec2f	size(box.x_max_ - box.x_min_, box.y_max_ - box.y_min_);
+#elif defined(CINDER_MAC)
+    ci::Vec2f size = ci::Vec2f::zero();
+#endif
 
 	return size;
 }
 
 ci::Vec2f getSizeFromString(const FontPtr &font, const std::wstring &str)
-{
+    {
+#if defined(CINDER_MSW)
 	OGLFT::BBox box = font->measureRaw(str);
-	ci::Vec2f	size(box.x_max_ - box.x_min_, box.y_max_ - box.y_min_);
+    ci::Vec2f	size(box.x_max_ - box.x_min_, box.y_max_ - box.y_min_);
+#elif defined(CINDER_MAC)
+    ci::Vec2f size = ci::Vec2f::zero();
+#endif
 
 	return size;
 }
@@ -217,10 +255,15 @@ void TextLayoutVertical::run(const TextLayout::Input& in, TextLayout& out)
 
 	tokens = ds::partition(in.mText, partitioners);
 
-	LimitCheck			check(in);
-	float				y = ceilf((1.0f - getFontAscender(in.mFont)) * in.mFont->pointSize());
+    LimitCheck			check(in);
+#if defined(CINDER_MSW)
+    float				y = ceilf((1.0f - getFontAscender(in.mFont)) * in.mFont->pointSize());
+    const float			lineH = in.mFont->pointSize()*mLeading + in.mFont->pointSize();//in.mFont->ascender() + in.mFont->descender() + (in.mFont->getFont().getLeading()*mLeading);
+#elif defined(CINDER_MAC)
+    float y = 0.0f;
+    const float lineH = 0.0f;
+#endif
 	//address this
-	const float			lineH = in.mFont->pointSize()*mLeading + in.mFont->pointSize();//in.mFont->ascender() + in.mFont->descender() + (in.mFont->getFont().getLeading()*mLeading);
 	std::wstring		lineText;
 
 	// Before we do anything, make sure we have room for the first line,

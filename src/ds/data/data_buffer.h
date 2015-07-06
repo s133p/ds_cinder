@@ -47,10 +47,7 @@ public:
 		mStream.write((const char *)(&t), sizeof(t));
 	}
 
-	template <>
-	void add<std::string>(const std::string &s);
-	template <>
-	void add<std::wstring>(const std::wstring &ws);
+    
 	void add(const char *cs);
 	void add(const wchar_t *cs);
 
@@ -63,11 +60,6 @@ public:
 		mStream.read((char *)(&t), sizeof(t));
 		return t;
 	}
-
-	template <>
-	std::string read<std::string>();
-	template <>
-	std::wstring read<std::wstring>();
 
 	template <typename T>
 	void rewindRead()
@@ -95,6 +87,17 @@ private:
 	RecycleArray<char>   mStringBuffer;
 	RecycleArray<char>   mWStringBuffer;
 };
+    
+    
+    template <>
+    std::string DataBuffer::read<std::string>();
+    template <>
+    std::wstring DataBuffer::read<std::wstring>();
+    
+    template <>
+    std::string DataBuffer::read<std::string>();
+    template <>
+    std::wstring DataBuffer::read<std::wstring>();
 
 template <>
 std::string DataBuffer::read<std::string>()

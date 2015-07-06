@@ -156,7 +156,11 @@ void Settings::directReadFrom(const std::string& filename, const bool clearAll, 
 			if(ext == ".xml") {
 				directReadXmlFrom(filename, clearAll);
 			} else {
+#ifdef CINDER_MSW
 				throw std::exception("unsupported format");
+#elif defined(CINDER_MAC)
+                //TODO MAC: throw something!
+#endif
 			}
 		}
 	} catch(std::exception const& ex) {
