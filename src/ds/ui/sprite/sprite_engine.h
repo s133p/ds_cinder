@@ -115,7 +115,7 @@ public:
 
 	void							addToDragDestinationList(Sprite *sprite);
 	void							removeFromDragDestinationList(Sprite *sprite);
-	Sprite*							getDragDestinationSprite(const ci::Vec3f &globalPoint, Sprite *draggingSprite);
+	Sprite*							getDragDestinationSprite(const glm::vec3 &globalPoint, Sprite *draggingSprite);
 
 	double							getElapsedTimeSeconds() const;
 
@@ -132,14 +132,14 @@ public:
 	virtual void					injectTouchesEnded(const ci::app::TouchEvent&){};
 
 	// translate a touch event point to the overlay bounds specified in the settings
-	virtual void					translateTouchPoint( ci::Vec2f& inOutPoint ) = 0;
+	virtual void					translateTouchPoint( glm::vec2& inOutPoint ) = 0;
 
 	// Turns on Sprite's setRotateTouches when first created so you can enable rotated touches app-wide by default
 	// Sprites can still turn this off after creation
 	virtual bool					getRotateTouchesDefault() = 0;
 
 	// Get the sprite at the global touch point. NOTE: performance intensive. Use carefully.
-	virtual ds::ui::Sprite*			getHit(const ci::Vec3f& point) = 0;
+	virtual ds::ui::Sprite*			getHit(const glm::vec3& point) = 0;
 
 
 	static const int				CLIENT_MODE = 0;

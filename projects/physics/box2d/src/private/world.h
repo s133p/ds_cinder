@@ -32,10 +32,10 @@ public:
 	World(ds::ui::SpriteEngine&, ds::ui::Sprite&);
 
 	void							createDistanceJoint(const SpriteBody&, const SpriteBody&, float length, float dampingRatio, float frequencyHz,
-													const ci::Vec3f bodyAOffset = ci::Vec3f(0.0f, 0.0f, 0.0f), const ci::Vec3f bodyBOffset = ci::Vec3f(0.0f, 0.0f, 0.0f));
+													const glm::vec3 bodyAOffset = glm::vec3(0.0f, 0.0f, 0.0f), const glm::vec3 bodyBOffset = glm::vec3(0.0f, 0.0f, 0.0f));
 	void							resizeDistanceJoint(const SpriteBody&, const SpriteBody&, float length);
 	void							createWeldJoint(const SpriteBody&, const SpriteBody&, const float dampingRation, const float frequencyHz,
-													const ci::Vec3f bodyAOffset = ci::Vec3f(0.0f, 0.0f, 0.0f), const ci::Vec3f bodyBOffset = ci::Vec3f(0.0f, 0.0f, 0.0f));
+													const glm::vec3 bodyAOffset = glm::vec3(0.0f, 0.0f, 0.0f), const glm::vec3 bodyBOffset = glm::vec3(0.0f, 0.0f, 0.0f));
 	void							releaseJoints(const SpriteBody&);
 
 	void							processTouchAdded(const SpriteBody&, const ds::ui::TouchInfo&);
@@ -53,8 +53,8 @@ public:
 	// Fill out the collision object, if it applies to me, otherwise return false
 	bool							makeCollision(const b2Fixture&, Collision&) const;
 
-	ci::Vec3f						box2CiTranslation(const b2Vec2&, ds::ui::Sprite*) const;
-	b2Vec2							Ci2BoxTranslation(const ci::Vec3f&, ds::ui::Sprite*) const;
+	glm::vec3						box2CiTranslation(const b2Vec2&, ds::ui::Sprite*) const;
+	b2Vec2							Ci2BoxTranslation(const glm::vec3&, ds::ui::Sprite*) const;
 
 	bool							isLocked() const;
 

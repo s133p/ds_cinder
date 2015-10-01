@@ -19,8 +19,8 @@ FullStarterApp::FullStarterApp()
 
 								.persp() // sample perp view
 								.perspFov(60.0f)
-								.perspPosition(ci::Vec3f(0.0, 0.0f, 10.0f))
-								.perspTarget(ci::Vec3f(0.0f, 0.0f, 0.0f))
+								.perspPosition(glm::vec3(0.0, 0.0f, 10.0f))
+								.perspTarget(glm::vec3(0.0f, 0.0f, 0.0f))
 								.perspNear(0.0002f)
 								.perspFar(20.0f)
 
@@ -75,17 +75,17 @@ void FullStarterApp::keyDown(ci::app::KeyEvent event){
 	if(event.getChar() == KeyEvent::KEY_r){ // R = reload all configs and start over without quitting app
 		setupServer();
 	} else if(event.getCode() == KeyEvent::KEY_d){
-		moveCamera(ci::Vec3f(1.0f, 0.0f, 0.0f));
+		moveCamera(glm::vec3(1.0f, 0.0f, 0.0f));
 	} else if(event.getCode() == KeyEvent::KEY_a){
-		moveCamera(ci::Vec3f(-1.0f, 0.0f, 0.0f));
+		moveCamera(glm::vec3(-1.0f, 0.0f, 0.0f));
 	} else if(event.getCode() == KeyEvent::KEY_w){
-		moveCamera(ci::Vec3f(0.0f, -1.0f, 0.0f));
+		moveCamera(glm::vec3(0.0f, -1.0f, 0.0f));
 	} else if(event.getCode() == KeyEvent::KEY_s){
-		moveCamera(ci::Vec3f(0.0f, 1.0f, 0.0f));
+		moveCamera(glm::vec3(0.0f, 1.0f, 0.0f));
 	} else if(event.getCode() == KeyEvent::KEY_RIGHTBRACKET){
-		moveCamera(ci::Vec3f(0.0f, 0.0f, 1.0f));
+		moveCamera(glm::vec3(0.0f, 0.0f, 1.0f));
 	} else if(event.getCode() == KeyEvent::KEY_LEFTBRACKET){
-		moveCamera(ci::Vec3f(0.0f, 0.0f, -1.0f));
+		moveCamera(glm::vec3(0.0f, 0.0f, -1.0f));
 	} else if(event.getCode() == KeyEvent::KEY_EQUALS){
 		ds::PerspCameraParams p = mEngine.getPerspectiveCamera(1);
 		p.mFarPlane += 1.0f;
@@ -99,7 +99,7 @@ void FullStarterApp::keyDown(ci::app::KeyEvent event){
 	}
 }
 
-void FullStarterApp::moveCamera(const ci::Vec3f& deltaMove){
+void FullStarterApp::moveCamera(const glm::vec3& deltaMove){
 	ds::PerspCameraParams p = mEngine.getPerspectiveCamera(1);
 	p.mPosition += deltaMove;
 	std::cout << "Moving camera: " << p.mPosition.x << " " << p.mPosition.y << " " << p.mPosition.z << std::endl;

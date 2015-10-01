@@ -63,7 +63,7 @@ private:
 	PageSizeMode				mPageSizeMode;
 	std::function<void(void)>	mPageSizeChangeFn;
 	// CACHE
-	ci::Vec2i					mPageSizeCache;
+	glm::ivec2					mPageSizeCache;
 
 	// It'd be nice just have the PdfRes in a unique_ptr,
 	// but it has rules around destruction
@@ -76,7 +76,7 @@ private:
 		void					setResourceFilename(const std::string& filename, const PageSizeMode&);
 		void					update();
 		void					drawLocalClient();
-		void					setScale(const ci::Vec3f&);
+		void					setScale(const glm::vec3&);
 		void					setPageSizeMode(const PageSizeMode&);
 		float					getWidth() const;
 		float					getHeight() const;
@@ -85,7 +85,7 @@ private:
 		void					setPageNum(const int pageNum);
 		int						getPageNum() const;
 		int						getPageCount() const;
-		ci::Vec2i				getPageSize() const;
+		glm::ivec2				getPageSize() const;
 		void					goToNextPage();
 		void					goToPreviousPage();
 

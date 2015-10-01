@@ -74,7 +74,7 @@ public:
 	void				setupServer();
 
 private:
-	ds::ui::Video*		addVideo(ds::ui::Sprite &root, const ci::Vec2f &pos);
+	ds::ui::Video*		addVideo(ds::ui::Sprite &root, const glm::vec2 &pos);
 
 	typedef ds::App		inherited;
 };
@@ -102,14 +102,14 @@ void CsApp::setupServer() {
 		rootSprite.addChild(*web);
 	}
 
-	addVideo(rootSprite, ci::Vec2f(0.0f, 400.0f));
-	ds::ui::Video*			vid(addVideo(rootSprite, ci::Vec2f(400.0f, 400.0f)));
+	addVideo(rootSprite, glm::vec2(0.0f, 400.0f));
+	ds::ui::Video*			vid(addVideo(rootSprite, glm::vec2(400.0f, 400.0f)));
 	if (vid) {
 		vid->setServerModeHack(true);
 	}
 }
 
-ds::ui::Video* CsApp::addVideo(ds::ui::Sprite &root, const ci::Vec2f &pos) {
+ds::ui::Video* CsApp::addVideo(ds::ui::Sprite &root, const glm::vec2 &pos) {
 	ds::ui::Video*			vid(new FrontVideo(mEngine));
 	if (vid) {
 		vid->setLooping(true);

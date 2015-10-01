@@ -50,36 +50,36 @@ public:
 	Sprite*						getSpriteForFinger( const int fingerId );
 
 	void						setOverrideTranslation( const bool doOverride ){ mOverrideTranslation = doOverride; }
-	void						setOverrideDimensions( const ci::Vec2f& dimensions ){ mTouchDimensions = dimensions; }
-	void						setOverrideOffset( const ci::Vec2f& offset ){ mTouchOffset = offset; }
+	void						setOverrideDimensions( const glm::vec2& dimensions ){ mTouchDimensions = dimensions; }
+	void						setOverrideOffset( const glm::vec2& offset ){ mTouchOffset = offset; }
 	void						setTouchFilterRect( const ci::Rectf &filterRect ){ mTouchFilterRect = filterRect; }
 
 	bool						getOverrideEnabled(){ return mOverrideTranslation; }
 
 	// If you've set the override for translation, actually do that translation
-	void						overrideTouchTranslation(ci::Vec2f& inOutPoint);
+	void						overrideTouchTranslation(glm::vec2& inOutPoint);
 
 	// If we have a rect defined to discard touches, discard that shit!
-	bool						shouldDiscardTouch( const ci::Vec2f& p );
+	bool						shouldDiscardTouch( const glm::vec2& p );
 
 	void						setCapture(Capture*);
 
   private:
     // Utility to get the hit sprite in either the othorganal or perspective root sprites
-    Sprite*                     getHit(const ci::Vec3f &point);
+    Sprite*                     getHit(const glm::vec3 &point);
 
 	// If the window is stretched, the mouse points will be off. Fix that shit!
-	ci::Vec2f					translateMousePoint(const ci::Vec2i);
+	glm::vec2					translateMousePoint(const glm::ivec2);
 
     Engine &mEngine;
 
     std::map<int, ui::Sprite*>	mFingerDispatcher;
-    std::map<int, ci::Vec3f>	mTouchStartPoint;
-    std::map<int, ci::Vec3f>	mTouchPreviousPoint;
+    std::map<int, glm::vec3>	mTouchStartPoint;
+    std::map<int, glm::vec3>	mTouchPreviousPoint;
 	std::map<int, bool>			mDiscardTouchMap;
 
-	ci::Vec2f					mTouchDimensions;
-	ci::Vec2f					mTouchOffset;
+	glm::vec2					mTouchDimensions;
+	glm::vec2					mTouchOffset;
 	bool						mOverrideTranslation;
 	ci::Rectf					mTouchFilterRect;
 

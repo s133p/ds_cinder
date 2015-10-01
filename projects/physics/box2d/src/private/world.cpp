@@ -103,7 +103,7 @@ World::World(ds::ui::SpriteEngine& e, ds::ui::Sprite& spriddy)
 }
 
 void World::createDistanceJoint(const SpriteBody& body1, const SpriteBody& body2, float length, float dampingRatio, float frequencyHz,
-	const ci::Vec3f bodyAOffset, const ci::Vec3f bodyBOffset) {
+	const glm::vec3 bodyAOffset, const glm::vec3 bodyBOffset) {
 	
 	if (body1.mBody && body2.mBody) {
 		b2DistanceJointDef jointDef;
@@ -135,7 +135,7 @@ void World::resizeDistanceJoint(const SpriteBody& body1, const SpriteBody& body2
 	}
 }
 
-void World::createWeldJoint(const SpriteBody& body1, const SpriteBody& body2, const float damping, const float frequency, const ci::Vec3f bodyAOffset, const ci::Vec3f bodyBOffset) {
+void World::createWeldJoint(const SpriteBody& body1, const SpriteBody& body2, const float damping, const float frequency, const glm::vec3 bodyAOffset, const glm::vec3 bodyBOffset) {
 	if (body1.mBody && body2.mBody) {
 		b2WeldJointDef jointDef;
 		jointDef.bodyA = body1.mBody;
@@ -287,19 +287,19 @@ float World::getCi2BoxScale() const {
 	return mCi2BoxScale;
 }
 
-ci::Vec3f World::box2CiTranslation(const b2Vec2 &vec, ds::ui::Sprite* sp) const
+glm::vec3 World::box2CiTranslation(const b2Vec2 &vec, ds::ui::Sprite* sp) const
 {
 	if(mTranslateToLocalSpace && sp && sp->getParent()){
-		return  sp->getParent()->globalToLocal(ci::Vec3f(vec.x / mCi2BoxScale, vec.y / mCi2BoxScale, 0.0f));
+		return  sp->getParent()->globalToLocal(glm::vec3(vec.x / mCi2BoxScale, vec.y / mCi2BoxScale, 0.0f));
 	} else {
-		return ci::Vec3f(vec.x / mCi2BoxScale, vec.y / mCi2BoxScale, 0.0f);
+		return glm::vec3(vec.x / mCi2BoxScale, vec.y / mCi2BoxScale, 0.0f);
 	}
 }
 
-b2Vec2 World::Ci2BoxTranslation(const ci::Vec3f &vec, ds::ui::Sprite* sp) const
+b2Vec2 World::Ci2BoxTranslation(const glm::vec3 &vec, ds::ui::Sprite* sp) const
 {
 	if(mTranslateToLocalSpace && sp && sp->getParent()){
-		ci::Vec3f globalPoint = sp->getParent()->localToGlobal(vec) * mCi2BoxScale;
+		glm::vec3 globalPoint = sp->getParent()->localToGlobal(vec) * mCi2BoxScale;
 		return b2Vec2(globalPoint.x, globalPoint.y);
 	} else {
 		return b2Vec2(vec.x * mCi2BoxScale, vec.y * mCi2BoxScale);
@@ -309,8 +309,8 @@ b2Vec2 World::Ci2BoxTranslation(const ci::Vec3f &vec, ds::ui::Sprite* sp) const
 static void set_polygon_shape(	const World& trans,
 								const float l, const float t, const float r, const float b,
 								b2PolygonShape& out) {
-	const b2Vec2	lt = trans.Ci2BoxTranslation(ci::Vec3f(l, t, 0.0f), nullptr); // using nullptr for the sprite will make the polygon be in world space
-	const b2Vec2	rb = trans.Ci2BoxTranslation(ci::Vec3f(r, b, 0.0f), nullptr);
+	const b2Vec2	lt = trans.Ci2BoxTranslation(glm::vec3(l, t, 0.0f), nullptr); // using nullptr for the sprite will make the polygon be in world space
+	const b2Vec2	rb = trans.Ci2BoxTranslation(glm::vec3(r, b, 0.0f), nullptr);
 	b2Vec2			vtx[4];
 	vtx[0].Set(lt.x, lt.y);
 	vtx[1].Set(rb.x, lt.y);

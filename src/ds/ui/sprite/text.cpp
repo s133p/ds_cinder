@@ -265,7 +265,7 @@ if (mTextString == L"2012") {
 //std::cout << "Size: " << lines.size() << std::endl;
 //for (auto it=lines.begin(), end=lines.end(); it!=end; ++it) {
 //  const TextLayout::Line&   line(*it);
-//  mTextureFont->drawString(line.mText, ci::Vec2f(line.mPos.x+mBorder.x1, line.mPos.y+mBorder.y1), mDrawOptions);
+//  mTextureFont->drawString(line.mText, glm::vec2(line.mPos.x+mBorder.x1, line.mPos.y+mBorder.y1), mDrawOptions);
 //}
 }
 
@@ -474,7 +474,7 @@ void Text::makeLayout()
 		mNeedsLayout = false;
 		mLayout.clear();
 		if (mLayoutFunc && mFont) {
-			ci::Vec2f	size(mWidth-mBorder.x1-mBorder.x2, mHeight-mBorder.y1-mBorder.y2);
+			glm::vec2	size(mWidth-mBorder.x1-mBorder.x2, mHeight-mBorder.y1-mBorder.y2);
 			// If we're auto resizing, then the area to perform the layout should be unlimited.
 			if ((mResizeToTextF&RESIZE_W) != 0) {
 				size.x = 100000;
@@ -507,7 +507,7 @@ void Text::calculateFrame(const int flags)
 
 	for(auto it = lines.begin(), end = lines.end(); it != end; ++it) {
 		const TextLayout::Line&		line(*it);
-		const ci::Vec2f				size = getSizeFromString(mFont, line.mText);//mFont->measureRaw(line.mText.c_str());
+		const glm::vec2				size = getSizeFromString(mFont, line.mText);//mFont->measureRaw(line.mText.c_str());
 		const float					lineW = line.mPos.x + size.x;
 		float						lineH = line.mPos.y + height;
 		if(it + 1 != lines.end()) {
@@ -594,7 +594,7 @@ std::cout << "START=" << ds::utf8_from_wstr(mTextString) << std::endl;
 			const float						height = mFont->pointSize();
 			for (auto it=lines.begin(), end=lines.end(); it!=end; ++it) {
 				const TextLayout::Line&		line(*it);
-				//mTextureFont->drawString(line.mText, ci::Vec2f(line.mPos.x+mBorder.x1, line.mPos.y+mBorder.y1), mDrawOptions);
+				//mTextureFont->drawString(line.mText, glm::vec2(line.mPos.x+mBorder.x1, line.mPos.y+mBorder.y1), mDrawOptions);
 				OGLFT::BBox box = mFont->measureRaw(line.mText);
 
 				// Make sure textures are disabled, or else I can end up not

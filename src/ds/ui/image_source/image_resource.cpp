@@ -106,7 +106,7 @@ ImageResource::ImageResource(const ds::Resource& res, const int flags)
 		: mResource(res)
 		, mFlags(flags) {
 	ImageMetaData md;
-	md.add(res.getAbsoluteFilePath(), ci::Vec2f(res.getWidth(), res.getHeight()));
+	md.add(res.getAbsoluteFilePath(), glm::vec2(res.getWidth(), res.getHeight()));
 
 }
 

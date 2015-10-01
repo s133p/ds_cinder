@@ -37,10 +37,10 @@ public:
 
 	virtual bool update(float dt);
 protected:
-	std::vector<ci::Vec2f>	mPreviousTouch;
-	std::vector<ci::Vec2f>	mTouchPos;
+	std::vector<glm::vec2>	mPreviousTouch;
+	std::vector<glm::vec2>	mTouchPos;
 	float					mMagnitude;
-	ci::Vec2f				mDirection;
+	glm::vec2				mDirection;
 	float					mUpdateTime;
 	float					mUpdateTimeTotal;
 };

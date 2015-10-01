@@ -32,8 +32,8 @@ private:
 
 	int					mDebugCamera;
 
-	void				moveRoot(const ci::Vec3f& deltaMove);
-	void				moveCamera(const ci::Vec3f& deltaMove, const bool moveTarget);
+	void				moveRoot(const glm::vec3& deltaMove);
+	void				moveCamera(const glm::vec3& deltaMove, const bool moveTarget);
 	void				shiftLensH(const float amount);
 };
 

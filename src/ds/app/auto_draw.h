@@ -26,7 +26,7 @@ public:
 	virtual ~AutoDraw();
 
 protected:
-	virtual void		drawClient(const ci::Matrix44f&, const DrawParams&) = 0;
+	virtual void		drawClient(const glm::mat4&, const DrawParams&) = 0;
 
 private:
 	friend class AutoDrawService;
@@ -43,7 +43,7 @@ class AutoDrawService : public EngineService {
 public:
     AutoDrawService();
 
-	virtual void			drawClient(const ci::Matrix44f&, const DrawParams&);
+	virtual void			drawClient(const glm::mat4&, const DrawParams&);
 
 private:
 	friend class AutoDraw;

@@ -45,7 +45,7 @@ void TouchManager::touchesBegin(const TouchEvent &event) {
 			return;
 		}
 
-		ci::Vec2f touchPos = touchIt->getPos();
+		glm::vec2 touchPos = touchIt->getPos();
 		if(mOverrideTranslation){
 			overrideTouchTranslation(touchPos);
 		}
@@ -60,7 +60,7 @@ void TouchManager::touchesBegin(const TouchEvent &event) {
 		mDiscardTouchMap[fingerId] = false;
 
 		TouchInfo touchInfo;
-		touchInfo.mCurrentGlobalPoint = Vec3f(touchPos, 0.0f);
+		touchInfo.mCurrentGlobalPoint = glm::vec3(touchPos, 0.0f);
 		touchInfo.mFingerId = fingerId;
 		touchInfo.mStartPoint = mTouchStartPoint[touchInfo.mFingerId] = touchInfo.mCurrentGlobalPoint;
 		mTouchPreviousPoint[touchInfo.mFingerId] = touchInfo.mCurrentGlobalPoint;
@@ -94,7 +94,7 @@ void TouchManager::touchesMoved(const TouchEvent &event) {
 			continue;
 		}
 
-		ci::Vec2f touchPos = touchIt->getPos();
+		glm::vec2 touchPos = touchIt->getPos();
 		if(mOverrideTranslation){
 			overrideTouchTranslation(touchPos);
 		}
@@ -103,7 +103,7 @@ void TouchManager::touchesMoved(const TouchEvent &event) {
 		//	return;
 
 		TouchInfo touchInfo;
-		touchInfo.mCurrentGlobalPoint = Vec3f(touchPos, 0.0f);
+		touchInfo.mCurrentGlobalPoint = glm::vec3(touchPos, 0.0f);
 		touchInfo.mFingerId = fingerId;
 		touchInfo.mStartPoint = mTouchStartPoint[touchInfo.mFingerId];
 		touchInfo.mDeltaPoint = touchInfo.mCurrentGlobalPoint - mTouchPreviousPoint[touchInfo.mFingerId];
@@ -139,7 +139,7 @@ void TouchManager::touchesEnded(const TouchEvent &event) {
 			continue;
 		}
 
-		ci::Vec2f touchPos = touchIt->getPos();
+		glm::vec2 touchPos = touchIt->getPos();
 		if(mOverrideTranslation){
 			overrideTouchTranslation(touchPos);
 		}
@@ -149,7 +149,7 @@ void TouchManager::touchesEnded(const TouchEvent &event) {
 
 
 		TouchInfo touchInfo;
-		touchInfo.mCurrentGlobalPoint = Vec3f(touchPos, 0.0f);
+		touchInfo.mCurrentGlobalPoint = glm::vec3(touchPos, 0.0f);
 		touchInfo.mFingerId = fingerId;
 		touchInfo.mStartPoint = mTouchStartPoint[touchInfo.mFingerId];
 		touchInfo.mDeltaPoint = touchInfo.mCurrentGlobalPoint - mTouchPreviousPoint[touchInfo.mFingerId];
@@ -174,7 +174,7 @@ void TouchManager::touchesEnded(const TouchEvent &event) {
 void TouchManager::mouseTouchBegin(const MouseEvent &event, int id ){
 
 	TouchInfo touchInfo;
-	touchInfo.mCurrentGlobalPoint = Vec3f(translateMousePoint(event.getPos()), 0.0f);
+	touchInfo.mCurrentGlobalPoint = glm::vec3(translateMousePoint(event.getPos()), 0.0f);
 	touchInfo.mFingerId = id;
 	touchInfo.mStartPoint = mTouchStartPoint[touchInfo.mFingerId] = touchInfo.mCurrentGlobalPoint;
 	mTouchPreviousPoint[touchInfo.mFingerId] = touchInfo.mCurrentGlobalPoint;
@@ -197,7 +197,7 @@ void TouchManager::mouseTouchBegin(const MouseEvent &event, int id ){
 void TouchManager::mouseTouchMoved(const MouseEvent &event, int id ){
 
 	TouchInfo touchInfo;
-	touchInfo.mCurrentGlobalPoint = Vec3f(translateMousePoint(event.getPos()), 0.0f);
+	touchInfo.mCurrentGlobalPoint = glm::vec3(translateMousePoint(event.getPos()), 0.0f);
 	touchInfo.mFingerId = id;
 	touchInfo.mStartPoint = mTouchStartPoint[touchInfo.mFingerId];
 	touchInfo.mDeltaPoint = touchInfo.mCurrentGlobalPoint - mTouchPreviousPoint[touchInfo.mFingerId];
@@ -219,7 +219,7 @@ void TouchManager::mouseTouchMoved(const MouseEvent &event, int id ){
 void TouchManager::mouseTouchEnded(const MouseEvent &event, int id ){
 
 	TouchInfo touchInfo;
-	touchInfo.mCurrentGlobalPoint = Vec3f(translateMousePoint(event.getPos()), 0.0f);
+	touchInfo.mCurrentGlobalPoint = glm::vec3(translateMousePoint(event.getPos()), 0.0f);
 	touchInfo.mFingerId = id;
 	touchInfo.mStartPoint = mTouchStartPoint[touchInfo.mFingerId];
 	touchInfo.mDeltaPoint = touchInfo.mCurrentGlobalPoint - mTouchPreviousPoint[touchInfo.mFingerId];
@@ -247,7 +247,7 @@ void TouchManager::drawTouches() const {
 	applyBlendingMode(NORMAL);
 
 	for ( auto it = mTouchPreviousPoint.begin(), it2 = mTouchPreviousPoint.end(); it != it2; ++it ) {
-		ci::Vec2f		pos(it->second.xy());
+		glm::vec2		pos(it->second.xy());
 		ci::gl::drawStrokedCircle(pos, 20.0f);
 	}
 }
@@ -281,16 +281,16 @@ Sprite* TouchManager::getSpriteForFinger( const int fingerId ){
 	return mFingerDispatcher[fingerId];
 }
 
-Sprite* TouchManager::getHit(const ci::Vec3f &point) {
+Sprite* TouchManager::getHit(const glm::vec3 &point) {
 	return mEngine.getHit(point);
 }
 
-ci::Vec2f TouchManager::translateMousePoint( const ci::Vec2i inputPoint ){
+glm::vec2 TouchManager::translateMousePoint( const glm::ivec2 inputPoint ){
 	// The translation has been moved to the engine
-	return ci::Vec2f(static_cast<float>(inputPoint.x), static_cast<float>(inputPoint.y));
+	return glm::vec2(static_cast<float>(inputPoint.x), static_cast<float>(inputPoint.y));
 }
 
-bool TouchManager::shouldDiscardTouch( const ci::Vec2f& p ) {
+bool TouchManager::shouldDiscardTouch( const glm::vec2& p ) {
 	if (mTouchFilterRect.getWidth() != 0.0f ) {
 		return !mTouchFilterRect.contains(p);
 	}
@@ -301,7 +301,7 @@ void TouchManager::setCapture(Capture *c) {
 	mCapture = c;
 }
 
-void TouchManager::overrideTouchTranslation( ci::Vec2f& inOutPoint){
+void TouchManager::overrideTouchTranslation( glm::vec2& inOutPoint){
 	inOutPoint.set((inOutPoint.x / getWindowWidth()) * mTouchDimensions.x + mTouchOffset.x, 
 		(inOutPoint.y / getWindowHeight()) * mTouchDimensions.y + mTouchOffset.y);
 }

@@ -57,9 +57,9 @@ static ci::ColorA parseColor( const std::string &color ) {
 	return ci::ColorA(r, g, b, a);
 }
 
-ci::Vec3f parseVector( const std::string &s ) {
+glm::vec3 parseVector( const std::string &s ) {
 	auto tokens = ds::split( s, ", ", true );
-	ci::Vec3f v;
+	glm::vec3 v;
 	v.x = tokens.size() > 0 ? std::stof(tokens[0]) : 0.0f;
 	v.y = tokens.size() > 1 ? std::stof(tokens[1]) : 0.0f;
 	v.z = tokens.size() > 2 ? std::stof(tokens[2]) : 0.0f;
@@ -111,7 +111,7 @@ static void setSpriteProperty( ds::ui::Sprite &sprite, ci::XmlTree::Attr &attr, 
 		sprite.setSizeAll( sprite.getWidth(), sprite.getHeight(), attr.getValue<float>() );
 	}
 	else if ( property == "size" ) {
-		ci::Vec3f v = parseVector( attr.getValue() );
+		glm::vec3 v = parseVector( attr.getValue() );
 		sprite.setSize( v.x, v.y );
 	}
 	else if ( property == "color" ) {

@@ -82,15 +82,15 @@ public:
 	virtual void			updateClient(const ds::UpdateParams&);
 	virtual void			updateServer(const ds::UpdateParams&);
 
-	virtual void			drawClient( const ci::Matrix44f &trans, const DrawParams &drawParams );
-	virtual void			drawServer( const ci::Matrix44f &trans, const DrawParams &drawParams );
+	virtual void			drawClient( const glm::mat4 &trans, const DrawParams &drawParams );
+	virtual void			drawServer( const glm::mat4 &trans, const DrawParams &drawParams );
 
 	ds::sprite_id_t			getId() const;
 	ds::ui::SpriteEngine&	getEngine();
 
-	void					setSize(const ci::Vec2f& size2d);
+	void					setSize(const glm::vec2& size2d);
 	void					setSize(float width, float height);
-	virtual void			setSizeAll(const ci::Vec3f& size3d);
+	virtual void			setSizeAll(const glm::vec3& size3d);
 	virtual void			setSizeAll(float width, float height, float depth);
 
 	// sets the size based on the size of it's immediate children, not recursive
@@ -98,7 +98,7 @@ public:
 	// Answer the preferred size for this object. This is intended to be part of a
 	// layout pass, so the default preferred size is 0 not width/height. Subclasses
 	// need to override this to be meaningful.
-	virtual ci::Vec3f		getPreferredSize() const;
+	virtual glm::vec3		getPreferredSize() const;
 
 	virtual float			getWidth() const;
 	virtual float			getHeight() const;
@@ -107,30 +107,30 @@ public:
 	float					getScaleHeight() const;
 	float					getScaleDepth() const;
 
-	void					setPosition(const ci::Vec3f &pos);
+	void					setPosition(const glm::vec3 &pos);
 	void					setPosition(float x, float y, float z = 0.0f);
-	const ci::Vec3f&		getPosition() const;
+	const glm::vec3&		getPosition() const;
 
-	ci::Vec3f				getCenterPosition() const;
-	ci::Vec3f				getLocalCenterPosition() const;
+	glm::vec3				getCenterPosition() const;
+	glm::vec3				getLocalCenterPosition() const;
 
-	void					move(const ci::Vec3f &delta);
+	void					move(const glm::vec3 &delta);
 	void					move(float deltaX, float deltaY, float deltaZ = 0.0f);
 
-	void					setScale(const ci::Vec3f &scale);
+	void					setScale(const glm::vec3 &scale);
 	void					setScale(float x, float y, float z = 1.0f);
 	void					setScale(float scale);
-	const ci::Vec3f&		getScale() const;
+	const glm::vec3&		getScale() const;
 
 	// center of the Sprite. Where its positioned at and rotated at.
-	virtual void			setCenter(const ci::Vec3f &center);
+	virtual void			setCenter(const glm::vec3 &center);
 	virtual void			setCenter(float x, float y, float z = 0.0f);
-	const ci::Vec3f&		getCenter() const;
+	const glm::vec3&		getCenter() const;
 
 	void					setRotation(float rotZ);
 	void					setRotation(const float xRot, const float yRot, const float zRot);
-	void					setRotation(const ci::Vec3f &rot);
-	ci::Vec3f				getRotation() const;
+	void					setRotation(const glm::vec3 &rot);
+	glm::vec3				getRotation() const;
 
 	// \note This ZLevel is not analogous to 3D position z value at all.
 	// This value affects drawing order of sprites. The higher this value is,
@@ -147,10 +147,10 @@ public:
 	void					setDrawSorted( bool drawSorted );
 	bool					getDrawSorted() const;
 
-	const ci::Matrix44f&	getTransform() const;
-	const ci::Matrix44f&	getInverseTransform() const;
-	const ci::Matrix44f&	getGlobalTransform() const;
-	const ci::Matrix44f&	getInverseGlobalTransform() const;
+	const glm::mat4&	getTransform() const;
+	const glm::mat4&	getInverseTransform() const;
+	const glm::mat4&	getGlobalTransform() const;
+	const glm::mat4&	getInverseGlobalTransform() const;
 
 	ds::UserData&			getUserData();
 	const ds::UserData&		getUserData() const;
@@ -219,14 +219,14 @@ public:
 
 	Sprite*					getParent() const;
 
-	ci::Vec3f				globalToLocal( const ci::Vec3f &globalPoint );
-	ci::Vec3f				localToGlobal( const ci::Vec3f &localPoint );
+	glm::vec3				globalToLocal( const glm::vec3 &globalPoint );
+	glm::vec3				localToGlobal( const glm::vec3 &localPoint );
 
 	// check if a point is inside the Sprite's bounds.
-	virtual bool			contains(const ci::Vec3f& point, const float pad = 0.0f) const;
+	virtual bool			contains(const glm::vec3& point, const float pad = 0.0f) const;
 
 	// finds Sprite at position
-	Sprite*					getHit( const ci::Vec3f &point );
+	Sprite*					getHit( const glm::vec3 &point );
 	Sprite*					getPerspectiveHit(CameraPick&);
 
 	void					setProcessTouchCallback( const std::function<void (Sprite *, const TouchInfo &)> &func );
@@ -235,9 +235,9 @@ public:
 	// a tap if, for example, they only want to handle single taps.  Answer true as
 	// long as you want to keep checking for a tap, false otherwise.
 	void					setTapInfoCallback( const std::function<bool (Sprite *, const TapInfo &)> &func );
-	void					setSwipeCallback( const std::function<void (Sprite *, const ci::Vec3f &)> &func );
-	void					setTapCallback( const std::function<void (Sprite *, const ci::Vec3f &)> &func );
-	void					setDoubleTapCallback( const std::function<void (Sprite *, const ci::Vec3f &)> &func );
+	void					setSwipeCallback( const std::function<void (Sprite *, const glm::vec3 &)> &func );
+	void					setTapCallback( const std::function<void (Sprite *, const glm::vec3 &)> &func );
+	void					setDoubleTapCallback( const std::function<void (Sprite *, const glm::vec3 &)> &func );
 	void					setDragDestinationCallback( const std::function<void (Sprite *, const DragDestinationInfo &)> &func );
 
 	// true will size the sprite using setSize() on a touch scale gesture
@@ -329,10 +329,10 @@ protected:
 	friend class        TouchManager;
 	friend class        TouchProcess;
 
-	void				swipe(const ci::Vec3f &swipeVector);
+	void				swipe(const glm::vec3 &swipeVector);
 	bool				tapInfo(const TapInfo&);
-	void				tap(const ci::Vec3f &tapPos);
-	void				doubleTap(const ci::Vec3f &tapPos);
+	void				tap(const glm::vec3 &tapPos);
+	void				doubleTap(const glm::vec3 &tapPos);
 	void				dragDestination(Sprite *sprite, const DragDestinationInfo &dragInfo);
 	void				processTouchInfo( const TouchInfo &touchInfo );
 	void				processTouchInfoCallback( const TouchInfo &touchInfo );
@@ -350,11 +350,11 @@ protected:
 	// Once the sprite has passed the getHit() sprite bounds, this is a second
 	// stage that allows the sprite itself to determine if the point is interior,
 	// in the case that the sprite has transparency or other special rules.
-	virtual bool		getInnerHit(const ci::Vec3f&) const;
+	virtual bool		getInnerHit(const glm::vec3&) const;
 
-	virtual void		doSetPosition(const ci::Vec3f&);
-	virtual void		doSetScale(const ci::Vec3f&);
-	virtual void		doSetRotation(const ci::Vec3f&);
+	virtual void		doSetPosition(const glm::vec3&);
+	virtual void		doSetScale(const glm::vec3&);
+	virtual void		doSetRotation(const glm::vec3&);
 	void				doPropagateVisibilityChange(bool before, bool after);
 
 	virtual void		onCenterChanged();
@@ -415,12 +415,12 @@ protected:
 						mHeight,
 						mDepth;
 
-	mutable ci::Matrix44f	mTransformation;
-	mutable ci::Matrix44f	mInverseTransform;
+	mutable glm::mat4	mTransformation;
+	mutable glm::mat4	mInverseTransform;
 	mutable bool			mUpdateTransform;
 
 	int                 mSpriteFlags;
-	ci::Vec3f           mPosition,
+	glm::vec3           mPosition,
 						mCenter,
 						mScale,
 						mRotation;
@@ -431,8 +431,8 @@ protected:
 	bool				mClippingBoundsDirty;
 	SpriteShader		mSpriteShader;
 
-	mutable ci::Matrix44f	mGlobalTransform;
-	mutable ci::Matrix44f	mInverseGlobalTransform;
+	mutable glm::mat4	mGlobalTransform;
+	mutable glm::mat4	mInverseGlobalTransform;
 
 	ds::UserData			mUserData;
 
@@ -447,10 +447,10 @@ protected:
 	DirtyState			mDirty;
 
 	std::function<void (Sprite *, const TouchInfo &)> mProcessTouchInfoCallback;
-	std::function<void (Sprite *, const ci::Vec3f &)> mSwipeCallback;
+	std::function<void (Sprite *, const glm::vec3 &)> mSwipeCallback;
 	std::function<bool (Sprite *, const TapInfo &)> mTapInfoCallback;
-	std::function<void (Sprite *, const ci::Vec3f &)> mTapCallback;
-	std::function<void (Sprite *, const ci::Vec3f &)> mDoubleTapCallback;
+	std::function<void (Sprite *, const glm::vec3 &)> mTapCallback;
+	std::function<void (Sprite *, const glm::vec3 &)> mDoubleTapCallback;
 	std::function<void (Sprite *, const DragDestinationInfo &)> mDragDestinationCallback;
 
 	bool				mMultiTouchEnabled;
@@ -530,12 +530,12 @@ public:
 	// Upon destruction, this class restores the scale.
 	class LockScale {
 	public:
-		LockScale(Sprite&, const ci::Vec3f& temporaryScale);
+		LockScale(Sprite&, const glm::vec3& temporaryScale);
 		~LockScale();
 
 	private:
 		Sprite&			mSprite;
-		const ci::Vec3f	mScale;
+		const glm::vec3	mScale;
 	};
 
 #ifdef _DEBUG

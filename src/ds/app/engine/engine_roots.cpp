@@ -92,13 +92,13 @@ void OrthRoot::drawClient(const DrawParams& p, AutoDrawService* auto_draw) {
 	}
 	setGlCamera();
 
-	ci::Matrix44f		m(ci::gl::getModelView());
+	glm::mat4		m(ci::gl::getModelView());
 	// Account for src rect translation
 	if (mSrcRect.x2 > mSrcRect.x1 && mSrcRect.y2 > mSrcRect.y1) {
 		const float			sx = mDstRect.getWidth() / mSrcRect.getWidth(),
 							sy = mDstRect.getHeight() / mSrcRect.getHeight();
-		m.translate(ci::Vec3f(-mSrcRect.x1*sx, -mSrcRect.y1*sy, 0.0f));
-		m.scale(ci::Vec3f(sx, sy, 1.0f));
+		m.translate(glm::vec3(-mSrcRect.x1*sx, -mSrcRect.y1*sy, 0.0f));
+		m.scale(glm::vec3(sx, sy, 1.0f));
 	}
 	mSprite->drawClient(m, p);
 
@@ -110,7 +110,7 @@ void OrthRoot::drawServer(const DrawParams& p) {
 	mSprite->drawServer(ci::gl::getModelView(), p);
 }
 
-ui::Sprite* OrthRoot::getHit(const ci::Vec3f& point) {
+ui::Sprite* OrthRoot::getHit(const glm::vec3& point) {
 	return mSprite->getHit(point);
 }
 
@@ -203,7 +203,7 @@ void PerspRoot::drawServer(const DrawParams& p) {
 	drawFunc([this, &p](){mSprite->drawClient(ci::gl::getModelView(), p);});
 }
 
-ui::Sprite* PerspRoot::getHit(const ci::Vec3f& point) {
+ui::Sprite* PerspRoot::getHit(const glm::vec3& point) {
 	ui::Sprite*		s = nullptr;
 	drawFunc([this, &point, &s](){s = mPicking.pickAt(point.xy(), *(mSprite.get()));});
 	return s;
@@ -302,8 +302,8 @@ PerspRoot::OldPick::OldPick(ci::Camera& c)
 		: mCamera(c) {
 }
 
-ds::ui::Sprite* PerspRoot::OldPick::pickAt(const ci::Vec2f& pt, ds::ui::Sprite& root) {
-	ds::CameraPick			pick(mCamera, ci::Vec3f(pt.x, pt.y, 0.0f), root.getWidth(), root.getHeight());
+ds::ui::Sprite* PerspRoot::OldPick::pickAt(const glm::vec2& pt, ds::ui::Sprite& root) {
+	ds::CameraPick			pick(mCamera, glm::vec3(pt.x, pt.y, 0.0f), root.getWidth(), root.getHeight());
 	return root.getPerspectiveHit(pick);
 }
 

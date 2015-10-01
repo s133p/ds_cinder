@@ -62,10 +62,10 @@ public:
 
 	static const SpriteAnim<ci::Color>&		ANIM_COLOR();
 	static const SpriteAnim<float>&			ANIM_OPACITY();
-	static const SpriteAnim<ci::Vec3f>&		ANIM_POSITION();
-	static const SpriteAnim<ci::Vec3f>&		ANIM_SCALE();
-	static const SpriteAnim<ci::Vec3f>&		ANIM_SIZE();
-	static const SpriteAnim<ci::Vec3f>&		ANIM_ROTATION();
+	static const SpriteAnim<glm::vec3>&		ANIM_POSITION();
+	static const SpriteAnim<glm::vec3>&		ANIM_SCALE();
+	static const SpriteAnim<glm::vec3>&		ANIM_SIZE();
+	static const SpriteAnim<glm::vec3>&		ANIM_ROTATION();
 
 	void									tweenColor(		const ci::Color&, const float duration = 1.0f, const float delay = 0.0f,
 															const ci::EaseFn& = ci::easeNone,
@@ -73,16 +73,16 @@ public:
 	void									tweenOpacity(	const float opacity, const float duration = 1.0f, const float delay = 0.0f,
 															const ci::EaseFn& = ci::easeNone,
 															const std::function<void(void)>& finishFn = nullptr);
-	void									tweenPosition(	const ci::Vec3f& pos, const float duration = 1.0f, const float delay = 0.0f,
+	void									tweenPosition(	const glm::vec3& pos, const float duration = 1.0f, const float delay = 0.0f,
 															const ci::EaseFn& = ci::easeNone,
 															const std::function<void(void)>& finishFn = nullptr);
-	void									tweenRotation(	const ci::Vec3f& rot, const float duration = 1.0f, const float delay = 0.0f,
+	void									tweenRotation(	const glm::vec3& rot, const float duration = 1.0f, const float delay = 0.0f,
 															const ci::EaseFn& = ci::easeNone,
 															const std::function<void(void)>& finishFn = nullptr);
-	void									tweenScale(		const ci::Vec3f& scale, const float duration = 1.0f, const float delay = 0.0f,
+	void									tweenScale(		const glm::vec3& scale, const float duration = 1.0f, const float delay = 0.0f,
 															const ci::EaseFn& = ci::easeNone,
 															const std::function<void(void)>& finishFn = nullptr);
-	void									tweenSize(		const ci::Vec3f& size, const float duration = 1.0f, const float delay = 0.0f,
+	void									tweenSize(		const glm::vec3& size, const float duration = 1.0f, const float delay = 0.0f,
 															const ci::EaseFn& = ci::easeNone,
 															const std::function<void(void)>& finishFn = nullptr);
 	void									animStop();
@@ -90,10 +90,10 @@ public:
 public:
 	ci::Anim<ci::Color>						mAnimColor;
 	ci::Anim<float>							mAnimOpacity;
-	ci::Anim<ci::Vec3f>						mAnimPosition;
-	ci::Anim<ci::Vec3f>						mAnimScale;
-	ci::Anim<ci::Vec3f>						mAnimSize;
-	ci::Anim<ci::Vec3f>						mAnimRotation;
+	ci::Anim<glm::vec3>						mAnimPosition;
+	ci::Anim<glm::vec3>						mAnimScale;
+	ci::Anim<glm::vec3>						mAnimSize;
+	ci::Anim<glm::vec3>						mAnimRotation;
 
 private:
 	Sprite&									mOwner;

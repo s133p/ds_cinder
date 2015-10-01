@@ -31,7 +31,7 @@ AnimationApp::AnimationApp()
 
 void AnimationApp::setupServer()
 {
-	const ci::Vec2f     cen(getWindowCenter());
+	const glm::vec2     cen(getWindowCenter());
 	ds::ui::Sprite     &rootSprite = mEngine.getRootSprite();
 
 	mSprite1.enable(false);
@@ -55,20 +55,20 @@ void AnimationApp::mouseDown(MouseEvent event)
 	inherited::mouseDown(event);
 
 	// Tween to current mouse position
-	const ci::Vec3f       posEnd(ci::Vec3f(float(event.getPos().x), float(event.getPos().y), 0));
+	const glm::vec3       posEnd(glm::vec3(float(event.getPos().x), float(event.getPos().y), 0));
 
 	// Tween to a randomized scale
 	const float           nextScale = ci::Rand::randFloat(10.25f, 1000.5f);
-	const ci::Vec3f       scaleEnd(ci::Vec3f(nextScale, nextScale, 1));
+	const glm::vec3       scaleEnd(glm::vec3(nextScale, nextScale, 1));
 	mSprite1.tweenSize(scaleEnd, 10.0f, 1.0f, ci::EaseInOutCubic());
 	mSprite1.tweenPosition(posEnd, 5.0f, 0.0f, ci::EaseInOutCubic());
 
 	// A custom tween parameter -- only position y (also could have been done by
 	// setting the end position.x and .z values to the same as the start, this is
 	// here just to illustrate how to do a custom)
-	ds::ui::SpriteAnim<ci::Vec3f>  anim_pos([](ds::ui::Sprite& s)->ci::Anim<ci::Vec3f>& { return s.mAnimPosition; },
-											[](ds::ui::Sprite& s)->ci::Vec3f { return s.getPosition(); },
-											[](const ci::Vec3f& v, ds::ui::Sprite& s) { s.setPosition(s.getPosition().x, v.y, s.getPosition().z); });
+	ds::ui::SpriteAnim<glm::vec3>  anim_pos([](ds::ui::Sprite& s)->ci::Anim<glm::vec3>& { return s.mAnimPosition; },
+											[](ds::ui::Sprite& s)->glm::vec3 { return s.getPosition(); },
+											[](const glm::vec3& v, ds::ui::Sprite& s) { s.setPosition(s.getPosition().x, v.y, s.getPosition().z); });
 	mEngine.getTweenline().apply(mSprite2, anim_pos, posEnd, 1.0f, EaseInOutQuart());
 }
 

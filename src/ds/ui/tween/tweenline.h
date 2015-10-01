@@ -41,7 +41,7 @@ void Tweenline::apply( Sprite& s, const SpriteAnim<T>& a, const T& end,
 {
   auto&   anim = a.getAnim(s); 
   // OK, for some reason, this broke once I added float<> anims.  What's
-  // going on is that, no matter what, the lerp is always a ci::Vec3f type,
+  // going on is that, no matter what, the lerp is always a glm::vec3 type,
   // probably not coincidentally the only type I was using before adding floats.
   // This doesn't affect the default lerp if I don't pass mine in, not sure
   // what the deal is.

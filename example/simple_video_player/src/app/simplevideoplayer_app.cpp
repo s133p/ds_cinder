@@ -82,7 +82,7 @@ void SimpleVideoPlayer::startVideo(const std::string& vidPath){
 	mVideo->loadVideo(vidPath);
 	mVideo->enable(true);
 	mVideo->enableMultiTouch(ds::ui::MULTITOUCH_INFO_ONLY);
-	mVideo->setTapCallback([this](ds::ui::Sprite* bs, const ci::Vec3f& pos){
+	mVideo->setTapCallback([this](ds::ui::Sprite* bs, const glm::vec3& pos){
 		if(mVideo){
 			if(mVideo->getIsPlaying()){
 				mVideo->pause();

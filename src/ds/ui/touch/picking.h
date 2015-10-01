@@ -15,12 +15,12 @@ class Picking {
 public:
 	virtual ~Picking();
 
-	void					setWorldSize(const ci::Vec2f&);
+	void					setWorldSize(const glm::vec2&);
 
-	virtual ds::ui::Sprite*	pickAt(const ci::Vec2f&, ds::ui::Sprite& root) = 0;
+	virtual ds::ui::Sprite*	pickAt(const glm::vec2&, ds::ui::Sprite& root) = 0;
 	
 protected:
-	ci::Vec2f				mWorldSize;
+	glm::vec2				mWorldSize;
 
 	Picking();
 };

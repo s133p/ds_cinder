@@ -31,7 +31,7 @@ private:
 	bool				mIdling;
 
 
-	void				moveCamera(const ci::Vec3f& deltaMove);
+	void				moveCamera(const glm::vec3& deltaMove);
 };
 
 } // !namespace example

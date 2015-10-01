@@ -155,7 +155,7 @@ void ImageArc::addFloatInput(const double f) {
 	mInput.addFloat(f);
 }
 
-void ImageArc::addVec2Input(const ci::Vec2d& v) {
+void ImageArc::addVec2Input(const glm::dvec2& v) {
 	mInput.addVec2(v);
 }
 

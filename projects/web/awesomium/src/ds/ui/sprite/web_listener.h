@@ -17,8 +17,8 @@ public:
 	TouchEvent();
 
 	Phase			mPhase;
-	ci::Vec2f		mPosition;
-	ci::Vec2f		mUnitPosition;
+	glm::vec2		mPosition;
+	glm::vec2		mUnitPosition;
 };
 
 } // namespace web

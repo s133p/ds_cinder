@@ -16,14 +16,14 @@ class TouchTranslator {
 public:
 	TouchTranslator();
 
-	ci::Vec2i		toWorldi(const int x, const int y) const;
-	ci::Vec2f		toWorldf(const float x, const float y) const;
+	glm::ivec2		toWorldi(const int x, const int y) const;
+	glm::vec2		toWorldf(const float x, const float y) const;
 
 	void			setTranslation(const float x, const float y);
 	void			setScale(const float x, const float y);
 
-	ci::Vec2f		getTranslate() const		{ return ci::Vec2f(mTx, mTy); }
-	ci::Vec2f		getScale() const			{ return ci::Vec2f(mSx, mSy); }
+	glm::vec2		getTranslate() const		{ return glm::vec2(mTx, mTy); }
+	glm::vec2		getScale() const			{ return glm::vec2(mSx, mSy); }
 
 	void			setTouchOverlay(const ci::Rectf &src, const ci::Rectf &dst);
 

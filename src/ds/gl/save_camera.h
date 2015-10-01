@@ -22,7 +22,7 @@ public:
 
 private:
 	const ci::Area		mViewport;
-	const ci::Matrix44f	mModelView,
+	const glm::mat4	mModelView,
 						mProjection;
 };
 

@@ -170,14 +170,14 @@ public:
 
 	bool								hideMouse() const;
 
-	ds::ui::Sprite*						getHit(const ci::Vec3f& point);
+	ds::ui::Sprite*						getHit(const glm::vec3& point);
 
 	virtual void						clearFingers( const std::vector<int> &fingers );
 	void								setSpriteForFinger( const int fingerId, ui::Sprite* theSprite ){ mTouchManager.setSpriteForFinger(fingerId, theSprite); }
 	ds::ui::Sprite*						getSpriteForFinger( const int fingerId ){ return mTouchManager.getSpriteForFinger(fingerId); }
 	// translate a touch event point to the overlay bounds specified in the settings
-	virtual void						translateTouchPoint( ci::Vec2f& inOutPoint );
-	virtual bool						shouldDiscardTouch( ci::Vec2f& p ){ return mTouchManager.shouldDiscardTouch(p); }
+	virtual void						translateTouchPoint( glm::vec2& inOutPoint );
+	virtual bool						shouldDiscardTouch( glm::vec2& p ){ return mTouchManager.shouldDiscardTouch(p); }
 
 	// Root support
 	const ci::Rectf&					getScreenRect() const;

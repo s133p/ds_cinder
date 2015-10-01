@@ -59,7 +59,7 @@ public:
 
 	virtual void		touchBegin(const ds::ui::TouchInfo &ti) {
 		if (mTouchTrailsUse) {
-			mTouchPointHistory[ti.mFingerId] = std::vector<ci::Vec3f>();
+			mTouchPointHistory[ti.mFingerId] = std::vector<glm::vec3>();
 			mTouchPointHistory[ti.mFingerId].push_back(ti.mCurrentGlobalPoint);
 		}
 	}
@@ -98,9 +98,9 @@ private:
 		for ( auto it = mTouchPointHistory.begin(), it2 = mTouchPointHistory.end(); it != it2; ++it ) {
 			float sizey = incrementy;
 			int secondSize = it->second.size();
-			ci::Vec2f prevPos = ci::Vec2f::zero();
+			glm::vec2 prevPos = glm::vec2(0.0f, 0.0f);
 			for (int i = 0; i < secondSize; i++){
-				ci::Vec2f		pos(it->second[i].xy());
+				glm::vec2		pos(it->second[i].xy());
 				ci::gl::drawSolidCircle(pos, sizey);
 
 				if(i < secondSize - 1 && i > 0){ 
@@ -109,10 +109,10 @@ private:
 					float angle = atan2f(pos.y - prevPos.y, pos.x - prevPos.x) + ds::math::PI / 2.0f;
 					float smallSize = (sizey - incrementy);
 					float bigSize = sizey;
-					ci::Vec2f p1 = ci::Vec2f(pos.x + bigSize * cos(angle), pos.y + bigSize * sin(angle));
-					ci::Vec2f p2 = ci::Vec2f(pos.x - bigSize * cos(angle), pos.y - bigSize * sin(angle));
-					ci::Vec2f p3 = ci::Vec2f(prevPos.x + smallSize * cos(angle), prevPos.y + smallSize * sin(angle));
-					ci::Vec2f p4 = ci::Vec2f(prevPos.x - smallSize * cos(angle), prevPos.y - smallSize * sin(angle));
+					glm::vec2 p1 = glm::vec2(pos.x + bigSize * cos(angle), pos.y + bigSize * sin(angle));
+					glm::vec2 p2 = glm::vec2(pos.x - bigSize * cos(angle), pos.y - bigSize * sin(angle));
+					glm::vec2 p3 = glm::vec2(prevPos.x + smallSize * cos(angle), prevPos.y + smallSize * sin(angle));
+					glm::vec2 p4 = glm::vec2(prevPos.x - smallSize * cos(angle), prevPos.y - smallSize * sin(angle));
 					glBegin(GL_QUADS);
 					ci::gl::vertex(p1);
 					ci::gl::vertex(p3);
@@ -129,7 +129,7 @@ private:
 	}
 
 	ds::ui::TouchManager&				mTouchManager;
-	std::map<int, std::vector<Vec3f>>	mTouchPointHistory;
+	std::map<int, std::vector<glm::vec3>>	mTouchPointHistory;
 	bool								mTouchTrailsUse;
 	int									mTouchTrailsLength;
 	float								mTouchTrailsIncrement;
@@ -208,8 +208,8 @@ Engine::Engine(	ds::App& app, const ds::cfg::Settings &settings,
 	mTouchMode = ds::ui::TouchMode::fromSettings(settings);
 	setTouchMode(mTouchMode);
 	mTouchManager.setOverrideTranslation(settings.getBool("touch_overlay:override_translation", 0, false));
-	mTouchManager.setOverrideDimensions(settings.getSize("touch_overlay:dimensions", 0, ci::Vec2f(1920.0f, 1080.0f)));
-	mTouchManager.setOverrideOffset(settings.getSize("touch_overlay:offset", 0, ci::Vec2f(0.0f, 0.0f)));
+	mTouchManager.setOverrideDimensions(settings.getSize("touch_overlay:dimensions", 0, glm::vec2(1920.0f, 1080.0f)));
+	mTouchManager.setOverrideOffset(settings.getSize("touch_overlay:offset", 0, glm::vec2(0.0f, 0.0f)));
 	mTouchManager.setTouchFilterRect(settings.getRect("touch_overlay:filter_rect", 0, ci::Rectf(0.0f, 0.0f, 0.0f, 0.0f)));
 	mTouchTranslator.setTouchOverlay(	settings.getRect("touch:src_rect", 0, ci::Rectf(0.0f, 0.0f, 0.0f, 0.0f)),
 										settings.getRect("touch:dst_rect", 0, ci::Rectf(0.0f, 0.0f, 0.0f, 0.0f)));
@@ -235,7 +235,7 @@ Engine::Engine(	ds::App& app, const ds::cfg::Settings &settings,
 		mData.mSrcRect = settings.getRect("local_rect", 0, mData.mSrcRect);
 		mData.mDstRect = ci::Rectf(0.0f, 0.0f, mData.mSrcRect.getWidth(), mData.mSrcRect.getHeight());
 		if (settings.getPointSize("window_pos") > 0) {
-			const ci::Vec3f	size(settings.getPoint("window_pos"));
+			const glm::vec3	size(settings.getPoint("window_pos"));
 			mData.mDstRect.offset(size.xy());
 		}
 	}
@@ -288,8 +288,8 @@ Engine::Engine(	ds::App& app, const ds::cfg::Settings &settings,
 			
 			// mData.mSrcRect and mData.mDstRect equal to world will force the entire world
 			// to be rendered into a single FBO.
-			mData.mSrcRect = ci::Rectf(ci::Vec2f::zero(), mData.mWorldSize);
-			mData.mDstRect = ci::Rectf(ci::Vec2f::zero(), mData.mWorldSize);
+			mData.mSrcRect = ci::Rectf(glm::vec2(0.0f, 0.0f), mData.mWorldSize);
+			mData.mDstRect = ci::Rectf(glm::vec2(0.0f, 0.0f), mData.mWorldSize);
 
 			// Get all "chunks" of the world we've been asked to render.
 			for (auto index = 0, end = settings.getRectSize("src_rect"); index < end; ++index)
@@ -819,7 +819,7 @@ MouseEvent Engine::alteredMouseEvent(const MouseEvent& e) const {
 	// the newer version of cinder gave access so hopefully can just wait for that if we need it.
 
 	// Translate the mouse from the actual window to the desired rect in world coordinates.
-	const ci::Vec2i	pos(mTouchTranslator.toWorldi(e.getX(), e.getY()));
+	const glm::ivec2	pos(mTouchTranslator.toWorldi(e.getX(), e.getY()));
 	return ci::app::MouseEvent(e.getWindow(),	0, pos.x, pos.y,
 												0, e.getWheelIncrement(), e.getNativeModifiers());
 }
@@ -862,7 +862,7 @@ bool Engine::hideMouse() const {
 	return mHideMouse;
 }
 
-ds::ui::Sprite* Engine::getHit(const ci::Vec3f& point) {
+ds::ui::Sprite* Engine::getHit(const glm::vec3& point) {
 	for (auto it=mRoots.rbegin(), end=mRoots.rend(); it!=end; ++it) {
 		ds::ui::Sprite*		s = (*it)->getHit(point);
 		if (s) return s;
@@ -878,7 +878,7 @@ const ci::Rectf& Engine::getScreenRect() const {
 	return mData.mScreenRect;
 }
 
-void Engine::translateTouchPoint(ci::Vec2f& inOutPoint) {
+void Engine::translateTouchPoint(glm::vec2& inOutPoint) {
 	inOutPoint = mTouchTranslator.toWorldf(inOutPoint.x, inOutPoint.y);
 	if(mTouchManager.getOverrideEnabled()){
 		mTouchManager.overrideTouchTranslation(inOutPoint);

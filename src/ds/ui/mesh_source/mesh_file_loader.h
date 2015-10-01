@@ -19,13 +19,13 @@ struct MeshFileLoader
 
     ~MeshFileLoader();
 
-    void setVerts( const std::vector<ci::Vec3f> &verts );
+    void setVerts( const std::vector<glm::vec3> &verts );
 
     void setInd( const std::vector<unsigned> &inds );
 
-    void setTexs( const std::vector<ci::Vec2f> &texs );
+    void setTexs( const std::vector<glm::vec2> &texs );
 
-    void setNorms( const std::vector<ci::Vec3f> &norms );
+    void setNorms( const std::vector<glm::vec3> &norms );
 
     void ChunkRead( std::fstream &filestr, char *dest, unsigned size, unsigned chunksize );
 
@@ -37,9 +37,9 @@ struct MeshFileLoader
 
     void clear();
 
-    ci::Vec3f *mVert;
-    ci::Vec3f *mNorm;
-    ci::Vec2f *mTex;
+    glm::vec3 *mVert;
+    glm::vec3 *mNorm;
+    glm::vec2 *mTex;
     unsigned *mIndices;
     unsigned mNumVert;
     unsigned mNumNorm;

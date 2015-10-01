@@ -89,11 +89,11 @@ void SpriteBody::create(const BodyBuilder& b) {
 	b.createFixture(*this);
 }
 
-void SpriteBody::createDistanceJoint(SpriteBody& body, float length, float dampingRatio, float frequencyHz, const ci::Vec3f bodyAOffset, const ci::Vec3f bodyBOffset) {
+void SpriteBody::createDistanceJoint(SpriteBody& body, float length, float dampingRatio, float frequencyHz, const glm::vec3 bodyAOffset, const glm::vec3 bodyBOffset) {
 	mWorld.createDistanceJoint(*this, body, length, dampingRatio, frequencyHz, bodyAOffset, bodyBOffset);
 }
 
-void SpriteBody::createWeldJoint(SpriteBody& body,const float damping, const float frequency, const ci::Vec3f bodyAOffset, const ci::Vec3f bodyBOffset) {
+void SpriteBody::createWeldJoint(SpriteBody& body,const float damping, const float frequency, const glm::vec3 bodyAOffset, const glm::vec3 bodyBOffset) {
 	mWorld.createWeldJoint(*this, body, damping, frequency, bodyAOffset, bodyBOffset);
 }
 
@@ -153,7 +153,7 @@ void SpriteBody::processTouchRemoved(const ds::ui::TouchInfo& ti) {
 	mWorld.processTouchRemoved(*this, ti);
 }
 
-void SpriteBody::setPosition(const ci::Vec3f& pos) {
+void SpriteBody::setPosition(const glm::vec3& pos) {
 	if (!mBody) return;
 
 	const b2Vec2		boxpos = mWorld.Ci2BoxTranslation(pos, &mSprite);
@@ -213,7 +213,7 @@ void SpriteBody::onCenterChanged() {
 			const float32	w = mSprite.getWidth() / 2.0f * mWorld.getCi2BoxScale(),
 							h = mSprite.getHeight() / 2.0f * mWorld.getCi2BoxScale();
 			// Convert the sprite center into a box2d center.
-			const ci::Vec2f	cen((mSprite.getCenter().x * 2) - 1.0f,
+			const glm::vec2	cen((mSprite.getCenter().x * 2) - 1.0f,
 								(mSprite.getCenter().y * 2) - 1.0f);
 			b2Vec2			box_cen;
 			box_cen.x = cen.x * -w;

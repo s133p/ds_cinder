@@ -53,7 +53,7 @@ const ds::web::ScriptTree	EMPTY_SCRIPT_TREE;
 
 // Utility to get x,y data as a result of running some javascript. It's assumed that
 // the javascript is returning an array value with two named keys that match prop_x and prop_y.
-ci::Vec2f get_javascript_xy(Awesomium::WebView& view, const std::string& prop_x, const std::string& prop_y, const std::string& javascript) {
+glm::vec2 get_javascript_xy(Awesomium::WebView& view, const std::string& prop_x, const std::string& prop_y, const std::string& javascript) {
 	const std::string		utf8_width(prop_x);
 	const std::string		utf8_height(prop_y);
 	Awesomium::WebString	width_key(Awesomium::WebString::CreateFromUTF8(utf8_width.c_str(), utf8_width.size()));
@@ -62,7 +62,7 @@ ci::Vec2f get_javascript_xy(Awesomium::WebView& view, const std::string& prop_x,
 	Awesomium::JSValue		jsv = view.ExecuteJavascriptWithResult(str, Awesomium::WebString());
 	const size_t			MAX_BUF = 256;
 	char					buf[MAX_BUF];
-	ci::Vec2f				ans(0.0f, 0.0f);
+	glm::vec2				ans(0.0f, 0.0f);
 	if (jsv.IsObject()) {
 		const Awesomium::JSObject&	jobj(jsv.ToObject());
 		if (jobj.HasProperty(width_key) && jobj.HasProperty(height_key)) {
@@ -94,7 +94,7 @@ ci::Vec2f get_javascript_xy(Awesomium::WebView& view, const std::string& prop_x,
 }
 
 // Get the current document scroll position
-ci::Vec2f get_document_scroll(Awesomium::WebView& view) {
+glm::vec2 get_document_scroll(Awesomium::WebView& view) {
 	const std::string		prop_x("x");
 	const std::string		prop_y("y");
 	const std::string		javascript("(function() { \
@@ -105,7 +105,7 @@ ci::Vec2f get_document_scroll(Awesomium::WebView& view) {
 	return get_javascript_xy(view, prop_x, prop_y, javascript);
 }
 
-ci::Vec2f get_document_size(Awesomium::WebView& view) {
+glm::vec2 get_document_size(Awesomium::WebView& view) {
 	const std::string		prop_x("width");
 	const std::string		prop_y("height");
 	const std::string		javascript("(function() { var result = {height:$(document).height(), width:$(document).width()}; return result; }) ();");
@@ -133,7 +133,7 @@ Web::Web( ds::ui::SpriteEngine &engine, float width, float height )
 	, mService(engine.getService<ds::web::Service>("web"))
 	, mWebViewPtr(nullptr)
 	, mLoadingAngle(0.0f)
-	, mLoadingOffset(ci::Vec2f::zero())
+	, mLoadingOffset(glm::vec2(0.0f, 0.0f))
 	, mLoadingOpacity(1.0f)
 	, mActive(false)
 	, mTransitionTime(0.35f)
@@ -238,11 +238,11 @@ void Web::drawLocalClient() {
 	if (mLoadingTexture && mWebViewPtr && mWebViewPtr->IsLoading()) {
 		ci::gl::pushModelView();
 
-		ci::gl::translate(0.5f * ci::Vec2f(getWidth(), getHeight()));
+		ci::gl::translate(0.5f * glm::vec2(getWidth(), getHeight()));
 		ci::gl::translate(mLoadingOffset);
 		ci::gl::scale(0.5f, 0.5f );
 		ci::gl::rotate(mLoadingAngle);
-		ci::gl::translate(-0.5f * ci::Vec2f(mLoadingTexture.getSize()));
+		ci::gl::translate(-0.5f * glm::vec2(mLoadingTexture.getSize()));
 
 		ci::gl::color(1.0f, 1.0f, 1.0f, mLoadingOpacity);
 		//ci::gl::enableAlphaBlending();
@@ -257,7 +257,7 @@ void Web::handleTouch(const ds::ui::TouchInfo& touchInfo) {
 	if (touchInfo.mFingerIndex != 0)
 		return;
 
-	ci::Vec2f pos = globalToLocal(touchInfo.mCurrentGlobalPoint).xy();
+	glm::vec2 pos = globalToLocal(touchInfo.mCurrentGlobalPoint).xy();
 
 	if (ds::ui::TouchInfo::Added == touchInfo.mPhase) {
 		ci::app::MouseEvent event(mEngine.getWindow(), ci::app::MouseEvent::LEFT_DOWN, static_cast<int>(pos.x), static_cast<int>(pos.y), ci::app::MouseEvent::LEFT_DOWN, 0, 1);
@@ -406,11 +406,11 @@ void Web::setTouchListener(const std::function<void(const ds::web::TouchEvent&)>
 void Web::handleListenerTouchEvent(const ds::web::TouchEvent& te) {
 	if (!mWebViewPtr) return;
 
-//	const ci::Vec2f			doc_size(getDocumentSize());
-	const ci::Vec2f			doc_scroll(getDocumentScroll());
-//	const ci::Vec2i			pos(static_cast<int>((te.mUnitPosition.x*doc_size.x)-doc_scroll.x),
+//	const glm::vec2			doc_size(getDocumentSize());
+	const glm::vec2			doc_scroll(getDocumentScroll());
+//	const glm::ivec2			pos(static_cast<int>((te.mUnitPosition.x*doc_size.x)-doc_scroll.x),
 //								static_cast<int>((te.mUnitPosition.y*doc_size.y)-doc_scroll.y));
-	const ci::Vec2i			pos(static_cast<int>((te.mPosition.x)-doc_scroll.x),
+	const glm::ivec2			pos(static_cast<int>((te.mPosition.x)-doc_scroll.x),
 								static_cast<int>((te.mPosition.y)-doc_scroll.y));
 	if (te.mPhase == te.kAdded) {
 		sendMouseDownEvent(ci::app::MouseEvent(mEngine.getWindow(), 1, pos.x, pos.y, 0, 0, 0));
@@ -513,13 +513,13 @@ void Web::setDocumentReadyFn(const std::function<void(void)>& fn) {
 	mDocumentReadyFn = fn;
 }
 
-ci::Vec2f Web::getDocumentSize() {
-	if (!mWebViewPtr) return ci::Vec2f(0.0f, 0.0f);
+glm::vec2 Web::getDocumentSize() {
+	if (!mWebViewPtr) return glm::vec2(0.0f, 0.0f);
 	return get_document_size(*mWebViewPtr);
 }
 
-ci::Vec2f Web::getDocumentScroll() {
-	if (!mWebViewPtr) return ci::Vec2f(0.0f, 0.0f);
+glm::vec2 Web::getDocumentScroll() {
+	if (!mWebViewPtr) return glm::vec2(0.0f, 0.0f);
 	return get_document_scroll(*mWebViewPtr);
 }
 
@@ -658,7 +658,7 @@ void Web::setLoadingIconOpacity(const float iconOpacity){
 	mLoadingOpacity = iconOpacity;
 }
 
-void Web::setLoadingIconOffset(const ci::Vec2f& offset){
+void Web::setLoadingIconOffset(const glm::vec2& offset){
 	mLoadingOffset = offset;
 }
 

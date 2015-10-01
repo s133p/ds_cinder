@@ -36,7 +36,7 @@ public:
 	float					mSwipeMaxTime;
 	float					mDoubleTapTime;
 	ci::Rectf				mScreenRect;
-	ci::Vec2f				mWorldSize;
+	glm::vec2				mWorldSize;
 	float					mFrameRate;
 	// The source rect in world bounds and the destination
 	// local rect. Together these should obsolete mScreenRect.

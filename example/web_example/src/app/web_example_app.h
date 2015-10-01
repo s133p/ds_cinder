@@ -24,7 +24,7 @@ private:
 	WebView*			mWebView;
 
 
-	void				moveCamera(const ci::Vec3f& deltaMove);
+	void				moveCamera(const glm::vec3& deltaMove);
 };
 
 } // !namespace web_example

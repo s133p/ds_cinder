@@ -34,35 +34,35 @@ const SpriteAnim<float>& SpriteAnimatable::ANIM_OPACITY() {
   return ANIM;
 }
 
-const SpriteAnim<ci::Vec3f>& SpriteAnimatable::ANIM_POSITION() {
-  static ds::ui::SpriteAnim<ci::Vec3f>  ANIM(
-          [](ds::ui::Sprite& s)->ci::Anim<ci::Vec3f>& { return s.mAnimPosition; },
-          [](ds::ui::Sprite& s)->ci::Vec3f { return s.getPosition(); },
-          [](const ci::Vec3f& v, ds::ui::Sprite& s) { s.setPosition(v); });
+const SpriteAnim<glm::vec3>& SpriteAnimatable::ANIM_POSITION() {
+  static ds::ui::SpriteAnim<glm::vec3>  ANIM(
+          [](ds::ui::Sprite& s)->ci::Anim<glm::vec3>& { return s.mAnimPosition; },
+          [](ds::ui::Sprite& s)->glm::vec3 { return s.getPosition(); },
+          [](const glm::vec3& v, ds::ui::Sprite& s) { s.setPosition(v); });
   return ANIM;
 }
 
-const SpriteAnim<ci::Vec3f>& SpriteAnimatable::ANIM_SCALE() {
-  static ds::ui::SpriteAnim<ci::Vec3f>  ANIM(
-          [](ds::ui::Sprite& s)->ci::Anim<ci::Vec3f>& { return s.mAnimScale; },
-          [](ds::ui::Sprite& s)->ci::Vec3f { return s.getScale(); },
-          [](const ci::Vec3f& v, ds::ui::Sprite& s) { s.setScale(v); });
+const SpriteAnim<glm::vec3>& SpriteAnimatable::ANIM_SCALE() {
+  static ds::ui::SpriteAnim<glm::vec3>  ANIM(
+          [](ds::ui::Sprite& s)->ci::Anim<glm::vec3>& { return s.mAnimScale; },
+          [](ds::ui::Sprite& s)->glm::vec3 { return s.getScale(); },
+          [](const glm::vec3& v, ds::ui::Sprite& s) { s.setScale(v); });
   return ANIM;
 }
 
-const SpriteAnim<ci::Vec3f>& SpriteAnimatable::ANIM_SIZE() {
-  static ds::ui::SpriteAnim<ci::Vec3f>  ANIM(
-          [](ds::ui::Sprite& s)->ci::Anim<ci::Vec3f>& { return s.mAnimSize; },
-          [](ds::ui::Sprite& s)->ci::Vec3f { return ci::Vec3f(s.getWidth(), s.getHeight(), s.getDepth()); },
-          [](const ci::Vec3f& v, ds::ui::Sprite& s) { s.setSizeAll(v.x, v.y, v.z); });
+const SpriteAnim<glm::vec3>& SpriteAnimatable::ANIM_SIZE() {
+  static ds::ui::SpriteAnim<glm::vec3>  ANIM(
+          [](ds::ui::Sprite& s)->ci::Anim<glm::vec3>& { return s.mAnimSize; },
+          [](ds::ui::Sprite& s)->glm::vec3 { return glm::vec3(s.getWidth(), s.getHeight(), s.getDepth()); },
+          [](const glm::vec3& v, ds::ui::Sprite& s) { s.setSizeAll(v.x, v.y, v.z); });
   return ANIM;
 }
 
-const SpriteAnim<ci::Vec3f>& SpriteAnimatable::ANIM_ROTATION() {
-  static ds::ui::SpriteAnim<ci::Vec3f>  ANIM(
-    [](ds::ui::Sprite& s)->ci::Anim<ci::Vec3f>& { return s.mAnimRotation; },
-    [](ds::ui::Sprite& s)->ci::Vec3f { return s.getRotation(); },
-    [](const ci::Vec3f& v, ds::ui::Sprite& s) { s.setRotation(v); });
+const SpriteAnim<glm::vec3>& SpriteAnimatable::ANIM_ROTATION() {
+  static ds::ui::SpriteAnim<glm::vec3>  ANIM(
+    [](ds::ui::Sprite& s)->ci::Anim<glm::vec3>& { return s.mAnimRotation; },
+    [](ds::ui::Sprite& s)->glm::vec3 { return s.getRotation(); },
+    [](const glm::vec3& v, ds::ui::Sprite& s) { s.setRotation(v); });
   return ANIM;
 }
 
@@ -78,25 +78,25 @@ void SpriteAnimatable::tweenOpacity(const float opacity, const float duration, c
 	mEngine.getTweenline().apply(mOwner, ANIM_OPACITY(), opacity, duration, ease, finishFn, delay);
 }
 
-void SpriteAnimatable::tweenPosition(const ci::Vec3f& pos, const float duration, const float delay,
+void SpriteAnimatable::tweenPosition(const glm::vec3& pos, const float duration, const float delay,
 									const ci::EaseFn& ease, const std::function<void(void)>& finishFn) {
 	mAnimPosition.stop();
 	mEngine.getTweenline().apply(mOwner, ANIM_POSITION(), pos, duration, ease, finishFn, delay);
 }
 
-void SpriteAnimatable::tweenRotation(const ci::Vec3f& rot, const float duration, const float delay,
+void SpriteAnimatable::tweenRotation(const glm::vec3& rot, const float duration, const float delay,
 									const ci::EaseFn& ease, const std::function<void(void)>& finishFn) {
 	mAnimRotation.stop();
 	mEngine.getTweenline().apply(mOwner, ANIM_ROTATION(), rot, duration, ease, finishFn, delay);
 }
 
-void SpriteAnimatable::tweenScale(	const ci::Vec3f& scale, const float duration, const float delay,
+void SpriteAnimatable::tweenScale(	const glm::vec3& scale, const float duration, const float delay,
 									const ci::EaseFn& ease, const std::function<void(void)>& finishFn) {
 	mAnimScale.stop();
 	mEngine.getTweenline().apply(mOwner, ANIM_SCALE(), scale, duration, ease, finishFn, delay);
 }
 
-void SpriteAnimatable::tweenSize(	const ci::Vec3f& size, const float duration, const float delay,
+void SpriteAnimatable::tweenSize(	const glm::vec3& size, const float duration, const float delay,
 									const ci::EaseFn& ease, const std::function<void(void)>& finishFn) {
 	mAnimSize.stop();
 	mEngine.getTweenline().apply(mOwner, ANIM_SIZE(), size, duration, ease, finishFn, delay);

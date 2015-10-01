@@ -68,7 +68,7 @@ public:
 	void					activate();
 	void					deactivate();
 
-	void					setLoadingIconOffset(const ci::Vec2f& offset);
+	void					setLoadingIconOffset(const glm::vec2& offset);
 	void					setLoadingIconOpacity(const float iconOpacity);
 
 	// Get the zoom level, where 1 = 100%, 0.25 = 25% etc.
@@ -98,8 +98,8 @@ public:
 	// Convenience to access various document properties. Note that
 	// the document probably needs to have passed onLoaded() for this
 	// to be reliable.
-	ci::Vec2f				getDocumentSize();
-	ci::Vec2f				getDocumentScroll();
+	glm::vec2				getDocumentSize();
+	glm::vec2				getDocumentScroll();
 
 	// Scripting.
 	// Send function to object with supplied args. For example, if you want to just invoke the global
@@ -135,7 +135,7 @@ private:
 
 	ci::gl::Texture			mWebTexture;
 	ci::gl::Texture			mLoadingTexture;
-	ci::Vec2f				mLoadingOffset;
+	glm::vec2				mLoadingOffset;
 	float					mLoadingOpacity;
 
 	float					mLoadingAngle;
@@ -143,12 +143,12 @@ private:
 	float					mTransitionTime;
 	bool					mDrawWhileLoading;
 
-	ci::Vec3f				mPreviousTouchPos;
+	glm::vec3				mPreviousTouchPos;
 	bool					mClickDown;
 	bool					mDragScrolling;
 	int						mDragScrollMinFingers;
 	// Cache the page size and scroll during touch events
-	ci::Vec2f				mPageSizeCache,
+	glm::vec2				mPageSizeCache,
 							mPageScrollCache;
 	// Prevent the scroll from being cached more than once in an update.
 	int32_t					mPageScrollCount;

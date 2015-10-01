@@ -31,10 +31,10 @@ static const float				FLOAT_TYPE(0.0f);
 static const int				INT_TYPE(0);
 static const ci::Rectf			RECT_TYPE;
 static const Resource::Id		RESOURCE_ID_TYPE;
-static const ci::Vec2f			SIZE_TYPE;
+static const glm::vec2			SIZE_TYPE;
 static const std::string		TEXT_TYPE;
 static const std::wstring		TEXTW_TYPE;
-static const ci::Vec3f			POINT_TYPE;
+static const glm::vec3			POINT_TYPE;
 
 namespace {
 
@@ -259,7 +259,7 @@ void Settings::directReadXmlFromTree(const cinder::XmlTree& xml, const bool clea
 	for (auto it = xml.begin(POINT_PATH); it != end; ++it) {
 		const float             DEFV = 0.0f;
 		const std::string       name = it->getAttributeValue<std::string>(NAME_SZ);
-		cinder::Vec3f           value(it->getAttributeValue<float>(X_SZ, DEFV),
+		glm::vec3           value(it->getAttributeValue<float>(X_SZ, DEFV),
 			it->getAttributeValue<float>(Y_SZ, DEFV), DEFV);
 		if (it->hasAttribute(Z_SZ)) {
 			value.z = it->getAttributeValue<float>(Z_SZ, DEFV);
@@ -382,7 +382,7 @@ const std::wstring& Settings::getTextW(const std::string& name, const int index)
 	return get_or_throw(name, mTextW, index, TEXTW_TYPE, TEXTW_NAME);
 }
 
-const ci::Vec3f& Settings::getPoint( const std::string& name, const int index /*= 0*/ ) const
+const glm::vec3& Settings::getPoint( const std::string& name, const int index /*= 0*/ ) const
 {
   return get_or_throw(name, mPoints, index, POINT_TYPE, POINT_NAME);
 }
@@ -422,7 +422,7 @@ cinder::ColorA Settings::getColorA(const std::string& name, const int index, con
 	return get(name, mColorA, index, defaultValue, COLOR_NAME);
 }
 
-cinder::Vec2f Settings::getSize(const std::string& name, const int index, const ci::Vec2f& defaultValue) const
+cinder::Vec2f Settings::getSize(const std::string& name, const int index, const glm::vec2& defaultValue) const
 {
 	return get(name, mSize, index, defaultValue, SIZE_NAME);
 }
@@ -437,7 +437,7 @@ std::wstring Settings::getTextW(const std::string& name, const int index, const 
 	return get(name, mTextW, index, defaultValue, TEXTW_NAME);
 }
 
-const ci::Vec3f& Settings::getPoint( const std::string& name, const int index /*= 0*/, const ci::Vec3f& defaultValue ) const
+const glm::vec3& Settings::getPoint( const std::string& name, const int index /*= 0*/, const glm::vec3& defaultValue ) const
 {
 	return get(name, mPoints, index, defaultValue, POINT_NAME);
 }
@@ -614,7 +614,7 @@ Settings::Editor& Settings::Editor::setResourceId(const std::string& name, const
 	return *this;
 }
 
-Settings::Editor& Settings::Editor::setSize(const std::string& name, const ci::Vec2f& v) {
+Settings::Editor& Settings::Editor::setSize(const std::string& name, const glm::vec2& v) {
 	editor_set_vec(mMode, name, mSettings.mSize, v);
 	return *this;
 }
@@ -639,7 +639,7 @@ Settings::Editor& Settings::Editor::addTextW(const std::string& name, const std:
 	return *this;
 }
 
-Settings::Editor& Settings::Editor::setPoint( const std::string& name, const ci::Vec3f& v) {
+Settings::Editor& Settings::Editor::setPoint( const std::string& name, const glm::vec3& v) {
 	editor_add_vec(mMode, name, mSettings.mPoints, v);
 	return *this;
 }

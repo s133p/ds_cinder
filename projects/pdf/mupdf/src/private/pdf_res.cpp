@@ -137,7 +137,7 @@ public:
 		{ }
 
 
-	const ci::Vec2i&	getPageSize() const {
+	const glm::ivec2&	getPageSize() const {
 		return mPageSize;
 	}
 
@@ -281,7 +281,7 @@ private:
 	float						mWidth,
 								mHeight;
 	int							mMode;
-	ci::Vec2i					mOutSize,
+	glm::ivec2					mOutSize,
 								mPageSize;
 };
 
@@ -377,7 +377,7 @@ void Pdf::resetAnchor() {
 
 void PdfRes::draw(float x, float y) {
 	if (mPageCount > 0 && mTexture) {
-		ci::gl::draw(mTexture, ci::Vec2f(x, y));
+		ci::gl::draw(mTexture, glm::vec2(x, y));
 	}
 }
 
@@ -418,7 +418,7 @@ int PdfRes::getPageCount() const {
 	return mPageCount;
 }
 
-ci::Vec2i PdfRes::getPageSize() const {
+glm::ivec2 PdfRes::getPageSize() const {
 	std::lock_guard<decltype(mMutex)>		l(mMutex);
 	return mState.mPageSize;
 }

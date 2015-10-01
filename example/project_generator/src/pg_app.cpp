@@ -72,7 +72,7 @@ public:
 		, mTemplateNamespace("fullstarter")
 		, mTemplateHeadguard("FULLSTARTER")
 	{
-		mParams = ci::params::InterfaceGl::create(ci::app::getWindow(), "App parameters", ci::app::toPixels(ci::Vec2i(600, 250)));
+		mParams = ci::params::InterfaceGl::create(ci::app::getWindow(), "App parameters", ci::app::toPixels(glm::ivec2(600, 250)));
 		setTransparent(false);
 
 		mParams->addText("status", "label=`Please modify the following values and hit Generate.`");
@@ -119,7 +119,7 @@ public:
 	virtual void drawLocalClient() {
 		// Draw the interface
 		mParams->draw();
-		mParams->setPosition(ci::Vec2i(20, 25));
+		mParams->setPosition(glm::ivec2(20, 25));
 	}
 
 	void copyTemplate() {

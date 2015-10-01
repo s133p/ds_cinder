@@ -37,7 +37,7 @@ private:
 	double					mScale;
 	std::unique_ptr<Arc>	mArc;
 	ColorArray				mColor;
-	std::function<double(const RenderCircleParams&, const ci::Vec2d& offset)>
+	std::function<double(const RenderCircleParams&, const glm::dvec2& offset)>
 							mScaleFn;
 	std::function<double(const double dist, const double degree)>
 							mInputFn;

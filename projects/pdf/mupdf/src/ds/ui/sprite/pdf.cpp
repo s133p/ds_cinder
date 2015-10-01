@@ -85,7 +85,7 @@ Pdf& Pdf::setPageSizeMode(const PageSizeMode& m) {
 
 Pdf& Pdf::setResourceFilename(const std::string& filename) {
 	mResourceFilename = filename;
-	mPageSizeCache = ci::Vec2i(0, 0);
+	mPageSizeCache = glm::ivec2(0, 0);
 	mHolder.setResourceFilename(filename, mPageSizeMode);
 	mHolder.setScale(mScale);
 	setSize(mHolder.getWidth(), mHolder.getHeight());
@@ -122,7 +122,7 @@ void Pdf::updateServer(const UpdateParams& p) {
 	inherited::updateServer(p);
 	mHolder.update();
 	if (mPageSizeMode == kAutoResize) {
-		const ci::Vec2i			page_size(mHolder.getPageSize());
+		const glm::ivec2			page_size(mHolder.getPageSize());
 		if (mPageSizeCache != page_size) {
 			mPageSizeCache = page_size;
 			setSize(static_cast<float>(mPageSizeCache.x), static_cast<float>(mPageSizeCache.y));
@@ -183,10 +183,10 @@ void Pdf::drawLocalClient() {
 	// To draw properly, we first have to turn off whatever scaling has
 	// been applied, then apply a new scale to compensate for any mismatch
 	// between my current texture size and my display size.
-	const ci::Vec3f			turnOffScale(1.0f/mScale.x, 1.0f/mScale.y, 1.0f);
-	const ci::Vec3f			newScale(targetw/tw, targeth/th, 1.0f);
-    ci::gl::multModelView(ci::Matrix44f::createScale(turnOffScale));
-    ci::gl::multModelView(ci::Matrix44f::createScale(newScale));
+	const glm::vec3			turnOffScale(1.0f/mScale.x, 1.0f/mScale.y, 1.0f);
+	const glm::vec3			newScale(targetw/tw, targeth/th, 1.0f);
+    ci::gl::multModelView(glm::mat4::createScale(turnOffScale));
+    ci::gl::multModelView(glm::mat4::createScale(newScale));
 
 	mHolder.drawLocalClient();
 
@@ -259,7 +259,7 @@ void Pdf::ResHolder::drawLocalClient()
 	}
 }
 
-void Pdf::ResHolder::setScale(const ci::Vec3f& scale) {
+void Pdf::ResHolder::setScale(const glm::vec3& scale) {
 	if (mRes) {
 		mRes->setScale(scale.x);
 	}
@@ -309,8 +309,8 @@ int Pdf::ResHolder::getPageCount() const {
 	return 0;
 }
 
-ci::Vec2i Pdf::ResHolder::getPageSize() const {
-	if (!mRes) return ci::Vec2i(0, 0);
+glm::ivec2 Pdf::ResHolder::getPageSize() const {
+	if (!mRes) return glm::ivec2(0, 0);
 	return mRes->getPageSize();
 }
 

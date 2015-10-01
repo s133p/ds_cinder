@@ -7,7 +7,7 @@ namespace ds {
 /**
  * \class ds::CameraPick
  */
-CameraPick::CameraPick(	ci::Camera& c, const ci::Vec3f& screenPt,
+CameraPick::CameraPick(	ci::Camera& c, const glm::vec3& screenPt,
 												const float screenWidth, const float screenHeight)
 	: mCamera(c)
 	, mScreenPt(screenPt)
@@ -16,12 +16,12 @@ CameraPick::CameraPick(	ci::Camera& c, const ci::Vec3f& screenPt,
 {
 }
 
-const ci::Vec3f& CameraPick::getScreenPt() const
+const glm::vec3& CameraPick::getScreenPt() const
 {
 	return mScreenPt;
 }
 
-ci::Vec2f CameraPick::worldToScreen(const ci::Vec3f &worldCoord) const
+glm::vec2 CameraPick::worldToScreen(const glm::vec3 &worldCoord) const
 {
 	return mCamera.worldToScreen(worldCoord, mScreenW, mScreenH);
 }
@@ -45,42 +45,42 @@ void ScreenToWorld::update()
 	mViewport = ci::gl::getViewport();
 }
 
-ci::Vec3f ScreenToWorld::translate(const ci::Vec3f & point)
+glm::vec3 ScreenToWorld::translate(const glm::vec3 & point)
 {
 	// Find near and far plane intersections
-	ci::Vec3f point3f = ci::Vec3f((float)point.x, mWindowSize.getHeight() * 0.5f - (float)point.y, 0.0f);
-	ci::Vec3f nearPlane = unproject(point3f);
-	ci::Vec3f farPlane = unproject(ci::Vec3f(point3f.x, point3f.y, 1.0f));
+	glm::vec3 point3f = glm::vec3((float)point.x, mWindowSize.getHeight() * 0.5f - (float)point.y, 0.0f);
+	glm::vec3 nearPlane = unproject(point3f);
+	glm::vec3 farPlane = unproject(glm::vec3(point3f.x, point3f.y, 1.0f));
 
 	// Calculate X, Y and return point
 	float theta = (0.0f - nearPlane.z) / (farPlane.z - nearPlane.z);
-	return ci::Vec3f(
+	return glm::vec3(
 		nearPlane.x + theta * (farPlane.x - nearPlane.x), 
 		nearPlane.y + theta * (farPlane.y - nearPlane.y), 
 		0.0f
 	);
 }
 
-ci::Vec3f ScreenToWorld::unproject(const ci::Vec3f & point)
+glm::vec3 ScreenToWorld::unproject(const glm::vec3 & point)
 {
 	// Find the inverse Modelview-Projection-Matrix
-	ci::Matrix44f invMVP = mProjection * mModelView;
+	glm::mat4 invMVP = mProjection * mModelView;
 	invMVP.invert();
 
 	// Transform to normalized coordinates in the range [-1, 1]
-	ci::Vec4f				pointNormal;
+	glm::vec4				pointNormal;
 	pointNormal.x = (point.x - mViewport.getX1()) / mViewport.getWidth() * 2.0f - 1.0f;
 	pointNormal.y = (point.y - mViewport.getY1()) / mViewport.getHeight() * 2.0f;
 	pointNormal.z = 2.0f * point.z - 1.0f;
 	pointNormal.w = 1.0f;
 
 	// Find the object's coordinates
-	ci::Vec4f				pointCoord = invMVP * pointNormal;
+	glm::vec4				pointCoord = invMVP * pointNormal;
 	if (pointCoord.w != 0.0f)
 		pointCoord.w = 1.0f / pointCoord.w;
 
 	// Return coordinate
-	return ci::Vec3f(
+	return glm::vec3(
 		pointCoord.x * pointCoord.w, 
 		pointCoord.y * pointCoord.w, 
 		pointCoord.z * pointCoord.w

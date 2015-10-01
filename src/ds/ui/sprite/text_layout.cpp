@@ -74,7 +74,7 @@ TextLayout::Line::Line()
  */
 TextLayout::Input::Input(const Text& sprite,
 						 const FontPtr& f,
-						 const ci::Vec2f& size,
+						 const glm::vec2& size,
 						 const std::wstring& text)
 						 : mSprite(sprite)
 						 , mFont(f)
@@ -95,7 +95,7 @@ void TextLayout::clear()
 	mLines.clear();
 }
 
-void TextLayout::addLine(const ci::Vec2f& pos, const std::wstring& text)
+void TextLayout::addLine(const glm::vec2& pos, const std::wstring& text)
 {
 	mLines.push_back(Line());
 	Line& l = mLines.back();
@@ -150,7 +150,7 @@ void TextLayout::debugPrint() const
 
 const TextLayout::MAKE_FUNC& TextLayout::SINGLE_LINE()
 {
-	static const MAKE_FUNC ANS = [](const TextLayout::Input& i, TextLayout& l) { l.addLine(ci::Vec2f(0, ceilf((1.0f - getFontAscender(i.mFont)) * i.mFont->pointSize())), i.mText); };
+	static const MAKE_FUNC ANS = [](const TextLayout::Input& i, TextLayout& l) { l.addLine(glm::vec2(0, ceilf((1.0f - getFontAscender(i.mFont)) * i.mFont->pointSize())), i.mText); };
 	return ANS;
 }
 
@@ -173,17 +173,17 @@ void TextLayoutVertical::installOn(Text& t) {
 	t.setLayoutFunction(f);
 }
 
-ci::Vec2f getSizeFromString(const FontPtr &font, const std::string &str) {
+glm::vec2 getSizeFromString(const FontPtr &font, const std::string &str) {
 	OGLFT::BBox box = font->measureRaw(str);
-	ci::Vec2f	size(box.x_max_ - box.x_min_, box.y_max_ - box.y_min_);
+	glm::vec2	size(box.x_max_ - box.x_min_, box.y_max_ - box.y_min_);
 
 	return size;
 }
 
-ci::Vec2f getSizeFromString(const FontPtr &font, const std::wstring &str)
+glm::vec2 getSizeFromString(const FontPtr &font, const std::wstring &str)
 {
 	OGLFT::BBox box = font->measureRaw(str);
-	ci::Vec2f	size(box.x_max_ - box.x_min_, box.y_max_ - box.y_min_);
+	glm::vec2	size(box.x_max_ - box.x_min_, box.y_max_ - box.y_min_);
 
 	return size;
 }
@@ -229,9 +229,9 @@ void TextLayoutVertical::run(const TextLayout::Input& in, TextLayout& out)
 
 	float maxWidth = 0.0f;
 	// spaces don't have a size so we make something up
-	const ci::Vec2f		spaceSize = getSizeFromString(in.mFont, L"o");
-	//const ci::Vec2f	spaceSize = in.mFont->measureString("o", in.mOptions);
-	const ci::Vec2f		tabSize(spaceSize.x*3.0f, spaceSize.y);
+	const glm::vec2		spaceSize = getSizeFromString(in.mFont, L"o");
+	//const glm::vec2	spaceSize = in.mFont->measureString("o", in.mOptions);
+	const glm::vec2		tabSize(spaceSize.x*3.0f, spaceSize.y);
 	//for (auto it=tokens.begin(), end=tokens.end(); it != end; ++it) {
 	typedef std::pair<float, std::wstring> outPair;
 	std::vector<outPair> linesToWrite;
@@ -252,18 +252,18 @@ void TextLayoutVertical::run(const TextLayout::Input& in, TextLayout& out)
 				if(inSize > maxWidth)
 					maxWidth = inSize;
 				linesToWrite.push_back(outPair(y, lineText));
-				////out.addLine(ci::Vec2f(0, y + getDifference(in.mFont, lineText, lineH, mLeading)), lineText);
+				////out.addLine(glm::vec2(0, y + getDifference(in.mFont, lineText, lineH, mLeading)), lineText);
 				//if (mAlignment == Left) {
-				//  //out.addLine(ci::Vec2f(0, y), lineText);
+				//  //out.addLine(glm::vec2(0, y), lineText);
 				//  linesToWrite.push_back(outPair(y, lineText));
 				//} else if (mAlignment == Right) {
 				//  float size = getSizeFromString(in.mFont, lineText).x;//in.mFont->measureString(lineText, in.mOptions).x;
 				//  float x = in.mSize.x - size;
-				//  out.addLine(ci::Vec2f(x, y), lineText);
+				//  out.addLine(glm::vec2(x, y), lineText);
 				//} else {
 				//  float size = getSizeFromString(in.mFont, lineText).x;//in.mFont->measureString(lineText, in.mOptions).x;
 				//  float x = (in.mSize.x - size) / 2.0f;
-				//  out.addLine(ci::Vec2f(x, y), lineText);
+				//  out.addLine(glm::vec2(x, y), lineText);
 				//}
 			}
 			lineText.clear();
@@ -282,7 +282,7 @@ void TextLayoutVertical::run(const TextLayout::Input& in, TextLayout& out)
 		}
 
 		newLine.append(token);
-		ci::Vec2f size = getSizeFromString(in.mFont, newLine);//in.mFont->measureString(newLine, in.mOptions);
+		glm::vec2 size = getSizeFromString(in.mFont, newLine);//in.mFont->measureString(newLine, in.mOptions);
 		if(size.x > in.mSize.x) {
 			// Flush the current line
 			if(!lineText.empty()) {
@@ -291,15 +291,15 @@ void TextLayoutVertical::run(const TextLayout::Input& in, TextLayout& out)
 					maxWidth = inSize;
 				linesToWrite.push_back(outPair(y, lineText));
 				//if (mAlignment == Left) {
-				//  out.addLine(ci::Vec2f(0, y), lineText);
+				//  out.addLine(glm::vec2(0, y), lineText);
 				//} else if (mAlignment == Right) {
 				//  float size = getSizeFromString(in.mFont, lineText).x;//in.mFont->measureString(lineText, in.mOptions).x;
 				//  float x = in.mSize.x - size;
-				//  out.addLine(ci::Vec2f(x, y), lineText);
+				//  out.addLine(glm::vec2(x, y), lineText);
 				//} else {
 				//  float size = getSizeFromString(in.mFont, lineText).x;//in.mFont->measureString(lineText, in.mOptions).x;
 				//  float x = (in.mSize.x - size) / 2.0f;
-				//  out.addLine(ci::Vec2f(x, y), lineText);
+				//  out.addLine(glm::vec2(x, y), lineText);
 				//}
 				y += lineH;
 				if(check.outOfBounds(y)) return;
@@ -322,15 +322,15 @@ void TextLayoutVertical::run(const TextLayout::Input& in, TextLayout& out)
 								maxWidth = inSize;
 							linesToWrite.push_back(outPair(y, sub));
 							//if (mAlignment == Left) {
-							//  out.addLine(ci::Vec2f(0, y), sub);
+							//  out.addLine(glm::vec2(0, y), sub);
 							//} else if (mAlignment == Right) {
 							//  float size = getSizeFromString(in.mFont, sub).x;//in.mFont->measureString(sub, in.mOptions).x;
 							//  float x = in.mSize.x - size;
-							//  out.addLine(ci::Vec2f(x, y), sub);
+							//  out.addLine(glm::vec2(x, y), sub);
 							//} else {
 							//  float size = getSizeFromString(in.mFont, sub).x;//in.mFont->measureString(sub, in.mOptions).x;
 							//  float x = (in.mSize.x - size) / 2.0f;
-							//  out.addLine(ci::Vec2f(x, y), sub);
+							//  out.addLine(glm::vec2(x, y), sub);
 							//}
 
 							y += lineH;
@@ -363,15 +363,15 @@ void TextLayoutVertical::run(const TextLayout::Input& in, TextLayout& out)
 			maxWidth = inSize;
 		linesToWrite.push_back(outPair(y, lineText));
 		//if (mAlignment == Left) {
-		//  out.addLine(ci::Vec2f(0, y), lineText);
+		//  out.addLine(glm::vec2(0, y), lineText);
 		//} else if (mAlignment == Right) {
 		//  float size = getSizeFromString(in.mFont, lineText).x;//in.mFont->measureString(lineText, in.mOptions).x;
 		//  float x = in.mSize.x - size;
-		//  out.addLine(ci::Vec2f(x, y), lineText);
+		//  out.addLine(glm::vec2(x, y), lineText);
 		//} else {
 		//  float size = getSizeFromString(in.mFont, lineText).x;//in.mFont->measureString(lineText, in.mOptions).x;
 		//  float x = (in.mSize.x - size) / 2.0f;
-		//  out.addLine(ci::Vec2f(x, y), lineText);
+		//  out.addLine(glm::vec2(x, y), lineText);
 		//}
 	}
 
@@ -384,15 +384,15 @@ void TextLayoutVertical::run(const TextLayout::Input& in, TextLayout& out)
 		std::wstring &str = it->second;
 
 		if(mAlignment == Alignment::kLeft) {
-			out.addLine(ci::Vec2f(0, y), str);
+			out.addLine(glm::vec2(0, y), str);
 		} else if(mAlignment == Alignment::kRight) {
 			float size = getSizeFromString(in.mFont, str).x;//in.mFont->measureString(lineText, in.mOptions).x;
 			float x = maxWidth - size;
-			out.addLine(ci::Vec2f(x, y), str);
+			out.addLine(glm::vec2(x, y), str);
 		} else {
 			float size = getSizeFromString(in.mFont, str).x;//in.mFont->measureString(lineText, in.mOptions).x;
 			float x = (maxWidth - size) / 2.0f;
-			out.addLine(ci::Vec2f(x, y), str);
+			out.addLine(glm::vec2(x, y), str);
 		}
 	}
 }

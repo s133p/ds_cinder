@@ -30,7 +30,7 @@ private:
 	ci::Rectf			mRenderRect;
 	ci::gl::Fbo			mFbo;
 	ci::gl::GlslProg	mFxaaShader;
-	ci::Vec2f			mTexCoordOffset;
+	glm::vec2			mTexCoordOffset;
 };
 
 }

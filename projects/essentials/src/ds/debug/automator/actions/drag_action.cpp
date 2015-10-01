@@ -71,7 +71,7 @@ void DragAction::setup(float limit, int numberOfFingers){
 
 	mTouchPos.reserve(mInUseList.size());
 	float radius = 20.0f;
-	ci::Vec2f touchPos = ci::Vec2f(mFrame.getX1() + ci::randFloat(0.0f, mFrame.getWidth()), mFrame.getY1() + ci::randFloat(0.0f, mFrame.getHeight()) );
+	glm::vec2 touchPos = glm::vec2(mFrame.getX1() + ci::randFloat(0.0f, mFrame.getWidth()), mFrame.getY1() + ci::randFloat(0.0f, mFrame.getHeight()) );
 
 	float step = (2.0f*(float)M_PI) / mNumberOfFingers;
 	float angle = (float)M_PI;
@@ -79,7 +79,7 @@ void DragAction::setup(float limit, int numberOfFingers){
 	std::vector<ci::app::TouchEvent::Touch> touches;
 	for(auto it = mInUseList.begin(), it2 = mInUseList.end(); it != it2; ++it){
 
-		ci::Vec2f nTouchPos = touchPos + ci::Vec2f(cos(angle)*radius - sin(angle)*radius, sin(angle)*radius + cos(angle)*radius);
+		glm::vec2 nTouchPos = touchPos + glm::vec2(cos(angle)*radius - sin(angle)*radius, sin(angle)*radius + cos(angle)*radius);
 		mTouchPos.push_back(nTouchPos);
 		mPreviousTouch.push_back(nTouchPos);
 		angle += step;
@@ -89,7 +89,7 @@ void DragAction::setup(float limit, int numberOfFingers){
 	mEngine.injectTouchesBegin(ci::app::TouchEvent(mEngine.getWindow(), touches));
 
 	mMagnitude = ci::randFloat (10.0f, 1500.0f);
-	mDirection = ci::Vec2f(ci::randFloat(-1.0f, 1.0f), ci::randFloat(-1.0f, 1.0f)).normalized();
+	mDirection = glm::normalize(glm::vec2(ci::randFloat(-1.0f, 1.0f), ci::randFloat(-1.0f, 1.0f)));
 }
 
 } // namespace debug

@@ -17,8 +17,8 @@ class DataBuffer;
 namespace ui {
 class Text;
 
-ci::Vec2f getSizeFromString(const FontPtr &font, const std::string &str);
-ci::Vec2f getSizeFromString(const FontPtr &font, const std::wstring &str);
+glm::vec2 getSizeFromString(const FontPtr &font, const std::string &str);
+glm::vec2 getSizeFromString(const FontPtr &font, const std::wstring &str);
 int getFontSize(const FontPtr &font);
 float getFontAscender(const FontPtr &font);
 float getFontDescender(const FontPtr &font);
@@ -36,17 +36,17 @@ public:
 	class Line {
 	public:
 		Line();
-		ci::Vec2f			mPos;
+		glm::vec2			mPos;
 		std::wstring		mText;
 	};
 	// A bundle of all data necessary to create a layout
 	class Input {
 	public:
 		Input(const Text&, const FontPtr &,
-			const ci::Vec2f& size, const std::wstring& text);
+			const glm::vec2& size, const std::wstring& text);
 		const Text&			mSprite;
 		const FontPtr&		mFont;
-		const ci::Vec2f&	mSize;
+		const glm::vec2&	mSize;
 		const std::wstring&	mText;
 	private:
 		Input();
@@ -57,7 +57,7 @@ public:
 
 	void					clear();
 
-	void					addLine(const ci::Vec2f&, const std::wstring&);
+	void					addLine(const glm::vec2&, const std::wstring&);
 
 	const std::vector<Line> getLines() const	{ return mLines; }
 

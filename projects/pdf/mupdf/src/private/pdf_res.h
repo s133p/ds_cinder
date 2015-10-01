@@ -47,7 +47,7 @@ public:
 	void					setPageNum(int thePageNum);
 	int						getPageNum() const;
 	int						getPageCount() const;
-	ci::Vec2i				getPageSize() const;
+	glm::ivec2				getPageSize() const;
 	void					goToNextPage();
 	void					goToPreviousPage();
 	void					setScale(const float theScale);
@@ -70,7 +70,7 @@ private:
 		ds::ui::Pdf::PageSizeMode
 					mPageSizeMode;
 		// NOTE: These items are not part of the equality test
-		ci::Vec2i	mPageSize;
+		glm::ivec2	mPageSize;
 	};
 
 public:

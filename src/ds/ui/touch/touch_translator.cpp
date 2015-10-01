@@ -14,13 +14,13 @@ TouchTranslator::TouchTranslator()
 		, mSy(1.0f) {
 }
 
-ci::Vec2i TouchTranslator::toWorldi(const int x, const int y) const {
-	const ci::Vec2f		f(toWorldf(static_cast<float>(x), static_cast<float>(y)));
-	return ci::Vec2i(	static_cast<int>(f.x),
+glm::ivec2 TouchTranslator::toWorldi(const int x, const int y) const {
+	const glm::vec2		f(toWorldf(static_cast<float>(x), static_cast<float>(y)));
+	return glm::ivec2(	static_cast<int>(f.x),
 						static_cast<int>(f.y));
 }
 
-ci::Vec2f TouchTranslator::toWorldf(const float _x, const float _y) const {
+glm::vec2 TouchTranslator::toWorldf(const float _x, const float _y) const {
 	float				x(_x),
 						y(_y);
 	// If we've got a touch overlay override, run it through that, first.
@@ -37,7 +37,7 @@ ci::Vec2f TouchTranslator::toWorldf(const float _x, const float _y) const {
 	}
 #endif
 	// Perform the translation to world space
-	return ci::Vec2f(	mTx + (x * mSx),
+	return glm::vec2(	mTx + (x * mSx),
 						mTy + (y * mSy));
 }
 

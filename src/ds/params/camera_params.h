@@ -15,7 +15,7 @@ public:
 
 	bool				operator==(const PerspCameraParams&) const;
 
-	ci::Vec3f			mPosition,
+	glm::vec3			mPosition,
 						mTarget;
 	float				mFov,
 						mNearPlane,
