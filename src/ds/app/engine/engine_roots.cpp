@@ -155,8 +155,7 @@ PerspRoot::PerspRoot(Engine& e, const RootList::Root& r, const sprite_id_t id, c
 		, mMaster(nullptr)
 		, mOldPick(mCamera)
 		, mPicking(picking ? *picking : mOldPick) {
-	mCamera.setEyePoint(p.mPosition);
-	mCamera.setCenterOfInterestPoint(p.mTarget);
+	mCamera.lookAt(p.mPosition, p.mTarget);
 	mCamera.setFov(p.mFov);
 	mCamera.setNearClip(p.mNearPlane);
 	mCamera.setFarClip(p.mFarPlane);
@@ -214,7 +213,7 @@ PerspCameraParams PerspRoot::getCamera() const {
 
 	PerspCameraParams		p;
 	p.mPosition = mCamera.getEyePoint();
-	p.mTarget = mCamera.getCenterOfInterestPoint();
+	p.mTarget = mCamera.getPivotPoint();
 	p.mFov = mCamera.getFov();
 	p.mNearPlane = mCamera.getNearClip();
 	p.mFarPlane = mCamera.getFarClip();
@@ -238,8 +237,7 @@ void PerspRoot::setCamera(const PerspCameraParams& p) {
 	}
 	if (p == getCamera()) return;
 
-	mCamera.setEyePoint(p.mPosition);
-	mCamera.setCenterOfInterestPoint(p.mTarget);
+	mCamera.lookAt(p.mPosition, p.mTarget);
 	mCamera.setPerspective(p.mFov, ci::app::getWindowAspectRatio(), p.mNearPlane, p.mFarPlane);
 	mCamera.setLensShiftHorizontal(p.mLensShiftH);
 	mCamera.setLensShiftVertical(p.mLensShiftV);
