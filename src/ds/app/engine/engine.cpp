@@ -100,7 +100,7 @@ private:
 			int secondSize = it->second.size();
 			glm::vec2 prevPos = glm::vec2(0.0f, 0.0f);
 			for (int i = 0; i < secondSize; i++){
-				glm::vec2		pos(it->second[i].xy());
+				glm::vec2		pos(it->second[i]);
 				ci::gl::drawSolidCircle(pos, sizey);
 
 				if(i < secondSize - 1 && i > 0){ 
@@ -236,7 +236,7 @@ Engine::Engine(	ds::App& app, const ds::cfg::Settings &settings,
 		mData.mDstRect = ci::Rectf(0.0f, 0.0f, mData.mSrcRect.getWidth(), mData.mSrcRect.getHeight());
 		if (settings.getPointSize("window_pos") > 0) {
 			const glm::vec3	size(settings.getPoint("window_pos"));
-			mData.mDstRect.offset(size.xy());
+			mData.mDstRect.offset(glm::vec2(size));
 		}
 	}
 	// Src rect and dst rect are new, and should obsolete local_rect. For now, default to illegal values,
@@ -691,7 +691,7 @@ void Engine::prepareSettings(ci::app::App::Settings& settings)
 	settings.setResizable(false);
 
 	if (ds::ui::TouchMode::hasSystem(mTouchMode)) {
-		settings.enableMultiTouch();
+		settings.setMultiTouchEnabled(true);
 	}
 
 	mHideMouse = mSettings.getBool("hide_mouse", 0, mHideMouse);

@@ -356,7 +356,7 @@ namespace OGLFT {
       if ( string_rotation_ != 0. ) {
 	float angle;
 	if ( string_rotation_ < 0. ) {
-	  angle = 360. - fmod( fabs( string_rotation_ ), 360.f );
+	  angle = 360.0f - fmod( fabs( string_rotation_ ), 360.f );
 	}
 	else {
 	  angle = fmod( string_rotation_, 360.f );
@@ -692,7 +692,7 @@ namespace OGLFT {
 
     float angle;
     if ( string_rotation_ < 0. ) {
-      angle = 360. - fmod( fabs( string_rotation_ ), 360.f );
+      angle = 360.0f - fmod( fabs( string_rotation_ ), 360.f );
     }
     else {
       angle = fmod( string_rotation_, 360.f );
@@ -880,7 +880,7 @@ namespace OGLFT {
 
     float angle;
     if ( string_rotation_ < 0. ) {
-      angle = 360. - fmod( fabs( string_rotation_ ), 360.f );
+      angle = 360.0f - fmod( fabs( string_rotation_ ), 360.f );
     }
     else {
       angle = fmod( string_rotation_, 360.f );
@@ -914,7 +914,7 @@ namespace OGLFT {
 
     float angle;
     if ( string_rotation_ < 0. ) {
-      angle = 360. - fmod( fabs( string_rotation_ ), 360.f );
+      angle = 360.0f - fmod( fabs( string_rotation_ ), 360.f );
     }
     else {
       angle = fmod( string_rotation_, 360.f );
@@ -1474,7 +1474,7 @@ namespace OGLFT {
       case LEFT:
 	dx = -bbox.x_min_; break;
       case CENTER:
-	dx = -( bbox.x_min_ + bbox.x_max_ ) / 2.; break;
+	dx = -( bbox.x_min_ + bbox.x_max_ ) / 2.0f; break;
       case RIGHT:
 	dx = -bbox.x_max_; break;
       default:
@@ -1484,7 +1484,7 @@ namespace OGLFT {
       case BOTTOM:
 	dy = -bbox.y_min_; break;
       case MIDDLE:
-	dy = -( bbox.y_min_ + bbox.y_max_ ) / 2.; break;
+	dy = -( bbox.y_min_ + bbox.y_max_ ) / 2.0f; break;
       case TOP:
 	dy = -bbox.y_max_; break;
       default:
@@ -1534,7 +1534,7 @@ namespace OGLFT {
       case LEFT:
 	dx = -bbox.x_min_; break;
       case CENTER:
-	dx = -( bbox.x_min_ + bbox.x_max_ ) / 2.; break;
+	dx = -( bbox.x_min_ + bbox.x_max_ ) / 2.0f; break;
       case RIGHT:
 	dx = -bbox.x_max_; break;
       default:
@@ -1544,7 +1544,7 @@ namespace OGLFT {
       case BOTTOM:
 	dy = -bbox.y_min_; break;
       case MIDDLE:
-	dy = -( bbox.y_min_ + bbox.y_max_ ) / 2.; break;
+	dy = -( bbox.y_min_ + bbox.y_max_ ) / 2.0f; break;
       case TOP:
 	dy = -bbox.y_max_; break;
       default:
@@ -1770,7 +1770,7 @@ namespace OGLFT {
         case LEFT:
           dx = -bbox.x_min_; break;
         case CENTER:
-          dx = -( bbox.x_min_ + bbox.x_max_ ) / 2.; break;
+          dx = -( bbox.x_min_ + bbox.x_max_ ) / 2.0f; break;
         case RIGHT:
           dx = -bbox.x_max_; break;
         }
@@ -1778,7 +1778,7 @@ namespace OGLFT {
         case BOTTOM:
           dy = -bbox.y_min_; break;
         case MIDDLE:
-          dy = -( bbox.y_min_ + bbox.y_max_ ) / 2.; break;
+          dy = -( bbox.y_min_ + bbox.y_max_ ) / 2.0f; break;
         case TOP:
           dy = -bbox.y_max_; break;
         }
@@ -1835,7 +1835,7 @@ namespace OGLFT {
           // Redo rotation
           float angle;
           if ( string_rotation_ < 0. ) {
-            angle = 360. - fmod( fabs( string_rotation_ ), 360.f );
+            angle = 360.0f - fmod( fabs( string_rotation_ ), 360.0f );
           }
           else {
             angle = fmod( string_rotation_, 360.f );
@@ -1927,7 +1927,7 @@ namespace OGLFT {
         case LEFT:
           dx = -bbox.x_min_; break;
         case CENTER:
-          dx = -( bbox.x_min_ + bbox.x_max_ ) / 2.; break;
+          dx = -( bbox.x_min_ + bbox.x_max_ ) / 2.0f; break;
         case RIGHT:
           dx = -bbox.x_max_; break;
         }
@@ -1935,7 +1935,7 @@ namespace OGLFT {
         case BOTTOM:
           dy = -bbox.y_min_; break;
         case MIDDLE:
-          dy = -( bbox.y_min_ + bbox.y_max_ ) / 2.; break;
+          dy = -( bbox.y_min_ + bbox.y_max_ ) / 2.0f; break;
         case TOP:
           dy = -bbox.y_max_; break;
         }
@@ -1992,7 +1992,7 @@ namespace OGLFT {
           // Redo rotation
           float angle;
           if ( string_rotation_ < 0. ) {
-            angle = 360. - fmod( fabs( string_rotation_ ), 360.f );
+            angle = 360.0f - fmod( fabs( string_rotation_ ), 360.0f );
           }
           else {
             angle = fmod( string_rotation_, 360.f );

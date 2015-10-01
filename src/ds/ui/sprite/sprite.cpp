@@ -468,10 +468,10 @@ inline float	max(const float a, const float b) { return a >= b ? a : b; }
 ci::Rectf Sprite::getBoundingBox() const {
 	const glm::mat4&	t = getTransform();
 
-	glm::vec3				ul = t * glm::vec3(0,0,0);
-	glm::vec3				ll = t * glm::vec3(0, getHeight(), 0);
-	glm::vec3				lr = t * glm::vec3(getWidth(), getHeight(), 0);
-	glm::vec3				ur = t * glm::vec3(getWidth(), 0, 0);
+	glm::vec3				ul = glm::vec3(t * glm::vec4(0,0,0,1));
+	glm::vec3				ll = glm::vec3(t * glm::vec4(0, getHeight(), 0, 1));
+	glm::vec3				lr = glm::vec3(t * glm::vec4(getWidth(), getHeight(), 0, 1));
+	glm::vec3				ur = glm::vec3(t * glm::vec4(getWidth(), 0, 0, 1));
 
 	const float				left = min(min(min(ul.x,ll.x),lr.x),ur.x);
 	const float				right = max(max(max(ul.x,ll.x),lr.x),ur.x);

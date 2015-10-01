@@ -156,8 +156,7 @@ App::~App() {
 }
 
 void App::prepareSettings(Settings *settings) {
-	inherited::prepareSettings(settings);
-
+	
 	if (settings) {
 		mEngine.prepareSettings(*settings);
 
@@ -338,7 +337,6 @@ void App::shutdown(){
 	mEngine.getRootSprite().clearChildren();
 	mEngine.stopServices();
 	ds::ui::clearFontCache();
-	ci::app::App::shutdown();
 }
 
 void App::showConsole(){

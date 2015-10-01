@@ -205,7 +205,7 @@ void PerspRoot::drawServer(const DrawParams& p) {
 
 ui::Sprite* PerspRoot::getHit(const glm::vec3& point) {
 	ui::Sprite*		s = nullptr;
-	drawFunc([this, &point, &s](){s = mPicking.pickAt(point.xy(), *(mSprite.get()));});
+	drawFunc([this, &point, &s](){s = mPicking.pickAt(glm::vec2(point), *(mSprite.get()));});
 	return s;
 }
 

@@ -64,8 +64,7 @@ glm::vec3 ScreenToWorld::translate(const glm::vec3 & point)
 glm::vec3 ScreenToWorld::unproject(const glm::vec3 & point)
 {
 	// Find the inverse Modelview-Projection-Matrix
-	glm::mat4 invMVP = mProjection * mModelView;
-	invMVP.invert();
+	glm::mat4 invMVP = glm::inverse(mProjection * mModelView);
 
 	// Transform to normalized coordinates in the range [-1, 1]
 	glm::vec4				pointNormal;
