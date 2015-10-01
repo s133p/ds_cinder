@@ -36,10 +36,10 @@ ds::ui::Sprite* SelectPicking::pickAt(const glm::vec2& pt, ds::ui::Sprite& root)
 //	glViewport( 0, 0, static_cast<int>(mWorldSize.x + picking_offset), static_cast<int>(mWorldSize.y));
 	GLint			viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
-	glm::mat4	m = ci::gl::getProjection();
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+	glm::mat4	m;
 	gluPickMatrix(pt.x, mWorldSize.y-pt.y, 8, 8, viewport);
+
+	/*
 	ci::gl::multProjection(m);
 
 	// Set up picking buffer
@@ -70,7 +70,7 @@ ds::ui::Sprite* SelectPicking::pickAt(const glm::vec2& pt, ds::ui::Sprite& root)
 
 		ptr += 3 + numNamesInHit;
 	}
-
+	*/
 	if (mHits.empty()) return nullptr;
 
 	// The z value is a GL-internal representation. The item with the lowest

@@ -183,10 +183,13 @@ void Pdf::drawLocalClient() {
 	// To draw properly, we first have to turn off whatever scaling has
 	// been applied, then apply a new scale to compensate for any mismatch
 	// between my current texture size and my display size.
-	const glm::vec3			turnOffScale(1.0f/mScale.x, 1.0f/mScale.y, 1.0f);
-	const glm::vec3			newScale(targetw/tw, targeth/th, 1.0f);
-    ci::gl::multModelView(glm::mat4::createScale(turnOffScale));
-    ci::gl::multModelView(glm::mat4::createScale(newScale));
+	const glm::vec3 adjustedScale(
+		(targetw / (tw * mScale.x)),
+		(targeth / (th * mScale.y)),
+		1.0f
+	);
+
+    ci::gl::multModelMatrix(scale(adjustedScale));
 
 	mHolder.drawLocalClient();
 

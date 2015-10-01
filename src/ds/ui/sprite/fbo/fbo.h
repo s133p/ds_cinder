@@ -44,7 +44,6 @@ class FboGeneral
     GLuint           mFboId;
     GLuint           mDepthId;
     GLuint           mStencilId;
-    GLint            mOldViewport[4];
     GLint            mPreviousFbo;
     ci::gl::TextureRef mAttached;
   public:

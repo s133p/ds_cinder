@@ -84,7 +84,6 @@ void Mesh::drawLocalClient() {
 	}
 
 	// Save the depth-read state...
-	ci::gl::BoolState( GL_DEPTH_TEST );
 	GLboolean oldDepthWriteMask;
 	glGetBooleanv( GL_DEPTH_WRITEMASK, &oldDepthWriteMask );
 

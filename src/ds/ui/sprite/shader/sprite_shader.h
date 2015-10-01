@@ -24,7 +24,7 @@ class SpriteShader
 	 */
 	static void clearShaderCache();
 
-    ci::gl::GlslProg &getShader();
+    ci::gl::GlslProgRef getShader();
 
     std::string getLocation() const;
     std::string getName() const;
@@ -37,7 +37,7 @@ class SpriteShader
     std::string         mDefaultName;
     std::string         mLocation;
     std::string         mName;
-    ci::gl::GlslProg    mShader;
+    ci::gl::GlslProgRef    mShader;
 };
 
 }

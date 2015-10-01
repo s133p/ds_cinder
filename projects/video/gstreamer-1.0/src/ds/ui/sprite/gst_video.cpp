@@ -194,7 +194,7 @@ void GstVideo::updateServer(const UpdateParams &up) {
 }
 
 void GstVideo::drawLocalClient() {
-	if (!mFbo) return;
+	if (!mFboRef) return;
 
 	if (mMovie.getState() == STOPPED) setStatus(Status::STATUS_STOPPED);
 	else if (mMovie.getState() == PLAYING) setStatus(Status::STATUS_PLAYING);
@@ -235,17 +235,20 @@ void GstVideo::drawLocalClient() {
 	if ( mFrameTextureRef ) {
 		{
 			ci::gl::pushMatrices();
-			ci::gl::setViewport(mFrameTextureRef->getBounds());
+			ci::Area bounds = mFrameTextureRef->getBounds();
+			ci::gl::pushViewport(bounds.getX1(), bounds.getY1(), bounds.getWidth(), bounds.getHeight());
 			ci::CameraOrtho camera;
-			camera.setOrtho(float(mFrameTextureRef->getBounds().getX1()), float(mFrameTextureRef->getBounds().getX2()), float(mFrameTextureRef->getBounds().getY2()), float(mFrameTextureRef->getBounds().getY1()), -1.0f, 1.0f);
+			camera.setOrtho(float(bounds.getX1()), float(bounds.getX2()), float(bounds.getY2()), float(bounds.getY1()), -1.0f, 1.0f);
 			ci::gl::setMatrices(camera);
 			// bind the framebuffer - now everything we draw will go there
-			mFbo.bindFramebuffer();
+			mFboRef->bindFramebuffer();
 
 			//glPushAttrib( GL_TRANSFORM_BIT | GL_ENABLE_BIT );
+			/*
 			for (int i = 0; i < 4; ++i) {
 				glDisable( GL_CLIP_PLANE0 + i );
 			}
+			*/
 
 			ci::gl::bindStockShader(ci::gl::ShaderDef().color());
 			if(mIsTransparent){
@@ -260,20 +263,20 @@ void GstVideo::drawLocalClient() {
 
 			//glPopAttrib();
 
-			mFbo.unbindFramebuffer();
-			mSpriteShader.getShader().bind();
+			mFboRef->unbindFramebuffer();
+			mSpriteShader.getShader()->bind();
 			ci::gl::popMatrices();
 		}
 
 		Rectf screenRect = mEngine.getScreenRect();
-		ci::gl::setViewport(Area((int)screenRect.getX1(), (int)screenRect.getY2(), (int)screenRect.getX2(), (int)screenRect.getY1()));
+		ci::gl::pushViewport((int)screenRect.getX1(), (int)screenRect.getY2(), (int)screenRect.getX2(), (int)screenRect.getY1());
 
 		if (getPerspective()) {
 			Rectf area(0.0f, 0.0f, getWidth(), getHeight());
-			ci::gl::draw( mFbo.getTexture2d(), area );
+			ci::gl::draw( mFboRef->getTexture2d(0), area );
 		} else {
 			Rectf area(0.0f, getHeight(), getWidth(), 0.0f);
-			ci::gl::draw( mFbo.getTexture2d(), area );
+			ci::gl::draw( mFboRef->getTexture2d(0), area );
 		}
 
 		DS_REPORT_GL_ERRORS();
@@ -547,7 +550,7 @@ void GstVideo::doLoadVideo(const std::string &filename) {
 		}
 		return;
 	}
-	mFbo = ci::gl::Fbo(static_cast<int>(getWidth()), static_cast<int>(getHeight()), true);
+	mFboRef = ci::gl::Fbo::create(static_cast<int>(getWidth()), static_cast<int>(getHeight()), true);
 }
 
 void GstVideo::onSetFilename(const std::string &fn) {

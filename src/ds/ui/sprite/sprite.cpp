@@ -223,20 +223,20 @@ void Sprite::drawClient( const glm::mat4 &trans, const DrawParams &drawParams ) 
 	}
 
 	buildTransform();
-	glm::mat4 totalTransformation = trans*mTransformation;
+	glm::mat4 totalTransformation = trans * mTransformation;
 	ci::gl::pushModelView();
-	glLoadIdentity();
-	ci::gl::multModelView(totalTransformation);
+	//glLoadIdentity();
+	ci::gl::multModelMatrix(totalTransformation);
 
 	if ((mSpriteFlags&TRANSPARENT_F) == 0) {
 		ci::gl::enableAlphaBlending();
 		applyBlendingMode(mBlendMode);
-		ci::gl::GlslProg& shaderBase = mSpriteShader.getShader();
+		ci::gl::GlslProgRef shaderBase = mSpriteShader.getShader();
 		if (shaderBase) {
-			shaderBase.bind();
-			shaderBase.uniform("tex0", 0);
-			shaderBase.uniform("useTexture", mUseShaderTexture);
-			shaderBase.uniform("preMultiply", premultiplyAlpha(mBlendMode));
+			shaderBase->bind();
+			shaderBase->uniform("tex0", 0);
+			shaderBase->uniform("useTexture", mUseShaderTexture);
+			shaderBase->uniform("preMultiply", premultiplyAlpha(mBlendMode));
 			mUniform.applyTo(shaderBase);
 		}
 
@@ -285,15 +285,17 @@ void Sprite::drawServer( const glm::mat4 &trans, const DrawParams &drawParams ) 
 	if ((mSpriteFlags&VISIBLE_F) == 0) {
 		return;
 	}
+	/*
 	if (mId > 0) {
 		glLoadName(mId);
 	}
+	*/
 
 	buildTransform();
 	glm::mat4 totalTransformation = trans*mTransformation;
 	ci::gl::pushModelView();
-	glLoadIdentity();
-	ci::gl::multModelView(totalTransformation);
+	//glLoadIdentity();
+	ci::gl::multModelMatrix(totalTransformation);
 
 	if ((mSpriteFlags&TRANSPARENT_F) == 0 && isEnabled()) {
 		ci::gl::color(mServerColor);

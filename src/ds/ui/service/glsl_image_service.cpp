@@ -2,6 +2,7 @@
 
 #include <cinder/Camera.h>
 #include <cinder/ImageIo.h>
+#include <cinder/gl/Shader.h>
 #include "ds/debug/debug_defines.h"
 #include "ds/debug/logger.h"
 #include <ds/gl/save_camera.h>
@@ -224,7 +225,7 @@ void ImageService::renderInput() {
 void ImageService::renderInput(op& input) {
 	input.mImgRef.reset();
 	// Load the shader -- no shader, no output
-	ci::gl::GlslProg shader = ci::gl::GlslProg(ci::loadFile(input.mKey.getVertex()), ci::loadFile(input.mKey.getFragment()));
+	ci::gl::GlslProgRef shader = ci::gl::GlslProg::create(ci::loadFile(input.mKey.getVertex()), ci::loadFile(input.mKey.getFragment()));
 	if (!shader) return;
 
 	// Set up the texture
@@ -233,8 +234,7 @@ void ImageService::renderInput(op& input) {
 	input.mImgRef = ci::gl::Texture::create(w, h);
 	if (!input.mImgRef) return;
 
-	ci::gl::SaveFramebufferBinding	bindingSaver;
-	ds::gl::SaveCamera				save_camera;
+	ci::gl::pushMatrices();
 	ds::ui::AutoFbo					afbo(mEngine, input.mImgRef);
 	{
 		afbo.mFbo->offsetViewport(0, 0);
@@ -246,8 +246,8 @@ void ImageService::renderInput(op& input) {
 		ci::gl::disableAlphaBlending();
 		ci::gl::clear(ci::ColorA(0.0f, 0.0f, 0.0f, 0.0f));
 
-        shader.bind();
-        shader.uniform("tex0", 0);
+        shader->bind();
+        shader->uniform("tex0", 0);
 		input.mKey.getUnifom().applyTo(shader);
 		ci::gl::color(ci::ColorA(1.0f, 1.0f, 1.0f, 1.0f));
 		ci::gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, static_cast<float>(w), static_cast<float>(h)));
@@ -255,8 +255,7 @@ void ImageService::renderInput(op& input) {
 
 		ci::gl::popMatrices();
 	}
-	// SaveCamera should be handling this.
-//	mEngine.setCamera();
+	ci::gl::popMatrices();
 }
 
 /* DS::LOAD-IMAGE-SERVICE::HOLDER

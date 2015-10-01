@@ -86,7 +86,7 @@ void NinePatch::drawLocalClient() {
 	// Probably should have an initialization stage
 	setStatus(Status::STATUS_LOADED);
 	if (mPatch.empty()) {
-		mPatch.buildSources(*tex);
+		mPatch.buildSources(tex);
 		mSizeDirty = true;
 //		mPatch.print();
 	}
@@ -107,9 +107,9 @@ void NinePatch::drawLocalClient() {
 //			tex->unbind();
 
 //			ci::Area	src(100, 0, mTexture.getWidth(), mTexture.getHeight());
-//			ci::gl::draw(*tex, src, ci::Rectf(0.0f, 0.0f, static_cast<float>(mTexture.getWidth()+300), static_cast<float>(mTexture.getHeight())) );
+//			ci::gl::draw(tex, src, ci::Rectf(0.0f, 0.0f, static_cast<float>(mTexture.getWidth()+300), static_cast<float>(mTexture.getHeight())) );
 
-		mPatch.draw(*tex);
+		mPatch.draw(tex);
 	}
 }
 
@@ -223,16 +223,11 @@ void NinePatch::Patch::buildSources(ci::gl::TextureRef texRef)
 
 	// Really just need the left and top rows of pixels, so this could
 	// be more efficient.
-	ci::Surface8u		s(texRef);
 	int					stretchX_start = texRef->getWidth()/2,
 						stretchY_start = (texRef->getHeight()/2);
 	int					stretchX_end = stretchX_start,
 						stretchY_end = (stretchY_start);
 	int					l = 0, t = 0, r = texRef->getWidth(), b = texRef->getHeight();
-
-// jus playin
-//stretchX_start = (int)(tex.getWidth()*0.35f);
-//stretchX_end = (int)(tex.getWidth()*0.65f);
 
 	// First do the four corners, which don't stretch
 

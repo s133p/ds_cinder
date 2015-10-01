@@ -8,6 +8,7 @@
 #include <cinder/Matrix.h>
 #include <cinder/Vector.h>
 #include <cinder/Color.h>
+#include <cinder/gl/GlslProg.h>
 
 #include <boost/variant/static_visitor.hpp>
 #include <boost/variant/variant.hpp>
@@ -58,7 +59,7 @@ public:
 
 public:
 	UniformVisitor() = delete;
-	UniformVisitor(ci::gl::GlslProg& shader);
+	UniformVisitor(ci::gl::GlslProgRef shader);
 
 	// Below all are uniform types, supported by Cinder.
 	void					operator()(int data);
@@ -83,7 +84,7 @@ public:
 	void					operator()(const glm::mat4 *data);
 
 private:
-	ci::gl::GlslProg&		mShader; //shader that will receive the passed variant
+	ci::gl::GlslProgRef		mShader; //shader that will receive the passed variant
 
 public:
 	UniformData&			mData; //just a placeholder
@@ -146,7 +147,7 @@ public:
 	// DEPRECATED LEGACY API, kept here for backward compatibility. use Uniform::set
 	void			setVec4f(const std::string& name, const glm::vec4&);
 
-	void			applyTo(ci::gl::GlslProg&) const;
+	void			applyTo(ci::gl::GlslProgRef) const;
 
 private:
 	// Internally handles inserting boost::variant's into a map for shaders to consume.

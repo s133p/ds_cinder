@@ -1,5 +1,6 @@
 #include "fbo.h"
 #include "ds/debug/debug_defines.h"
+#include "cinder/gl/wrapper.h"
 
 namespace ds {
 namespace ui {
@@ -123,22 +124,12 @@ void FboGeneral::offsetViewport(int offsetX, int offsetY)
 
 void FboGeneral::pushTransformation()
 {
-  mOldViewport[4];
-  glGetIntegerv(GL_VIEWPORT, mOldViewport);
-
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glMatrixMode(GL_MODELVIEW);
-  glPushMatrix();
+  ci::gl::pushMatrices();
 }
 
 void FboGeneral::popTransformation()
 {
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
-  glMatrixMode(GL_MODELVIEW);
-  glPopMatrix();
-  glViewport(mOldViewport[0], mOldViewport[1], mOldViewport[2], mOldViewport[3]);
+  ci::gl::popMatrices();
 }
 
 int FboGeneral::getWidth() const

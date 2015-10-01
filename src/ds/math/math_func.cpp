@@ -13,7 +13,7 @@ bool intersect2D( const glm::vec3 &start0, const glm::vec3 &end0, const glm::vec
 
   glm::vec3 w = start0 - start1;
 
-  float bottom = (glm::dot(u, u))*(glm::dot(v, v))-(glm::dot(u, v))*(glm::dot(u, v)));
+  float bottom = ((glm::dot(u, u))*(glm::dot(v, v))-(glm::dot(u, v))*(glm::dot(u, v)));
 
   float t0 = 0.0f;
   float t1 = 0.0f;

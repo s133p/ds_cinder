@@ -51,12 +51,14 @@ void enableClipping( float x0, float y0, float x1, float y1 )
     
     float d = glm::dot(-norm, clippingPoints[i]);
 
+	/*
     DS_REPORT_GL_ERRORS();
     glEnable( GL_CLIP_PLANE0 + i );
     DS_REPORT_GL_ERRORS();
     GLdouble equation[4] = { norm.x, norm.y, norm.z, d };
     glClipPlane( GL_CLIP_PLANE0 + i, equation );
     DS_REPORT_GL_ERRORS();
+	*/
   }
 }
 

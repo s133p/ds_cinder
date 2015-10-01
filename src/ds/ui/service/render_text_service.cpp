@@ -198,7 +198,7 @@ void RenderTextService::_run()
 //						font->setCompileMode(OGLFT::Face::COMPILE);
 
       ci::Area fboBounds(0, 0, fbo.getWidth(), fbo.getHeight());
-      ci::gl::setViewport(fboBounds);
+      ci::gl::pushViewport(fboBounds.getX1(), fboBounds.getX2(), fboBounds.getWidth(), fboBounds.getHeight());
       ci::CameraOrtho camera;
       camera.setOrtho(static_cast<float>(fboBounds.getX1()), static_cast<float>(fboBounds.getX2()), static_cast<float>(fboBounds.getY2()), static_cast<float>(fboBounds.getY1()), -1.0f, 1.0f);
 
@@ -216,7 +216,7 @@ void RenderTextService::_run()
 
 		{
 //			if (worker->mCode > 0) {
-				ci::Surface8u	s(worker->mFinished.mTextureRef);
+//				ci::Surface8u	s(worker->mFinished.mTextureRef);
 //				std::stringstream	buf;
 //				buf << "C:\\Users\\erich\\Documents\\downstream\\wtf_" << worker->mCode << ".png";
 //				ci::writeImage(buf.str(), s);

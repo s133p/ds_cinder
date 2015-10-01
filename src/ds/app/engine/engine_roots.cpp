@@ -97,8 +97,8 @@ void OrthRoot::drawClient(const DrawParams& p, AutoDrawService* auto_draw) {
 	if (mSrcRect.x2 > mSrcRect.x1 && mSrcRect.y2 > mSrcRect.y1) {
 		const float			sx = mDstRect.getWidth() / mSrcRect.getWidth(),
 							sy = mDstRect.getHeight() / mSrcRect.getHeight();
-		m.translate(glm::vec3(-mSrcRect.x1*sx, -mSrcRect.y1*sy, 0.0f));
-		m.scale(glm::vec3(sx, sy, 1.0f));
+		m = translate(m, glm::vec3(-mSrcRect.x1*sx, -mSrcRect.y1*sy, 0.0f));
+		m = scale(m, glm::vec3(sx, sy, 1.0f));
 	}
 	mSprite->drawClient(m, p);
 
@@ -120,7 +120,7 @@ void OrthRoot::setCinderCamera() {
 
 	// I think this should be in setGlCamera, but keeping it compatible for now.
 	if (mSetViewport) {
-		ci::gl::setViewport(ci::Area((int)screen_rect.getX1(), (int)screen_rect.getY2(), (int)screen_rect.getX2(), (int)screen_rect.getY1()));
+		ci::gl::pushViewport((int)screen_rect.getX1(), (int)screen_rect.getY2(), (int)screen_rect.getWidth(), (int)screen_rect.getHeight());
 	}
 	mCamera.setOrtho(screen_rect.getX1(), screen_rect.getX2(), screen_rect.getY2(), screen_rect.getY1(), mNearPlane, mFarPlane);
 	//gl::setMatrices(mCamera);
@@ -137,7 +137,7 @@ void OrthRoot::markCameraDirty() {
 void OrthRoot::setGlCamera() {
 	if (mSetViewport) {
 		const ci::Rectf&		screen_rect(mEngine.getScreenRect());
-		ci::gl::setViewport(ci::Area((int)screen_rect.getX1(), (int)screen_rect.getY2(), (int)screen_rect.getX2(), (int)screen_rect.getY1()));
+		ci::gl::pushViewport((int)screen_rect.getX1(), (int)screen_rect.getY2(), (int)screen_rect.getWidth(), (int)screen_rect.getHeight());
 	}
 	ci::gl::setMatrices(mCamera);
 	ci::gl::disableDepthRead();
@@ -279,7 +279,7 @@ void PerspRoot::drawFunc(const std::function<void(void)>& fn) {
 	// this, no later ortho roots will draw (but then it's fine once you go
 	// back to the first root). This inspite of the fact that the ortho
 	// setGlCamera code calls everything this does.
-	gl::SaveCamera		save_camera;
+	ci::gl::pushMatrices()
 
 	if (mCameraDirty) {
 		setCinderCamera();
@@ -291,6 +291,7 @@ void PerspRoot::drawFunc(const std::function<void(void)>& fn) {
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	fn();
+	ci::gl::popMatrices();
 }
 
 /**

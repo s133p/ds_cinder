@@ -121,7 +121,7 @@ private:
 	_2RealGStreamerWrapper::GStreamerWrapper&	mMovie;
 
 	ci::gl::TextureRef  mFrameTextureRef;
-	ci::gl::Fbo         mFbo;
+	ci::gl::FboRef      mFboRef;
 
 	std::string			mFilename;
 	bool				mFilenameChanged;

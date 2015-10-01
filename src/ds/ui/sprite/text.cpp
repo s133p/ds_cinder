@@ -11,7 +11,6 @@
 #include "ds/app/blob_registry.h"
 #include "ds/cfg/settings.h"
 #include "ds/data/data_buffer.h"
-#include <ds/gl/save_camera.h>
 #include "ds/ui/sprite/sprite_engine.h"
 #include "cinder/Camera.h"
 #include <stdexcept>
@@ -197,7 +196,7 @@ void Text::drawLocalClient()
 		ci::gl::color(0.25f, 0, 0, 0.5f);
 		ci::gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, mWidth, mHeight));
 		
-		mSpriteShader.getShader().bind();
+		mSpriteShader.getShader()->bind();
 		ci::gl::color(getColorA());
 	}
 
@@ -536,7 +535,7 @@ void Text::drawIntoFbo() {
 	if (lines.empty()) return;
 
 	if (mNeedRedrawing) {
-		ds::gl::SaveCamera		save_camera;
+		ci::gl::pushMatrices();
 #ifdef TEXT_RENDER_ASYNC
 	int		code = 0;
 	if (mTextString == L"2010") code = 2010;
@@ -573,14 +572,14 @@ std::cout << "START=" << ds::utf8_from_wstr(mTextString) << std::endl;
 		ci::gl::enableAlphaBlending();
 		applyBlendingMode(LIGHTEN);
 		{
-			ci::gl::SaveFramebufferBinding bindingSaver;
+			//gl::ScopedFramebuffer bindingSaver;
 			std::unique_ptr<ds::ui::FboGeneral> fbo = std::move(mEngine.getFbo());
 			fbo->attach(mTextureRef, true);
 			fbo->begin();
 
 //			glLoadIdentity();
 			ci::Area fboBounds(0, 0, fbo->getWidth(), fbo->getHeight());
-			ci::gl::setViewport(fboBounds);
+			ci::gl::pushViewport(fboBounds.getX1(), fboBounds.getX2(), fboBounds.getWidth(), fboBounds.getHeight());
 			ci::CameraOrtho camera;
 			camera.setOrtho(static_cast<float>(fboBounds.getX1()), static_cast<float>(fboBounds.getX2()), static_cast<float>(fboBounds.getY2()), static_cast<float>(fboBounds.getY1()), -1.0f, 1.0f);
 			ci::gl::setMatrices(camera);
@@ -599,8 +598,8 @@ std::cout << "START=" << ds::utf8_from_wstr(mTextString) << std::endl;
 
 				// Make sure textures are disabled, or else I can end up not
 				// drawing and it can be very difficult to know why.
-				ci::gl::BoolState	tex_2d_state(GL_TEXTURE_2D);
-				glDisable(GL_TEXTURE_2D);
+				//ci::gl::BoolState	tex_2d_state(GL_TEXTURE_2D);
+				//glDisable(GL_TEXTURE_2D);
 
 				float xPos = line.mPos.x + mBorder.x1 - box.x_min_;
 				float yPos = line.mPos.y + mBorder.y1 + height;
@@ -613,10 +612,13 @@ std::cout << "START=" << ds::utf8_from_wstr(mTextString) << std::endl;
 				mFont->draw(xPos, yPos, line.mText);
 			}
 
+			ci::gl::popViewport();
+
 			fbo->end();
 			fbo->detach();
 			mEngine.giveBackFbo(std::move(fbo));
 		}
+		ci::gl::popMatrices();
 	}
 }
 

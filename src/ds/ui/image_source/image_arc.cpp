@@ -95,7 +95,7 @@ private:
 		std::unique_ptr<ds::arc::Arc>		a = std::move(ds::arc::load(mFilename));
 		if (!a) return;
 		ci::Surface8u		s(mWidth, mHeight, true, ci::SurfaceConstraintsDefault());
-		if (!s || s.getWidth() != mWidth || s.getHeight() != mHeight) return;
+		if (!s.getData() || s.getWidth() != mWidth || s.getHeight() != mHeight) return;
 
 		ds::arc::RenderCircle		render;
 		if (!render.on(mInput, s, *(a.get()))) return;

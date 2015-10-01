@@ -292,7 +292,7 @@ LoadImageService::op::op(const ImageKey& key, const int flags, const ds::ui::ip:
 
 void LoadImageService::op::clear() {
 	mKey.clear();
-	mSurface = nullptr;
+	mSurface.create(0, 0, true);
 	mFlags = 0;
 	mIpFunction.clear();
 }
