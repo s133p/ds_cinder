@@ -10,39 +10,42 @@ namespace ds
 EngineRendererDiscontinuous::EngineRendererDiscontinuous(Engine& e)
 	: EngineRenderer(e)
 {
+	ci::gl::Texture::Format textureFormat;
+	textureFormat.setInternalFormat(GL_RGBA32F);
 	ci::gl::Fbo::Format fmt;
-	fmt.setColorInternalFormat(GL_RGBA32F);
+	fmt.setColorTextureFormat(textureFormat);
 
 	const auto w = static_cast<int>(e.getWidth());
 	const auto h = static_cast<int>(e.getHeight());
 
-	mFbo = ci::gl::Fbo(w, h, fmt);
+	mFbo = ci::gl::Fbo::create(w, h, fmt);
 }
 
 void EngineRendererDiscontinuous::drawClient()
 {
-	ci::gl::SaveFramebufferBinding bindingSaver;
-	mFbo.bindFramebuffer();
+	mFbo->bindFramebuffer();
 	ci::gl::enableAlphaBlending();
 	clearScreen();
 	for (auto it = mEngine.getRoots().cbegin(), end = mEngine.getRoots().cend(); it != end; ++it) {
 		(*it)->drawClient(mEngine.getDrawParams(), mEngine.getAutoDrawService());
 	}
-	mFbo.unbindFramebuffer();
+	mFbo->unbindFramebuffer();
 
 	clearScreen();
 	for (const auto& world_slice : mEngine.getEngineData().mWorldSlices)
 	{
-		ci::gl::draw(mFbo.getTexture2d(), world_slice.first, world_slice.second);
+		ci::gl::draw(mFbo->getTexture2d(0), world_slice.first, world_slice.second);
 	}
 }
 
 void EngineRendererDiscontinuous::drawServer()
 {
+	/*
 	glAlphaFunc(GL_GREATER, 0.001f);
 
 	ci::gl::enable(GL_ALPHA_TEST);
 	ci::gl::enableAlphaBlending();
+	*/
 	clearScreen();
 
 	for (auto it = mEngine.getRoots().cbegin(), end = mEngine.getRoots().cend(); it != end; ++it)
@@ -50,7 +53,7 @@ void EngineRendererDiscontinuous::drawServer()
 		(*it)->drawServer(mEngine.getDrawParams());
 	}
 
-	glAlphaFunc(GL_ALWAYS, 0.001f);
+	//glAlphaFunc(GL_ALWAYS, 0.001f);
 }
 
 }

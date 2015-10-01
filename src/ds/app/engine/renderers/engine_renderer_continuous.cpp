@@ -14,7 +14,7 @@ EngineRendererContinuous::EngineRendererContinuous(Engine& e)
 
 void EngineRendererContinuous::drawClient()
 {
-	ci::gl::enableAlphaBlending();
+	//ci::gl::enableAlphaBlending();
 	
 	clearScreen();
 
@@ -26,10 +26,12 @@ void EngineRendererContinuous::drawClient()
 
 void EngineRendererContinuous::drawServer()
 {
+	/*
 	glAlphaFunc(GL_GREATER, 0.001f);
 
 	ci::gl::enable(GL_ALPHA_TEST);
 	ci::gl::enableAlphaBlending();
+	*/
 	clearScreen();
 
 	for (auto it = mEngine.getRoots().cbegin(), end = mEngine.getRoots().cend(); it != end; ++it)
@@ -37,7 +39,7 @@ void EngineRendererContinuous::drawServer()
 		(*it)->drawServer(mEngine.getDrawParams());
 	}
 
-	glAlphaFunc(GL_ALWAYS, 0.001f);
+	//glAlphaFunc(GL_ALWAYS, 0.001f);
 }
 
 }

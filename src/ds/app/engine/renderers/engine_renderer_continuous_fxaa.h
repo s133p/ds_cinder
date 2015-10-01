@@ -28,8 +28,8 @@ public:
 
 private:
 	ci::Rectf			mRenderRect;
-	ci::gl::Fbo			mFbo;
-	ci::gl::GlslProg	mFxaaShader;
+	ci::gl::FboRef		mFbo;
+	ci::gl::GlslProgRef	mFxaaShader;
 	glm::vec2			mTexCoordOffset;
 };
 

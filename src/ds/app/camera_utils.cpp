@@ -41,8 +41,11 @@ void ScreenToWorld::setScreenSize(const float width, const float height)
 void ScreenToWorld::update()
 {
 	mModelView = ci::gl::getModelView();
-	mProjection = ci::gl::getProjection();
-	mViewport = ci::gl::getViewport();
+	mProjection = ci::gl::getProjectionMatrix();
+	glm::ivec2 viewportPos;
+	glm::ivec2 viewportSize;
+	ci::gl::viewport(viewportPos, viewportSize);
+	mViewport.set(viewportPos.x, viewportPos.y, viewportPos.x + viewportSize.x, viewportPos.y + viewportSize.y);
 }
 
 glm::vec3 ScreenToWorld::translate(const glm::vec3 & point)

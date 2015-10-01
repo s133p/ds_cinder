@@ -1948,7 +1948,7 @@ namespace {
 
 void			write_matrix44f(const glm::mat4 &m, std::ostream &s) {
 	for (int k=0; k<4; ++k) {
-		auto row = m.getRow(k);
+		auto row = glm::row(m, k);
 		if (k > 0) s << ", ";
 		s << row;
 	}
