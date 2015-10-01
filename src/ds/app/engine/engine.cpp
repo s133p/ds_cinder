@@ -113,12 +113,13 @@ private:
 					glm::vec2 p2 = glm::vec2(pos.x - bigSize * cos(angle), pos.y - bigSize * sin(angle));
 					glm::vec2 p3 = glm::vec2(prevPos.x + smallSize * cos(angle), prevPos.y + smallSize * sin(angle));
 					glm::vec2 p4 = glm::vec2(prevPos.x - smallSize * cos(angle), prevPos.y - smallSize * sin(angle));
-					glBegin(GL_QUADS);
+					
+					//glBegin(GL_QUADS);
 					ci::gl::vertex(p1);
 					ci::gl::vertex(p3);
 					ci::gl::vertex(p4);
 					ci::gl::vertex(p2);
-					glEnd();
+					//glEnd();
 				}
 
 				sizey += incrementy;

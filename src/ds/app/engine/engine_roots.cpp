@@ -278,7 +278,7 @@ void PerspRoot::drawFunc(const std::function<void(void)>& fn) {
 	// this, no later ortho roots will draw (but then it's fine once you go
 	// back to the first root). This inspite of the fact that the ortho
 	// setGlCamera code calls everything this does.
-	ci::gl::pushMatrices()
+	ci::gl::pushMatrices();
 
 	if (mCameraDirty) {
 		setCinderCamera();

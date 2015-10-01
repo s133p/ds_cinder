@@ -951,6 +951,7 @@ namespace OGLFT {
 
   GLuint Face::compile ( const char* s )
   {
+	/*
     // First, make sure all the characters in the string are themselves
     // in display lists
     const char* s_tmp = s;
@@ -975,6 +976,8 @@ namespace OGLFT {
     glEndList();
 
     return dlist;
+	*/
+	return 0;
   }
 #ifndef OGLFT_NO_QT
   // Compile a (UNICODE) string into a display list
@@ -1072,6 +1075,7 @@ namespace OGLFT {
 
   GLuint Face::compile( const std::string &s )
   {
+	/*
     // First, make sure all the characters in the string are themselves
     // in display lists
     for ( unsigned int i = 0; i < s.size(); i++ ) {
@@ -1094,10 +1098,13 @@ namespace OGLFT {
     glEndList();
 
     return dlist;
+	*/
+	return 0;
   }
 
   GLuint Face::compile( const std::wstring &s )
   {
+	/*
     // First, make sure all the characters in the string are themselves
     // in display lists
     for ( unsigned int i = 0; i < s.size(); i++ ) {
@@ -1120,6 +1127,8 @@ namespace OGLFT {
     glEndList();
 
     return dlist;
+	*/
+	return 0;
   }
 
   GLuint Face::compile( const wchar_t c )
@@ -1190,7 +1199,7 @@ namespace OGLFT {
     for ( char c = *s; c != 0; c = *++s ) {
 
       if ( character_display_list != character_display_lists_.end() ) {
-	glCallList( *character_display_list );
+	//glCallList( *character_display_list );
 	character_display_list++;
       }
 
@@ -1228,7 +1237,7 @@ namespace OGLFT {
     for ( unsigned int i = 0; i < s.size(); i++ ) {
 
       if ( character_display_list != character_display_lists_.end() ) {
-        glCallList( *character_display_list );
+        //glCallList( *character_display_list );
         character_display_list++;
       }
 
@@ -1243,7 +1252,7 @@ namespace OGLFT {
     for ( unsigned int i = 0; i < s.size(); i++ ) {
 
       if ( character_display_list != character_display_lists_.end() ) {
-        glCallList( *character_display_list );
+        //glCallList( *character_display_list );
         character_display_list++;
       }
 
@@ -1261,7 +1270,7 @@ namespace OGLFT {
     GDLCI fgi = glyph_dlists_.find( c );
 
     if ( fgi != glyph_dlists_.end( ) ) {
-      glCallList( fgi->second );
+      //glCallList( fgi->second );
       return;
     }
 
@@ -1280,7 +1289,7 @@ namespace OGLFT {
 
     else if ( compile_mode_ == COMPILE ) {
       GLuint dlist = compile( c );
-      glCallList( dlist );
+      //glCallList( dlist );
     }
 
     // ... render it immediately
@@ -1340,7 +1349,7 @@ namespace OGLFT {
     GDLCI fgi = glyph_dlists_.find( c );
 
     if ( fgi != glyph_dlists_.end( ) ) {
-      glCallList( fgi->second );
+      //glCallList( fgi->second );
       return;
     }
 
@@ -1361,7 +1370,7 @@ namespace OGLFT {
 
     if ( compile_mode_ == COMPILE ) {
       GLuint dlist = compile( c );
-      glCallList( dlist );
+      //glCallList( dlist );
     }
 
     // ... render it immediately
@@ -1375,12 +1384,14 @@ namespace OGLFT {
 
   void Face::draw ( GLfloat x, GLfloat y, unsigned char c )
   {
+	/*
     glTranslatef( x, y, 0. );
 
     glColor4f( foreground_color_[R], foreground_color_[G], foreground_color_[B],
 	       foreground_color_[A] );
 
     glRasterPos2i( 0, 0 );
+	*/
 
     draw( c );
   }
@@ -1390,12 +1401,14 @@ namespace OGLFT {
 
   void Face::draw ( GLfloat x, GLfloat y, GLfloat z, unsigned char c )
   {
+	/*
     glTranslatef( x, y, z );
 
     glColor4f( foreground_color_[R], foreground_color_[G], foreground_color_[B],
 	       foreground_color_[A] );
 
     glRasterPos2i( 0, 0 );
+	*/
 
     draw( c );
   }
@@ -1433,24 +1446,28 @@ namespace OGLFT {
 
   void Face::draw( GLfloat x, GLfloat y, wchar_t c )
   {
+	/*
     glTranslatef( x, y, 0. );
 
     glColor4f( foreground_color_[R], foreground_color_[G], foreground_color_[B],
       foreground_color_[A] );
 
     glRasterPos2i( 0, 0 );
+	*/
 
     draw( c );
   }
 
   void Face::draw( GLfloat x, GLfloat y, GLfloat z, wchar_t c )
   {
+	/*
     glTranslatef( x, y, z );
 
     glColor4f( foreground_color_[R], foreground_color_[G], foreground_color_[B],
       foreground_color_[A] );
 
     glRasterPos2i( 0, 0 );
+	*/
 
     draw( c );
   }
@@ -1459,6 +1476,7 @@ namespace OGLFT {
 
   void Face::draw ( GLfloat x, GLfloat y, const char* s )
   {
+	/*
     if ( !advance_ )
       glPushMatrix();
 
@@ -1513,12 +1531,14 @@ namespace OGLFT {
 
     if ( !advance_ )
       glPopMatrix();
+	*/
   }
 
   // Draw the (latin1) string at the given position.
 
   void Face::draw ( GLfloat x, GLfloat y, GLfloat z, const char* s )
   {
+	/*
     if ( !advance_ )
       glPushMatrix();
 
@@ -1573,6 +1593,7 @@ namespace OGLFT {
 
     if ( !advance_ )
       glPopMatrix();
+	*/
   }
 
 #ifndef OGLFT_NO_QT
@@ -1755,6 +1776,7 @@ namespace OGLFT {
 
   void Face::draw( GLfloat x, GLfloat y, const std::string &s )
   {
+	/*
     if ( !advance_ )
       glPushMatrix();
 
@@ -1805,10 +1827,12 @@ namespace OGLFT {
 
     if ( !advance_ )
       glPopMatrix();
+	*/
   }
 
   void Face::draw( GLfloat x, GLfloat y, GLfloat z, const std::string &s )
   {
+	/*
     if ( !advance_ )
       glPushMatrix();
 
@@ -1907,11 +1931,12 @@ namespace OGLFT {
 
     if ( !advance_ )
       glPopMatrix();
+	*/
   }
 
   void Face::draw( GLfloat x, GLfloat y, const std::wstring &s )
   {
-
+	/*
     if ( !advance_ )
       glPushMatrix();
 
@@ -1962,10 +1987,12 @@ namespace OGLFT {
 
     if ( !advance_ )
       glPopMatrix();
+	*/
   }
 
   void Face::draw( GLfloat x, GLfloat y, GLfloat z, const std::wstring &s )
   {
+	/*
     if ( !advance_ )
       glPushMatrix();
 
@@ -2064,6 +2091,7 @@ namespace OGLFT {
 
     if ( !advance_ )
       glPopMatrix();
+	*/
   }
 
   void Face::draw( GLfloat x, GLfloat y, const std::string &format, double number )
@@ -2187,19 +2215,20 @@ namespace OGLFT {
     // of the raster format has to be projected back into the
     // view's coordinates
 
+    /*
     GLint viewport[4];
     GLdouble modelview[16], projection[16];
 
-    glGetIntegerv( GL_VIEWPORT, viewport );
+	glGetIntegerv( GL_VIEWPORT, viewport );
     glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
     glGetDoublev( GL_PROJECTION_MATRIX, projection );
 
     // Well, first we have to get the Origin, since that is the basis
     // of the bounding box
-    GLdouble x0, y0, z0;
+    GLfloat x0, y0, z0;
     gluUnProject( 0., 0., 0., modelview, projection, viewport, &x0, &y0, &z0 );
 
-    GLdouble x, y, z;
+    GLfloat x, y, z;
     gluUnProject( bbox.x_min_, bbox.y_min_, 0., modelview, projection, viewport,
 		  &x, &y, &z );
     bbox.x_min_ = x - x0;
@@ -2215,6 +2244,7 @@ namespace OGLFT {
 		  &x, &y, &z );
     bbox.advance_.dx_ = x - x0;
     bbox.advance_.dy_ = y - y0;
+	*/
 
     return bbox;
   }
@@ -2330,19 +2360,20 @@ namespace OGLFT {
     // of the raster format has to be projected back into the
     // view's coordinates
 
+    /*
     GLint viewport[4];
     GLdouble modelview[16], projection[16];
 
-    glGetIntegerv( GL_VIEWPORT, viewport );
+	glGetIntegerv( GL_VIEWPORT, viewport );
     glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
     glGetDoublev( GL_PROJECTION_MATRIX, projection );
 
     // Well, first we have to get the Origin, since that is the basis
     // of the bounding box
-    GLdouble x0, y0, z0;
+    GLfloat x0, y0, z0;
     gluUnProject( 0., 0., 0., modelview, projection, viewport, &x0, &y0, &z0 );
 
-    GLdouble x, y, z;
+    GLfloat x, y, z;
     gluUnProject( bbox.x_min_, bbox.y_min_, 0., modelview, projection, viewport,
       &x, &y, &z );
     bbox.x_min_ = x - x0;
@@ -2358,6 +2389,7 @@ namespace OGLFT {
       &x, &y, &z );
     bbox.advance_.dx_ = x - x0;
     bbox.advance_.dy_ = y - y0;
+	*/
 
     return bbox;
   }
@@ -2400,19 +2432,20 @@ namespace OGLFT {
     // of the raster format has to be projected back into the
     // view's coordinates
 
+    /*
     GLint viewport[4];
     GLdouble modelview[16], projection[16];
 
-    glGetIntegerv( GL_VIEWPORT, viewport );
+	glGetIntegerv( GL_VIEWPORT, viewport );
     glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
     glGetDoublev( GL_PROJECTION_MATRIX, projection );
 
     // Well, first we have to get the Origin, since that is the basis
     // of the bounding box
-    GLdouble x0, y0, z0;
+    GLfloat x0, y0, z0;
     gluUnProject( 0., 0., 0., modelview, projection, viewport, &x0, &y0, &z0 );
 
-    GLdouble x, y, z;
+    GLfloat x, y, z;
     gluUnProject( bbox.x_min_, bbox.y_min_, 0., modelview, projection, viewport,
       &x, &y, &z );
     bbox.x_min_ = x - x0;
@@ -2428,6 +2461,7 @@ namespace OGLFT {
       &x, &y, &z );
     bbox.advance_.dx_ = x - x0;
     bbox.advance_.dy_ = y - y0;
+	*/
 
     return bbox;
   }
@@ -2435,6 +2469,7 @@ namespace OGLFT {
 
   GLuint Raster::compileGlyph ( FT_Face face, FT_UInt glyph_index )
   {
+	/*
     GLuint dlist = glGenLists( 1 );
     glNewList( dlist, GL_COMPILE );
 
@@ -2443,6 +2478,8 @@ namespace OGLFT {
     glEndList( );
 
     return dlist;
+	*/
+	return 0;
   }
 
   void Raster::setCharSize ( void )
@@ -2470,16 +2507,18 @@ namespace OGLFT {
     if ( error != 0 )
       return;
 
-    rotation_offset_y_ = rotation_reference_face_->glyph->bitmap.rows / 2.;
+    rotation_offset_y_ = rotation_reference_face_->glyph->bitmap.rows / 2.0f;
   }
 
   void Raster::clearCaches ( void )
   {
+	/*
     GDLI fgi = glyph_dlists_.begin();
 
     for ( ; fgi != glyph_dlists_.end(); ++fgi ) {
       glDeleteLists( fgi->second, 1 );
     }
+	*/
 
     glyph_dlists_.clear();
   }
@@ -2601,12 +2640,14 @@ namespace OGLFT {
 
     GLubyte* inverted_bitmap = invertBitmap( bitmap_glyph->bitmap );
 
+	/*
     glBitmap( bitmap_glyph->bitmap.width, bitmap_glyph->bitmap.rows,
 	      -bitmap_glyph->left,
 	      bitmap_glyph->bitmap.rows - bitmap_glyph->top,
 	      face->glyph->advance.x / 64.,
 	      face->glyph->advance.y / 64.,
 	      inverted_bitmap );
+	*/
 
     FT_Done_Glyph( glyph );
 
@@ -2711,6 +2752,7 @@ namespace OGLFT {
     // later when the list is actually called. So, the client should be alerted
     // to this fact: unpack alignment must be 1
 
+	/*
     //glPushAttrib( GL_PIXEL_MODE_BIT );
     glPixelTransferf( GL_RED_SCALE, foreground_color_[R] - background_color_[R] );
     glPixelTransferf( GL_GREEN_SCALE, foreground_color_[G] - background_color_[G] );
@@ -2738,6 +2780,7 @@ namespace OGLFT {
 	      bitmap_glyph->bitmap.rows - bitmap_glyph->top +
 	      face->glyph->advance.y / 64.,
 	      0 );
+	*/
 
     FT_Done_Glyph( glyph );
 
@@ -2850,6 +2893,7 @@ namespace OGLFT {
     GLubyte* inverted_pixmap = invertPixmapWithAlpha( bitmap_glyph->bitmap );
 
     //glPushAttrib( GL_PIXEL_MODE_BIT );
+	/*
     glPixelTransferf( GL_RED_SCALE, foreground_color_[R] - background_color_[R] );
     glPixelTransferf( GL_GREEN_SCALE, foreground_color_[G] -background_color_[G] );
     glPixelTransferf( GL_BLUE_SCALE, foreground_color_[B] - background_color_[B] );
@@ -2879,6 +2923,7 @@ namespace OGLFT {
 	      bitmap_glyph->bitmap.rows - bitmap_glyph->top +
 	      face->glyph->advance.y / 64.,
 	      0 );
+	*/
 
     FT_Done_Glyph( glyph );
 
@@ -3049,11 +3094,11 @@ namespace OGLFT {
       return;
 
     vector_scale_ = ( point_size_ * resolution_ ) /
-      ( 72. * rotation_reference_face_->units_per_EM );
+      ( 72.0f * rotation_reference_face_->units_per_EM );
 
     rotation_offset_y_ =
-      ( rotation_reference_face_->glyph->metrics.horiBearingY / 2. ) / 64.
-      * vector_scale_;
+      ( rotation_reference_face_->glyph->metrics.horiBearingY / 2.0f ) / 64.0f
+      * (float)vector_scale_;
   }
 
   double Polygonal::height ( void ) const
@@ -3223,6 +3268,7 @@ namespace OGLFT {
 
   GLuint Polygonal::compileGlyph ( FT_Face face, FT_UInt glyph_index )
   {
+	/*
     GLuint dlist = glGenLists( 1 );
 
     glNewList( dlist, GL_COMPILE );
@@ -3232,15 +3278,19 @@ namespace OGLFT {
     glEndList( );
 
     return dlist;
+	*/
+	return 0;
   }
 
   void Polygonal::clearCaches ( void )
   {
+	/*
     GDLI fgi = glyph_dlists_.begin();
 
     for ( ; fgi != glyph_dlists_.end(); ++fgi ) {
       glDeleteLists( fgi->second, 1 );
     }
+	*/
 
     glyph_dlists_.clear();
   }
@@ -3274,6 +3324,7 @@ namespace OGLFT {
 
   void Outline::renderGlyph ( FT_Face face, FT_UInt glyph_index )
   {
+	/*
     FT_Error error = FT_Load_Glyph( face, glyph_index, FT_LOAD_FORCE_AUTOHINT );
 
     if ( error != 0 )
@@ -3342,10 +3393,12 @@ namespace OGLFT {
       delete *vili;
 
     vertices_.clear();
+	*/
   }
 
   int Outline::moveToCallback ( FT_Vector* to, Outline* outline )
   {
+	/*
     if ( outline->contour_open_ ) {
       glEnd();
     }
@@ -3357,12 +3410,13 @@ namespace OGLFT {
     glBegin( GL_LINE_LOOP );
 
     outline->contour_open_ = true;
-
+	*/
     return 0;
   }
 
   int Outline::lineToCallback ( FT_Vector* to, Outline* outline )
   {
+	/*
     outline->last_vertex_ = VertexInfo( to,
 					outline->colorTess(),
 					outline->textureTess() );
@@ -3372,12 +3426,14 @@ namespace OGLFT {
     g[Y] = outline->last_vertex_.v_[Y] * outline->vector_scale_;
 
     glVertex2dv( g );
+	*/
 
     return 0;
   }
 
   int Outline::conicToCallback ( FT_Vector* control, FT_Vector* to, Outline* outline )
   {
+	/*
     // This is crude: Step off conics with a fixed number of increments
 
     VertexInfo to_vertex( to, outline->colorTess(), outline->textureTess() );
@@ -3432,6 +3488,7 @@ namespace OGLFT {
     glVertex2dv( g );
 
     outline->last_vertex_ = to_vertex;
+	*/
 
     return 0;
   }
@@ -3439,6 +3496,7 @@ namespace OGLFT {
   int Outline::cubicToCallback ( FT_Vector* control1, FT_Vector* control2,
 				 FT_Vector* to, Outline* outline )
   {
+	/*
     // This is crude: Step off cubics with a fixed number of increments
 
     VertexInfo to_vertex( to, outline->colorTess(), outline->textureTess() );
@@ -3505,6 +3563,7 @@ namespace OGLFT {
     glVertex2dv( g );
 
     outline->last_vertex_ = to_vertex;
+	*/
 
     return 0;
   }
@@ -3550,6 +3609,7 @@ namespace OGLFT {
 
   void Filled::renderGlyph ( FT_Face face, FT_UInt glyph_index )
   {
+	/*
     FT_Error error = FT_Load_Glyph( face, glyph_index, FT_LOAD_FORCE_AUTOHINT );
 
     if ( error != 0 )
@@ -3641,6 +3701,7 @@ namespace OGLFT {
       delete *vili;
 
     vertices_.clear();
+	*/
   }
 
   int Filled::moveToCallback ( FT_Vector* to, Filled* filled )
@@ -3807,6 +3868,7 @@ namespace OGLFT {
 
   void Filled::vertexCallback ( VertexInfo* vertex )
   {
+	/*
     if ( vertex->color_tess_ != 0 )
       glColor4fv( vertex->color_tess_->color( vertex->v_ ) );
 
@@ -3814,16 +3876,17 @@ namespace OGLFT {
       glTexCoord2fv( vertex->texture_tess_->texCoord( vertex->v_ ) );
 
     glVertex3dv( vertex->v_ );
+	*/
   }
 
   void Filled::beginCallback ( GLenum which )
   {
-    glBegin( which );
+    //glBegin( which );
   }
 
   void Filled::endCallback ( void )
   {
-    glEnd();
+    //glEnd();
   }
 
   void Filled::combineCallback ( GLdouble coords[3], void* vertex_data[4],
@@ -4320,7 +4383,7 @@ namespace OGLFT {
     if ( error != 0 )
       return;
 
-    rotation_offset_y_ = rotation_reference_face_->glyph->bitmap.rows / 2.;
+    rotation_offset_y_ = rotation_reference_face_->glyph->bitmap.rows / 2.0f;
   }
 
   BBox Texture::measure ( unsigned char c )
@@ -4482,6 +4545,7 @@ namespace OGLFT {
 
   GLuint Texture::compileGlyph ( FT_Face face, FT_UInt glyph_index )
   {
+	/*
     bindTexture( face, glyph_index );
 
     GLuint dlist = glGenLists( 1 );
@@ -4492,10 +4556,13 @@ namespace OGLFT {
     glEndList( );
 
     return dlist;
+	*/
+	return 0;
   }
 
   void Texture::renderGlyph ( FT_Face face, FT_UInt glyph_index )
   {
+	/*
     FT_Error error = FT_Load_Glyph( face, glyph_index, FT_LOAD_FORCE_AUTOHINT );
 
     if ( error != 0 )
@@ -4566,10 +4633,12 @@ namespace OGLFT {
     glTranslatef( texture_info.advance_.x / 64.,
 		  texture_info.advance_.y / 64.,
 		  0. );
+	*/
   }
 
   void Texture::clearCaches ( void )
   {
+	/*
     GDLI fgi = glyph_dlists_.begin();
 
     for ( ; fgi != glyph_dlists_.end(); ++fgi ) {
@@ -4585,6 +4654,7 @@ namespace OGLFT {
     }
 
     glyph_texobjs_.clear();
+	*/
   }
 
   unsigned int Texture::nearestPowerCeil ( unsigned int a )
@@ -4661,6 +4731,7 @@ namespace OGLFT {
 
   void MonochromeTexture::bindTexture ( FT_Face face, FT_UInt glyph_index )
   {
+	/*
     GTOCI texobj = glyph_texobjs_.find( glyph_index );
 
     if ( texobj != glyph_texobjs_.end() )
@@ -4719,6 +4790,7 @@ namespace OGLFT {
     glyph_texobjs_[ glyph_index ] = texture_info;
 
     delete[] inverted_pixmap;
+	*/
   }
 
   GrayscaleTexture::GrayscaleTexture ( const char* filename, float point_size,
@@ -4764,6 +4836,7 @@ namespace OGLFT {
 
   void GrayscaleTexture::bindTexture ( FT_Face face, FT_UInt glyph_index )
   {
+	/*
     GTOCI texobj = glyph_texobjs_.find( glyph_index );
 
     if ( texobj != glyph_texobjs_.end() )
@@ -4823,6 +4896,7 @@ namespace OGLFT {
     glyph_texobjs_[ glyph_index ] = texture_info;
 
     delete[] inverted_pixmap;
+	*/
   }
 
   TranslucentTexture::TranslucentTexture ( const char* filename, float point_size,
@@ -4869,6 +4943,7 @@ namespace OGLFT {
 
   void TranslucentTexture::bindTexture ( FT_Face face, FT_UInt glyph_index )
   {
+	/*
     GTOCI texobj = glyph_texobjs_.find( glyph_index );
 
     if ( texobj != glyph_texobjs_.end() )
@@ -4929,6 +5004,7 @@ namespace OGLFT {
     glyph_texobjs_[ glyph_index ] = texture_info;
 
     delete[] inverted_pixmap;
+	*/
   }
 
 } // close OGLFT namespace

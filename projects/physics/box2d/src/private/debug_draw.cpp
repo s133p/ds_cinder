@@ -82,7 +82,7 @@ void DebugDraw::drawClient(const glm::mat4& t, const DrawParams& p) {
 	ci::gl::pushModelView();
 	//glLoadIdentity();
 	float scaleFactor = 1.0f / mPhysicsWorld.getCi2BoxScale();
-	glm::mat4 scaledT glm::scale(t, glm::vec3(scaleFactor));
+	glm::mat4 scaledT = glm::scale(t, glm::vec3(scaleFactor));
 	ci::gl::multModelMatrix(scaledT);
 	mB2World.DrawDebugData();
 	ci::gl::popModelView();
