@@ -19,7 +19,6 @@
 
 #include <cinder/app/App.h>
 #include <cinder/app/TouchEvent.h>
-#include <cinder/app/AppBasic.h>
 
 #include "TuioClient.h"
 
@@ -99,7 +98,7 @@ public:
 	// Access to the configuration settings that created a root. Allows you to inspect pick style, debug drawing, perspective, etc
 	const RootList::Root&				getRootBuilder(const size_t index = 0);
 
-	void								prepareSettings( ci::app::AppBasic::Settings& );
+	void								prepareSettings( ci::app::App::Settings& );
 	//called in app setup; loads settings files and what not.
 	virtual void						setup(ds::App&);
 	virtual void						setupTuio(ds::App&) = 0;

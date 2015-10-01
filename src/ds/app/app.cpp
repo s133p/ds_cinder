@@ -331,14 +331,14 @@ void App::enableCommonKeystrokes( bool q /*= true*/, bool esc /*= true*/ ){
 }
 
 void App::quit(){
-	ci::app::AppBasic::quit();
+	ci::app::App::quit();
 }
 
 void App::shutdown(){
 	mEngine.getRootSprite().clearChildren();
 	mEngine.stopServices();
 	ds::ui::clearFontCache();
-	ci::app::AppBasic::shutdown();
+	ci::app::App::shutdown();
 }
 
 void App::showConsole(){

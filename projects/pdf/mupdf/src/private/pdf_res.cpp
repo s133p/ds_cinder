@@ -305,7 +305,7 @@ ci::Surface8u PdfRes::renderPage(const std::string& path) {
 	if (!load.run(draw, path, page_num)) return s;
 
 	s = ci::Surface8u(pixels.getData(), examine.mWidth, examine.mHeight, examine.mWidth * 4, ci::SurfaceChannelOrder(ci::SurfaceChannelOrder::BGRA));
-	if (s) return s.clone(true);
+	if (s.getData()) return s.clone(true);
 	return s;
 }
 

@@ -9,7 +9,6 @@
 
 #include "cinder/Exception.h"
 #include "cinder/Surface.h"
-#include "cinder/app/AppBasic.h"
 #include "cinder/gl/Texture.h"
 
 namespace ds {

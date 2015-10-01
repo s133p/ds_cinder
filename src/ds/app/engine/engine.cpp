@@ -227,7 +227,7 @@ Engine::Engine(	ds::App& app, const ds::cfg::Settings &settings,
 	mFxaaOptions.mFxAAReduceMul = settings.getFloat("FxAA:ReduceMul", 0, 8.0);
 	mFxaaOptions.mFxAAReduceMin = settings.getFloat("FxAA:ReduceMin", 0, 128.0);
 
-	mData.mWorldSize = settings.getSize("world_dimensions", 0, Vec2f(640.0f, 400.0f));
+	mData.mWorldSize = settings.getSize("world_dimensions", 0, glm::vec2(640.0f, 400.0f));
 	// Backwards compatibility with pre src-dst rect days
 	const float				DEFAULT_WINDOW_SCALE = 1.0f;
 	if (settings.getRectSize("local_rect") > 0) {
@@ -664,7 +664,7 @@ void Engine::setup(ds::App& app) {
 	setupRenderer();
 }
 
-void Engine::prepareSettings(ci::app::AppBasic::Settings& settings)
+void Engine::prepareSettings(ci::app::App::Settings& settings)
 {
 	if (mSettings.getBoolSize("null_renderer") > 0 && mSettings.getBool("null_renderer"))
 	{

@@ -233,7 +233,7 @@ void Settings::directReadXmlFromTree(const cinder::XmlTree& xml, const bool clea
 	for (auto it = xml.begin(SIZE_PATH); it != end; ++it) {
 		const float             DEFV = 0.0f;
 		const std::string       name = it->getAttributeValue<std::string>(NAME_SZ);
-		const cinder::Vec2f     value(it->getAttributeValue<float>(X_SZ, DEFV),
+		const glm::vec2			value(it->getAttributeValue<float>(X_SZ, DEFV),
 			it->getAttributeValue<float>(Y_SZ, DEFV));
 		add_item(name, mSize, value);
 	}
@@ -367,7 +367,7 @@ const cinder::ColorA& Settings::getColorA(const std::string& name, const int ind
 	return get_or_throw(name, mColorA, index, COLORA_TYPE, COLOR_NAME);
 }
 
-const cinder::Vec2f& Settings::getSize(const std::string& name, const int index) const
+const glm::vec2& Settings::getSize(const std::string& name, const int index) const
 {
 	return get_or_throw(name, mSize, index, SIZE_TYPE, SIZE_NAME);
 }
@@ -422,7 +422,7 @@ cinder::ColorA Settings::getColorA(const std::string& name, const int index, con
 	return get(name, mColorA, index, defaultValue, COLOR_NAME);
 }
 
-cinder::Vec2f Settings::getSize(const std::string& name, const int index, const glm::vec2& defaultValue) const
+glm::vec2 Settings::getSize(const std::string& name, const int index, const glm::vec2& defaultValue) const
 {
 	return get(name, mSize, index, defaultValue, SIZE_NAME);
 }

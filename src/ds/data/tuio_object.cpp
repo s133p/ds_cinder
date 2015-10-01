@@ -11,7 +11,7 @@ TuioObject::TuioObject()
 {
 }
 
-TuioObject::TuioObject(const int objectId, const cinder::Vec2f& position, const float angle)
+TuioObject::TuioObject(const int objectId, const glm::vec2& position, const float angle)
 		: mObjectId(objectId)
 		, mPosition(position)
 		, mAngle(angle)
@@ -22,7 +22,7 @@ int TuioObject::getObjectId() const {
 	return mObjectId;
 }
 
-const cinder::Vec2f& TuioObject::getPosition() const {
+const glm::vec2& TuioObject::getPosition() const {
 	return mPosition;
 }
 

@@ -14,15 +14,15 @@ namespace ds {
 class TuioObject {
 public:
 	TuioObject();
-	TuioObject(const int objectId, const cinder::Vec2f& position, const float angle = 0.0f);
+	TuioObject(const int objectId, const glm::vec2& position, const float angle = 0.0f);
 
 	int						getObjectId() const;
-	const cinder::Vec2f&	getPosition() const;
+	const glm::vec2&		getPosition() const;
 	const float				getAngle() const;
 
 private:
 	int						mObjectId;
-	cinder::Vec2f			mPosition;
+	glm::vec2				mPosition;
 	float					mAngle;
 };
 

@@ -81,7 +81,7 @@ void						super_slow_image_atts(const std::string& filename, glm::vec2& outSize)
 		const Poco::File file(filename);
 		if (file.exists()) {
 			auto s = ci::Surface8u(ci::loadImage(filename));
-			if (s) {
+			if (s.getData()) {
 				outSize = glm::vec2(static_cast<float>(s.getWidth()), static_cast<float>(s.getHeight()));
 			} else {
 				DS_LOG_WARNING_M("super_slow_image_atts: filename does not exist " << filename, GENERAL_LOG);

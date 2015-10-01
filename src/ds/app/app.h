@@ -2,7 +2,7 @@
 #ifndef DS_APP_APP_H_
 #define DS_APP_APP_H_
 
-#include <cinder/app/AppBasic.h>
+#include <cinder/app/App.h>
 #include "ds/app/app_defs.h"
 #include "ds/app/engine/engine_data.h"
 #include "ds/app/engine/engine_settings.h"
@@ -16,7 +16,7 @@ class Engine;
  * \class ds::App
  * Handle the main app setup.
  */
-class App : public ci::app::AppBasic {
+class App : public ci::app::App {
 public:
 	// This is used for external projects to perform some initialization
 	// on app startup time. It's intended to be called by clients from a
@@ -81,7 +81,7 @@ protected:
 	ds::Engine&					mEngine;
 
 private:
-	typedef ci::app::AppBasic   inherited;
+	typedef ci::app::App		inherited;
 
 	friend class Environment;
 	// Path to the executable (which realistically we never want)
