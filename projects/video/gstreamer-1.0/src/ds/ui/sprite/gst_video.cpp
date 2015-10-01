@@ -217,9 +217,9 @@ void GstVideo::drawLocalClient() {
 		if(pImg != nullptr){		
 			int vidWidth( mMovie.getWidth()), vidHeight(mMovie.getHeight());
 			if(mIsTransparent){
-				mFrameTexture = ci::gl::Texture(pImg, GL_RGBA, vidWidth, vidHeight);
+				mFrameTextureRef = ci::gl::Texture2d::create(pImg, GL_RGBA, vidWidth, vidHeight);
 			} else {
-				mFrameTexture = ci::gl::Texture(pImg, GL_RGB, vidWidth, vidHeight);
+				mFrameTextureRef = ci::gl::Texture2d::create(pImg, GL_RGB, vidWidth, vidHeight);
 			}
 			// 	DS_LOG_INFO("New video frame, texture id: " <<mFrameTexture.getId());
 			DS_REPORT_GL_ERRORS();
@@ -232,13 +232,13 @@ void GstVideo::drawLocalClient() {
 		}
 	}
 
-	if ( mFrameTexture ) {
+	if ( mFrameTextureRef ) {
 		{
 			ci::gl::pushMatrices();
 			mSpriteShader.getShader().unbind();
-			ci::gl::setViewport(mFrameTexture.getBounds());
+			ci::gl::setViewport(mFrameTextureRef->getBounds());
 			ci::CameraOrtho camera;
-			camera.setOrtho(float(mFrameTexture.getBounds().getX1()), float(mFrameTexture.getBounds().getX2()), float(mFrameTexture.getBounds().getY2()), float(mFrameTexture.getBounds().getY1()), -1.0f, 1.0f);
+			camera.setOrtho(float(mFrameTextureRef->getBounds().getX1()), float(mFrameTextureRef->getBounds().getX2()), float(mFrameTextureRef->getBounds().getY2()), float(mFrameTextureRef->getBounds().getY1()), -1.0f, 1.0f);
 			ci::gl::setMatrices(camera);
 			// bind the framebuffer - now everything we draw will go there
 			mFbo.bindFramebuffer();
@@ -255,7 +255,7 @@ void GstVideo::drawLocalClient() {
 			}
 			DS_REPORT_GL_ERRORS();
 
-			ci::gl::draw(mFrameTexture);
+			ci::gl::draw(mFrameTextureRef);
 			DS_REPORT_GL_ERRORS();
 
 			glPopAttrib();
@@ -270,10 +270,10 @@ void GstVideo::drawLocalClient() {
 
 		if (getPerspective()) {
 			Rectf area(0.0f, 0.0f, getWidth(), getHeight());
-			ci::gl::draw( mFbo.getTexture(0), area );
+			ci::gl::draw( mFbo.getTexture2d(), area );
 		} else {
 			Rectf area(0.0f, getHeight(), getWidth(), 0.0f);
-			ci::gl::draw( mFbo.getTexture(0), area );
+			ci::gl::draw( mFbo.getTexture2d(), area );
 		}
 
 		DS_REPORT_GL_ERRORS();
@@ -584,7 +584,7 @@ void GstVideo::unloadVideo(const bool clearFrame) {
 	mMovie.close();
 	mFilename.clear();
 	if (clearFrame) {
-		mFrameTexture.reset();
+		mFrameTextureRef.reset();
 	}
 }
 

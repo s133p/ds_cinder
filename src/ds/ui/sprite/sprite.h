@@ -498,9 +498,9 @@ private:
 	// calls removeParent then addChild to parent.
 	// setParent was previously public, but calling it by itself can cause an infinite loop
 	// Use addChild() from outside sprite.cpp
-	void					setParent(Sprite *parent);
+	void				setParent(Sprite *parent);
 
-	ci::gl::Texture		mRenderTarget;
+	ci::gl::TextureRef	mRenderTarget;
 	BlendMode			mBlendMode;
 
 	//set flag for determining whether to use orthoganol or perspective.

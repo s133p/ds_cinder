@@ -24,10 +24,10 @@ void enableClipping( float x0, float y0, float x1, float y1 )
   //glEnable(GL_SCISSOR_TEST);
   //glScissor(x0, y0, x1, y1);
   glm::vec3 clippingPoints[4];
-  clippingPoints[0].set( x0, y0, 0 );
-  clippingPoints[1].set( x0, y1, 0 );
-  clippingPoints[2].set( x1, y1, 0 );
-  clippingPoints[3].set( x1, y0, 0 );
+  clippingPoints[0] = glm::vec3( x0, y0, 0 );
+  clippingPoints[1] = glm::vec3( x0, y1, 0 );
+  clippingPoints[2] = glm::vec3( x1, y1, 0 );
+  clippingPoints[3] = glm::vec3( x1, y0, 0 );
 
   for (int i = 0; i < 4; ++i) {
     int j = (i+1) % 4;
@@ -42,7 +42,7 @@ void enableClipping( float x0, float y0, float x1, float y1 )
     // facing (clockwise) edge vector to get an inward-facing edge-
     // normal vector for that edge
     
-    glm::vec3 norm = -(edgeA.cross( edgeB )).cross(edgeA).normalized();
+    glm::vec3 norm = glm::normalize(glm::cross(edgeA, (glm::cross(edgeA, edgeB))));
 
     // the four points we pass to glClipPlane are the solutions of the
     // equation Ax + By + Cz + D = 0.  A, B, and C are the normal, and

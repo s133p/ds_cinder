@@ -33,7 +33,7 @@ void RotationTranslator::move(TouchInfo &ti, const glm::vec3 &previous_global_pt
 	}
 
 	glm::vec3				pt(ti.mCurrentGlobalPoint - ti.mStartPoint);
-	pt = ti.mStartPoint + m.transformPoint(pt);
+	pt = ti.mStartPoint + glm::vec3(m * glm::vec4(pt, 1.0f));
 	ti.mCurrentGlobalPoint = pt;
 	ti.mDeltaPoint = ti.mCurrentGlobalPoint - previous_global_pt;
 }
@@ -60,9 +60,9 @@ glm::mat4 RotationTranslator::buildRotationMatrix(ds::ui::Sprite *s) const {
 	}
 	for (auto it=vec.rbegin(), end=vec.rend(); it!=end; ++it) {
 		const glm::vec3				rotation((*it)->getRotation());
-		m.rotate(glm::vec3(1.0f, 0.0f, 0.0f), rotation.x * math::DEGREE2RADIAN);
-		m.rotate(glm::vec3(0.0f, 1.0f, 0.0f), rotation.y * math::DEGREE2RADIAN);
-		m.rotate(glm::vec3(0.0f, 0.0f, 1.0f), rotation.z * math::DEGREE2RADIAN);
+		m = glm::rotate(m, rotation.x * math::DEGREE2RADIAN, glm::vec3(1.0f, 0.0f, 0.0f));
+		m = glm::rotate(m, rotation.y * math::DEGREE2RADIAN, glm::vec3(0.0f, 1.0f, 0.0f));
+		m = glm::rotate(m, rotation.z * math::DEGREE2RADIAN, glm::vec3(0.0f, 0.0f, 1.0f));
 	}
 	return m;
 }

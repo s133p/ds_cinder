@@ -40,7 +40,7 @@ void FboGeneral::setup( bool useDepth /*= false*/, bool useStencil /*= false*/ )
   mAttached = nullptr;
 }
 
-void FboGeneral::attach( ci::gl::Texture &target, bool useDepth /*= false*/, bool useStencil /*= false*/ )
+void FboGeneral::attach( ci::gl::TextureRef target, bool useDepth /*= false*/, bool useStencil /*= false*/ )
 {
   activate();
 
@@ -49,7 +49,7 @@ void FboGeneral::attach( ci::gl::Texture &target, bool useDepth /*= false*/, boo
     mAttached = nullptr;
   }
 
-  mAttached = &target;
+  mAttached = target;
 
   glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, mAttached->getTarget(), mAttached->getId(), 0);
   DS_REPORT_GL_ERRORS();
@@ -111,7 +111,7 @@ void FboGeneral::end()
   popTransformation();
 }
 
-ci::gl::Texture *FboGeneral::getAttached()
+ci::gl::TextureRef FboGeneral::getAttached()
 {
   return mAttached;
 }
@@ -184,7 +184,7 @@ void FboGeneral::reset()
 }
 
 
-FboGeneral::AutoAttach::AutoAttach(FboGeneral &fbo, ci::gl::Texture &target, bool useDepth /*= false*/, bool useStencil /*= false */)
+FboGeneral::AutoAttach::AutoAttach(FboGeneral &fbo, ci::gl::TextureRef target, bool useDepth /*= false*/, bool useStencil /*= false */)
   : mFbo(fbo)
 {
   mFbo.attach(target, useDepth, useStencil);

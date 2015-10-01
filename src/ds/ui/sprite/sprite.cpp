@@ -615,19 +615,12 @@ void Sprite::buildTransform() const
 
 	mTransformation = glm::mat4();
 
-	mTransformation.translate(glm::vec3(mPosition.x, mPosition.y, mPosition.z));
-	mTransformation.rotate(glm::vec3(1.0f, 0.0f, 0.0f), mRotation.x * math::DEGREE2RADIAN);
-	mTransformation.rotate(glm::vec3(0.0f, 1.0f, 0.0f), mRotation.y * math::DEGREE2RADIAN);
-	mTransformation.rotate(glm::vec3(0.0f, 0.0f, 1.0f), mRotation.z * math::DEGREE2RADIAN);
-	mTransformation.scale(glm::vec3(mScale.x, mScale.y, mScale.z));
-	mTransformation.translate(glm::vec3(-mCenter.x*mWidth, -mCenter.y*mHeight, -mCenter.z*mDepth));
-	//mTransformation = glm::mat4();
-	//mTransformation.translate(glm::vec3(-mCenter.x*mWidth, -mCenter.y*mHeight, -mCenter.z*mDepth));
-	//mTransformation.scale(glm::vec3(mScale.x, mScale.y, mScale.z));
-	//mTransformation.rotate(glm::vec3(0.0f, 0.0f, 1.0f), mRotation.z * math::DEGREE2RADIAN);
-	//mTransformation.rotate(glm::vec3(0.0f, 1.0f, 0.0f), mRotation.y * math::DEGREE2RADIAN);
-	//mTransformation.rotate(glm::vec3(1.0f, 0.0f, 0.0f), mRotation.x * math::DEGREE2RADIAN);
-	//mTransformation.translate(glm::vec3(mPosition.x, mPosition.y, 1.0f));
+	mTransformation = glm::translate(mTransformation, glm::vec3(mPosition.x, mPosition.y, mPosition.z));
+	mTransformation = glm::rotate(mTransformation, mRotation.x * math::DEGREE2RADIAN, glm::vec3(1.0f, 0.0f, 0.0f));
+	mTransformation = glm::rotate(mTransformation, mRotation.y * math::DEGREE2RADIAN, glm::vec3(0.0f, 1.0f, 0.0f));
+	mTransformation = glm::rotate(mTransformation, mRotation.z * math::DEGREE2RADIAN, glm::vec3(0.0f, 0.0f, 1.0f));
+	mTransformation = glm::scale(mTransformation, glm::vec3(mScale.x, mScale.y, mScale.z));
+	mTransformation = glm::translate(mTransformation, glm::vec3(-mCenter.x*mWidth, -mCenter.y*mHeight, -mCenter.z*mDepth));
 
 	mInverseTransform = glm::inverse(mTransformation);
 }
@@ -800,7 +793,7 @@ void Sprite::buildGlobalTransform() const
 	  mGlobalTransform = parent->mTransformation * mGlobalTransform;
 	}
 
-	mInverseGlobalTransform = mGlobalTransform.inverted();
+	mInverseGlobalTransform = glm::inverse(mGlobalTransform);
 }
 
 void Sprite::eventReceived(const ds::Event&) {
@@ -1187,10 +1180,10 @@ bool Sprite::checkBounds() const
 
   buildGlobalTransform();
 
-  positions[0] = (mGlobalTransform * glm::vec4(spriteMinX, spriteMinY, 0.0f, 1.0f)).xyz();
-  positions[1] = (mGlobalTransform * glm::vec4(spriteMaxX, spriteMinY, 0.0f, 1.0f)).xyz();
-  positions[2] = (mGlobalTransform * glm::vec4(spriteMinX, spriteMaxY, 0.0f, 1.0f)).xyz();
-  positions[3] = (mGlobalTransform * glm::vec4(spriteMaxX, spriteMaxY, 0.0f, 1.0f)).xyz();
+  positions[0] = glm::vec3(mGlobalTransform * glm::vec4(spriteMinX, spriteMinY, 0.0f, 1.0f));
+  positions[1] = glm::vec3(mGlobalTransform * glm::vec4(spriteMaxX, spriteMinY, 0.0f, 1.0f));
+  positions[2] = glm::vec3(mGlobalTransform * glm::vec4(spriteMinX, spriteMaxY, 0.0f, 1.0f));
+  positions[3] = glm::vec3(mGlobalTransform * glm::vec4(spriteMaxX, spriteMaxY, 0.0f, 1.0f));
 
 
   spriteMinX = spriteMaxX = positions[0].x;

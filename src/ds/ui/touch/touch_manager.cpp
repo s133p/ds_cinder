@@ -247,7 +247,7 @@ void TouchManager::drawTouches() const {
 	applyBlendingMode(NORMAL);
 
 	for ( auto it = mTouchPreviousPoint.begin(), it2 = mTouchPreviousPoint.end(); it != it2; ++it ) {
-		glm::vec2		pos(it->second.xy());
+		glm::vec2		pos(it->second);
 		ci::gl::drawStrokedCircle(pos, 20.0f);
 	}
 }
@@ -302,7 +302,7 @@ void TouchManager::setCapture(Capture *c) {
 }
 
 void TouchManager::overrideTouchTranslation( glm::vec2& inOutPoint){
-	inOutPoint.set((inOutPoint.x / getWindowWidth()) * mTouchDimensions.x + mTouchOffset.x, 
+	inOutPoint = glm::vec2((inOutPoint.x / getWindowWidth()) * mTouchDimensions.x + mTouchOffset.x, 
 		(inOutPoint.y / getWindowHeight()) * mTouchDimensions.y + mTouchOffset.y);
 }
 

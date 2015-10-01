@@ -98,7 +98,7 @@ bool TouchProcess::processTouchInfo( const TouchInfo &touchInfo )
 
 			glm::vec3 fingerStart0 = foundControl0->second.mStartPoint;
 			glm::vec3 fingerCurrent0 = foundControl0->second.mCurrentGlobalPoint;
-			glm::vec3 fingerPositionOffset = (parentTransform * glm::vec4(fingerCurrent0.x, fingerCurrent0.y, 0.0f, 1.0f) - parentTransform * glm::vec4(fingerStart0.x, fingerStart0.y, 0.0f, 1.0f)).xyz();
+			glm::vec3 fingerPositionOffset = glm::vec3(parentTransform * glm::vec4(fingerCurrent0.x, fingerCurrent0.y, 0.0f, 1.0f) - parentTransform * glm::vec4(fingerStart0.x, fingerStart0.y, 0.0f, 1.0f));
 
 			if (mFingers.size() > 1 && found_0 && found_1) {
 				glm::vec3 fingerStart1 = foundControl1->second.mStartPoint;
@@ -231,7 +231,8 @@ void TouchProcess::initializeFirstTouch()
 	positionOffset.y *= mSprite.getHeight();
 	positionOffset.x *= mSprite.getScale().x;
 	positionOffset.y *= mSprite.getScale().y;
-	positionOffset.rotate( glm::vec3(0.0f, 0.0f, 1.0f), mSprite.getRotation().z * math::DEGREE2RADIAN);
+	glm::mat4 rotationMatrix = glm::rotate(mSprite.getRotation().z * math::DEGREE2RADIAN, glm::vec3(0.0f, 0.0f, 1.0f));
+	positionOffset = glm::vec3(rotationMatrix * glm::vec4(positionOffset, 1.0f));
 	if (mSprite.mMultiTouchConstraints != ds::ui::MULTITOUCH_INFO_ONLY) {
 		mSprite.setCenter(mMultiTouchAnchor);
 		mSprite.move(positionOffset);
@@ -302,8 +303,9 @@ void TouchProcess::resetTouchAnchor()
 	positionOffset.y *= mSprite.getHeight();
 	positionOffset.x *= mSprite.getScale().x;
 	positionOffset.y *= mSprite.getScale().y;
-	positionOffset.rotate( glm::vec3(0.0f, 0.0f, 1.0f), mSprite.getRotation().z * math::DEGREE2RADIAN);
-	if (mSprite.mMultiTouchConstraints != ds::ui::MULTITOUCH_INFO_ONLY) {
+	glm::mat4 rotationMatrix = glm::rotate(mSprite.getRotation().z * math::DEGREE2RADIAN, glm::vec3(0.0f, 0.0f, 1.0f));
+	positionOffset = glm::vec3(rotationMatrix * glm::vec4(positionOffset, 1.0f));
+	if(mSprite.mMultiTouchConstraints != ds::ui::MULTITOUCH_INFO_ONLY) {
 		mSprite.setCenter(mStartAnchor);
 		mSprite.move(positionOffset);
 	}

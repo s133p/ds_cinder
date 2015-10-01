@@ -41,7 +41,7 @@ class RenderTextFinished {
 public:
 	RenderTextFinished();
 
-	ci::gl::Texture	mTexture;
+	ci::gl::TextureRef	mTextureRef;
 	int mCode;
 };
 

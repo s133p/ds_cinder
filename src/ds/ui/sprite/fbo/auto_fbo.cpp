@@ -15,7 +15,7 @@ AutoFbo::AutoFbo(ds::ui::SpriteEngine& engine)
 	mFbo = std::move(mEngine.getFbo());
 }
 
-AutoFbo::AutoFbo(ds::ui::SpriteEngine& engine, ci::gl::Texture& tex)
+AutoFbo::AutoFbo(ds::ui::SpriteEngine& engine, ci::gl::TextureRef tex)
 	: mEngine(engine)
 	, mHasTexture(true)
 {

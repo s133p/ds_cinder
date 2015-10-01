@@ -120,7 +120,7 @@ private:
 	_2RealGStreamerWrapper::GStreamerWrapper*	mMoviePtr;
 	_2RealGStreamerWrapper::GStreamerWrapper&	mMovie;
 
-	ci::gl::Texture     mFrameTexture;
+	ci::gl::TextureRef  mFrameTextureRef;
 	ci::gl::Fbo         mFbo;
 
 	std::string			mFilename;

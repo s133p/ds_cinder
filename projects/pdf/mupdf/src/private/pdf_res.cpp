@@ -448,7 +448,7 @@ void PdfRes::update() {
 		if (mPixelsChanged) {
 			mPixelsChanged = false;
 			if (mPixels.empty()) {
-				mTextureRef = nullptr;
+				mTextureRef.reset();
 			} else {
 				if (!mTextureRef || mTextureRef->getWidth() != mPixels.getWidth() || mTextureRef->getHeight() != mPixels.getHeight()) {
 					mTextureRef = ci::gl::Texture2d::create(mPixels.getWidth(), mPixels.getHeight());

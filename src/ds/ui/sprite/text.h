@@ -129,13 +129,13 @@ private:
 	// When true, display the whole sprite area.
 	const bool					mDebugShowFrame;
 
-	ci::gl::Texture				mTexture;
+	ci::gl::TextureRef			mTextureRef;
 
 #ifdef TEXT_RENDER_ASYNC
 	std::shared_ptr<RenderTextShared>
 		mShared;
 	RenderTextClient			mRenderClient;
-	ci::gl::Texture				mTestTexture;
+	ci::gl::TextureRef			mTestTextureRef;
 #endif
 
 	// Initialization

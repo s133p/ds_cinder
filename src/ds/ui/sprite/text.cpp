@@ -253,13 +253,14 @@ if (mTextString == L"2012") {
 	}
 #endif
 
-	if (mTexture) {
-		mTexture.bind();
-		if (getPerspective())
-			ci::gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, static_cast<float>(mTexture.getWidth()), static_cast<float>(mTexture.getHeight())));
-		else
-			ci::gl::drawSolidRect(ci::Rectf(0.0f, static_cast<float>(mTexture.getHeight()), static_cast<float>(mTexture.getWidth()), 0.0f));
-		mTexture.unbind();
+	if (mTextureRef) {
+		mTextureRef->bind();
+		if (getPerspective()) {
+			ci::gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, static_cast<float>(mTextureRef->getWidth()), static_cast<float>(mTextureRef->getHeight())));
+		} else {
+			ci::gl::drawSolidRect(ci::Rectf(0.0f, static_cast<float>(mTextureRef->getHeight()), static_cast<float>(mTextureRef->getWidth()), 0.0f));
+		}
+		mTextureRef->unbind();
 	}
 
 //std::cout << "Size: " << lines.size() << std::endl;
@@ -529,7 +530,7 @@ void Text::calculateFrame(const int flags)
 }
 
 void Text::drawIntoFbo() {
-	mTexture.reset();
+	mTextureRef.reset();
 	if (!mFont) return;
 
 	auto& lines = mLayout.getLines();
@@ -562,12 +563,12 @@ std::cout << "START=" << ds::utf8_from_wstr(mTextString) << std::endl;
 			return;
 		}
 
-		if (!mTexture || mTexture.getWidth() < w || mTexture.getHeight() < h) {
+		if (!mTextureRef || mTextureRef->getWidth() < w || mTextureRef->getHeight() < h) {
 			ci::gl::Texture::Format format;
 			format.setTarget(GL_TEXTURE_2D);
 			format.setMagFilter(GL_LINEAR);
 			format.setMinFilter(GL_LINEAR);
-			mTexture = ci::gl::Texture(w, h, format);
+			mTextureRef = ci::gl::Texture::create(w, h, format);
 		}
 
 		ci::gl::enableAlphaBlending();
@@ -575,7 +576,7 @@ std::cout << "START=" << ds::utf8_from_wstr(mTextString) << std::endl;
 		{
 			ci::gl::SaveFramebufferBinding bindingSaver;
 			std::unique_ptr<ds::ui::FboGeneral> fbo = std::move(mEngine.getFbo());
-			fbo->attach(mTexture, true);
+			fbo->attach(mTextureRef, true);
 			fbo->begin();
 
 //			glLoadIdentity();

@@ -44,9 +44,9 @@ public:
 		return !d.empty();
 	}
 
-	const ci::gl::Texture*		getImage() {
+	const ci::gl::TextureRef		getImage() {
 		if (mStatus == STATUS_EMPTY) generate();
-		if (mStatus == STATUS_OK) return &mTexture;
+		if (mStatus == STATUS_OK) return mTextureRef;
 		return nullptr;
 	}
 
@@ -101,8 +101,8 @@ private:
 		if (!render.on(mInput, s, *(a.get()))) return;
 
 		writeFile(s);
-		mTexture = ci::gl::Texture(s);
-		if (mTexture && mTexture.getWidth() == mWidth && mTexture.getHeight() == mHeight) {
+		mTextureRef = ci::gl::Texture::create(s);
+		if (mTextureRef && mTextureRef->getWidth() == mWidth && mTextureRef->getHeight() == mHeight) {
 			mStatus = STATUS_OK;
 		}
 	}
@@ -124,7 +124,7 @@ private:
 	std::string				mFilename;
 	ds::arc::Input			mInput;
 	std::string				mWriteFile;
-	ci::gl::Texture			mTexture;
+	ci::gl::TextureRef		mTextureRef;
 };
 
 }

@@ -87,7 +87,7 @@ RenderTextWorker::RenderTextWorker(	const void* clientId,
 void RenderTextWorker::clear()
 {
 	mShared.reset();
-	mFinished.mTexture = ci::gl::Texture();
+	mFinished.mTextureRef.reset();
 }
 
 /**
@@ -177,17 +177,17 @@ void RenderTextService::_run()
 		{
 			ci::gl::Texture::Format format;
 			format.setTarget(GL_TEXTURE_2D);
-			ci::gl::Texture		tex;
+			ci::gl::TextureRef		texRef;
 			int					size = 30;
 			if (worker->mCode == 900) size = 50;
 			if (worker->mCode == 400) size = 20;
-			tex = ci::gl::Texture(size, size, format);
-			worker->mFinished.mTexture = tex;
+			texRef = ci::gl::Texture::create(size, size, format);
+			worker->mFinished.mTextureRef = texRef;
 			worker->mFinished.mCode = worker->mCode;
 
 			{
 				fbo.setup(true);
-				FboGeneral::AutoAttach	attach(fbo, tex);
+				FboGeneral::AutoAttach	attach(fbo, texRef);
 				{
 					FboGeneral::AutoRun	run(fbo);
 					ci::gl::clear(ci::ColorA(1.0f, 0.0f, 1.0f, 1.0f));
@@ -222,7 +222,7 @@ void RenderTextService::_run()
 
 		{
 //			if (worker->mCode > 0) {
-				ci::Surface8u	s(worker->mFinished.mTexture);
+				ci::Surface8u	s(worker->mFinished.mTextureRef);
 //				std::stringstream	buf;
 //				buf << "C:\\Users\\erich\\Documents\\downstream\\wtf_" << worker->mCode << ".png";
 //				ci::writeImage(buf.str(), s);

@@ -34,7 +34,7 @@ public:
 	// Answer meta data about this image.
 	bool					getMetaData(ImageMetaData&) const;
 	// Answer the generator image. If the texture is not null, then it will be valid.
-	const ci::gl::Texture*	getImage();
+	const ci::gl::TextureRef	getImage();
 
 	void					writeTo(DataBuffer&) const;
 	bool					readFrom(DataBuffer&);

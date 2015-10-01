@@ -70,7 +70,7 @@ void EngineRendererContinuousFxaa::drawClient()
 		mFxaaShader.unbind();
 	}
 	else {
-		ci::gl::draw(mFbo.getTexture(0), mRenderRect);
+		ci::gl::draw(mFbo.getTexture2d()), mRenderRect);
 	}
 
 	glAlphaFunc(GL_ALWAYS, 0.001f);

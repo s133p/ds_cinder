@@ -133,8 +133,8 @@ private:
 	std::unique_ptr<ds::web::WebDialogListener>		mWebDialogListener;
 	std::unique_ptr<ds::web::JsMethodHandler>		mJsMethodHandler;
 
-	ci::gl::Texture			mWebTexture;
-	ci::gl::Texture			mLoadingTexture;
+	ci::gl::TextureRef		mWebTexture;
+	ci::gl::TextureRef		mLoadingTexture;
 	glm::vec2				mLoadingOffset;
 	float					mLoadingOpacity;
 

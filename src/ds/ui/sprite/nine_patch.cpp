@@ -80,7 +80,7 @@ void NinePatch::updateServer(const UpdateParams& up) {
 void NinePatch::drawLocalClient() {
 	if (!inBounds()) return;
 
-	const ci::gl::Texture*		tex = mImageSource.getImage();
+	const ci::gl::TextureRef		tex = mImageSource.getImage();
 	if (!tex) return;
 
 	// Probably should have an initialization stage
@@ -180,7 +180,7 @@ glm::vec2 NinePatch::Cell::size() const
 	return ans;
 }
 
-void NinePatch::Cell::draw(const ci::gl::Texture& tex)
+void NinePatch::Cell::draw(const ci::gl::TextureRef tex)
 {
 	if (!mIsValid) return;
 
@@ -215,20 +215,20 @@ bool NinePatch::Patch::empty() const
 	return mEmpty;
 }
 
-void NinePatch::Patch::buildSources(ci::gl::Texture tex)
+void NinePatch::Patch::buildSources(ci::gl::TextureRef texRef)
 {
 	mEmpty = false;
 	for (int k=0; k<CELL_SIZE; ++k) mCell[k].mIsValid = false;
-	if (!tex) return;
+	if (!texRef) return;
 
 	// Really just need the left and top rows of pixels, so this could
 	// be more efficient.
-	ci::Surface8u		s(tex);
-	int					stretchX_start = tex.getWidth()/2,
-						stretchY_start = (tex.getHeight()/2);
+	ci::Surface8u		s(texRef);
+	int					stretchX_start = texRef->getWidth()/2,
+						stretchY_start = (texRef->getHeight()/2);
 	int					stretchX_end = stretchX_start,
 						stretchY_end = (stretchY_start);
-	int					l = 0, t = 0, r = tex.getWidth(), b = tex.getHeight();
+	int					l = 0, t = 0, r = texRef->getWidth(), b = texRef->getHeight();
 
 // jus playin
 //stretchX_start = (int)(tex.getWidth()*0.35f);
@@ -242,7 +242,7 @@ void NinePatch::Patch::buildSources(ci::gl::Texture tex)
 		mCell[CELL_LT].mSrc = ci::Area(l, t, stretchX_start-1, stretchY_start-1);
 	}
 	// RIGHT TOP CELL
-	if (stretchX_end < tex.getWidth()) {
+	if (stretchX_end < texRef->getWidth()) {
 		mCell[CELL_RT].mIsValid = true;
 		mCell[CELL_RT].mSrc = ci::Area(stretchX_end+1, t, r, stretchY_start-1);
 	}
@@ -252,7 +252,7 @@ void NinePatch::Patch::buildSources(ci::gl::Texture tex)
 		mCell[CELL_LB].mSrc = ci::Area(l, stretchY_end+1, stretchX_start-1, b);
 	}
 	// RIGHT BOTTOM CELL
-	if (stretchX_end < tex.getWidth()) {
+	if (stretchX_end < texRef->getWidth()) {
 		mCell[CELL_RB].mIsValid = true;
 		mCell[CELL_RB].mSrc = ci::Area(stretchX_end+1, stretchY_end+1, r, b);
 	}
@@ -344,7 +344,7 @@ void NinePatch::Patch::buildDestinations(const float width, const float height) 
 																	mCell[CELL_MB].mDst.x2, mCell[CELL_LM].mDst.y2);
 }
 
-void NinePatch::Patch::draw(const ci::gl::Texture& tex)
+void NinePatch::Patch::draw(const ci::gl::TextureRef tex)
 {
 	if (mEmpty) return;
 	for (int k=0; k<CELL_SIZE; ++k) mCell[k].draw(tex);

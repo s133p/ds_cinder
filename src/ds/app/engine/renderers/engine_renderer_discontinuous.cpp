@@ -33,7 +33,7 @@ void EngineRendererDiscontinuous::drawClient()
 	clearScreen();
 	for (const auto& world_slice : mEngine.getEngineData().mWorldSlices)
 	{
-		ci::gl::draw(mFbo.getTexture(), world_slice.first, world_slice.second);
+		ci::gl::draw(mFbo.getTexture2d(), world_slice.first, world_slice.second);
 	}
 }
 

@@ -14,13 +14,13 @@ class FboGeneral
 
     void             setup(bool useDepth = false, bool useStencil = false);
 
-    void             attach(ci::gl::Texture &target, bool useDepth = false, bool useStencil = false);
+    void             attach(ci::gl::TextureRef target, bool useDepth = false, bool useStencil = false);
     void             detach();
 
     void             begin();
     void             end();
 
-    ci::gl::Texture *getAttached();
+    ci::gl::TextureRef getAttached();
 
     void             offsetViewport(int offsetX, int offsetY);
 
@@ -46,13 +46,13 @@ class FboGeneral
     GLuint           mStencilId;
     GLint            mOldViewport[4];
     GLint            mPreviousFbo;
-    ci::gl::Texture *mAttached;
+    ci::gl::TextureRef mAttached;
   public:
     // Avoid making clients remember to call required functions
     class AutoAttach
     {
       public:
-        AutoAttach( FboGeneral &, ci::gl::Texture &target, bool useDepth = false, bool useStencil = false );
+        AutoAttach( FboGeneral &, ci::gl::TextureRef target, bool useDepth = false, bool useStencil = false );
         ~AutoAttach();
       private:
         FboGeneral &mFbo;

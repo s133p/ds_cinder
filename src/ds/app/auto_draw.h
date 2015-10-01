@@ -3,7 +3,6 @@
 #define DS_APP_AUTODRAW_H_
 
 #include <vector>
-#include <cinder/MatrixAffine2.h>
 #include <cinder/Matrix22.h>
 #include <cinder/Matrix33.h>
 #include <cinder/Matrix44.h>

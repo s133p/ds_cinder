@@ -109,4 +109,4 @@ void FullStarterApp::moveCamera(const glm::vec3& deltaMove){
 } // namespace fullstarter
 
 // This line tells Cinder to actually create the application
-CINDER_APP(fullstarter::FullStarterApp, ci::app::RendererGl(ci::app::RendererGl::AA_MSAA_4), ds::App::prepareSettings)
+CINDER_APP(fullstarter::FullStarterApp, ci::app::RendererGl(ci::app::RendererGl::AA_MSAA_4), &ds::App::prepareSettings)

@@ -192,7 +192,7 @@ Web::Web( ds::ui::SpriteEngine &engine, float width, float height )
 
 	// load and create a "loading" icon
 	try {
-		mLoadingTexture = ci::gl::Texture(ci::loadImage(ds::Environment::expand("%APP%/data/images/loading.png")));
+		mLoadingTexture = ci::gl::Texture::create(ci::loadImage(ds::Environment::expand("%APP%/data/images/loading.png")));
 	} catch( const std::exception &e ) {
 		DS_LOG_ERROR("Exception loading loading image for websprite: " << e.what() << " | File: " << __FILE__ << " Line: " << __LINE__
 				<< " missing file=" << ds::Environment::expand("%APP%/data/images/loading.png"));
@@ -228,7 +228,7 @@ void Web::drawLocalClient() {
 		//ci::gl::color(ci::Color::white());
 
 		if(getPerspective()){
-			ci::gl::draw(mWebTexture, ci::Rectf(0.0f, static_cast<float>(mWebTexture.getHeight()), static_cast<float>(mWebTexture.getWidth()), 0.0f));
+			ci::gl::draw(mWebTexture, ci::Rectf(0.0f, static_cast<float>(mWebTexture->getHeight()), static_cast<float>(mWebTexture->getWidth()), 0.0f));
 		} else {
 			ci::gl::draw(mWebTexture);
 		}
@@ -242,7 +242,7 @@ void Web::drawLocalClient() {
 		ci::gl::translate(mLoadingOffset);
 		ci::gl::scale(0.5f, 0.5f );
 		ci::gl::rotate(mLoadingAngle);
-		ci::gl::translate(-0.5f * glm::vec2(mLoadingTexture.getSize()));
+		ci::gl::translate(-0.5f * glm::vec2(mLoadingTexture->getSize()));
 
 		ci::gl::color(1.0f, 1.0f, 1.0f, mLoadingOpacity);
 		//ci::gl::enableAlphaBlending();
@@ -257,7 +257,7 @@ void Web::handleTouch(const ds::ui::TouchInfo& touchInfo) {
 	if (touchInfo.mFingerIndex != 0)
 		return;
 
-	glm::vec2 pos = globalToLocal(touchInfo.mCurrentGlobalPoint).xy();
+	glm::vec2 pos = glm::vec2(globalToLocal(touchInfo.mCurrentGlobalPoint));
 
 	if (ds::ui::TouchInfo::Added == touchInfo.mPhase) {
 		ci::app::MouseEvent event(mEngine.getWindow(), ci::app::MouseEvent::LEFT_DOWN, static_cast<int>(pos.x), static_cast<int>(pos.y), ci::app::MouseEvent::LEFT_DOWN, 0, 1);
@@ -604,7 +604,7 @@ void Web::update(const ds::UpdateParams &p) {
 			Awesomium::BitmapSurface* surface = (Awesomium::BitmapSurface*)mWebViewPtr->surface();
 			if(surface && surface->buffer()){
 				// create the gl::Texture by copying the data directly
-				mWebTexture = ci::gl::Texture(surface->buffer(), GL_BGRA, surface->width(), surface->height(), fmt);
+				mWebTexture = ci::gl::Texture::create(surface->buffer(), GL_BGRA, surface->width(), surface->height(), fmt);
 				// set isDirty to false, because we are manually copying the data
 				surface->set_is_dirty(false);
 			}

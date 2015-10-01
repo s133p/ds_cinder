@@ -83,18 +83,18 @@ void ImageToken::release() {
 	init();
 }
 
-ci::gl::Texture ImageToken::getImage(float& fade) {
-	if (!mAcquired) return ci::gl::Texture();
+ci::gl::TextureRef ImageToken::getImage(float& fade) {
+	if (!mAcquired) return nullptr;
 
-	if (!mTexture) {
-		return (mTexture = mSrv.getImage(mKey, fade));
+	if (!mTextureRef) {
+		return (mTextureRef = mSrv.getImage(mKey, fade));
 	}
 
 	fade = 1;
-	return mTexture;
+	return mTextureRef;
 }
 
-const ci::gl::Texture ImageToken::peekImage(const std::string& filename) const {
+const ci::gl::TextureRef ImageToken::peekImage(const std::string& filename) const {
 	return mSrv.peekImage(mKey);
 }
 
@@ -102,7 +102,7 @@ void ImageToken::init() {
 	mKey.clear();
 	mAcquired = false;
 	mError = false;
-	mTexture.reset();
+	mTextureRef.reset();
 }
 
 /* DS::LOAD-IMAGE-SERVICE
@@ -126,7 +126,7 @@ bool LoadImageService::acquire(const ImageKey& key, const int flags) {
 	// current image, then we need to load one in.  But if the refs are > 0, then there's
 	// either an image or one's being loaded.  And if there's an image but the refs are < 1,
 	// then it's being cached.
-	if ((!h.mTexture) && h.mRefs < 1) {
+	if ((!h.mTextureRef) && h.mRefs < 1) {
 //    DS_LOG_INFO_M("ImageService: acquire resource '" << filename << "' flags=" << flags << " refs=" << h.mRefs, LOAD_IMAGE_LOG_M);
 		// There's no image, so push on an operation to start one
 		{
@@ -163,24 +163,24 @@ void LoadImageService::release(const ImageKey& key) {
 	}
 }
 
-ci::gl::Texture LoadImageService::getImage(const ImageKey& key, float& fade) {
+ci::gl::TextureRef LoadImageService::getImage(const ImageKey& key, float& fade) {
 	// Anytime someone asks for an image, flush out the buffer.
 	update();
 
-	if (mImageResource.empty()) return ci::gl::Texture();
+	if (mImageResource.empty()) return nullptr;
 	holder& h = mImageResource[key];
 	fade = 1;
-	return h.mTexture;
+	return h.mTextureRef;
 }
 
-const ci::gl::Texture LoadImageService::peekImage(const ImageKey& key) const {
-	if (mImageResource.empty()) return ci::gl::Texture();
+const ci::gl::TextureRef LoadImageService::peekImage(const ImageKey& key) const {
+	if (mImageResource.empty()) return nullptr;
 	auto it = mImageResource.find(key);
 	if (it != mImageResource.end()) {
 		const holder&		h = it->second;
-		return h.mTexture;
+		return h.mTextureRef;
 	}
-	return ci::gl::Texture();
+	return nullptr;
 }
 
 bool LoadImageService::peekToken(const ImageKey& key, int* flags) const {
@@ -199,7 +199,7 @@ void LoadImageService::update() {
 	for (int k=0; k<mOutput.size(); k++) {
 		op&							out = mOutput[k];
 		holder&						h = mImageResource[out.mKey];
-		if(h.mTexture) {
+		if(h.mTextureRef) {
 			DS_LOG_WARNING_M("Duplicate images for id=" << out.mKey.mFilename << " refs=" << h.mRefs, LOAD_IMAGE_LOG_M);
 		} else {
 			ci::gl::Texture::Format	fmt;
@@ -207,7 +207,7 @@ void LoadImageService::update() {
 				fmt.enableMipmapping(true);
 				fmt.setMinFilter(GL_LINEAR_MIPMAP_LINEAR);
 			}
-			h.mTexture = ci::gl::Texture(out.mSurface, fmt);
+			h.mTextureRef = ci::gl::Texture::create(out.mSurface, fmt);
 			if (glGetError() == GL_OUT_OF_MEMORY) {
 				DS_LOG_ERROR_M("LoadImageService::update() called on filename: " << out.mKey.mFilename << " received an out of memory error. Image may be too big.", LOAD_IMAGE_LOG_M);
 			}
@@ -246,7 +246,7 @@ void LoadImageService::_load()
 			if (file.exists()) {
 				top.mSurface = ci::Surface8u(ci::loadImage(fn), ci::SurfaceConstraintsDefault(), alpha);
 				DS_REPORT_GL_ERRORS();
-				if (top.mSurface) {
+				if (top.mSurface.getData()) {
 					top.mIpFunction.on(top.mKey.mIpParams, top.mSurface);
 					// This is to immediately place operations on the output...
 					Poco::Mutex::ScopedLock		l(mMutex);
@@ -292,7 +292,7 @@ LoadImageService::op::op(const ImageKey& key, const int flags, const ds::ui::ip:
 
 void LoadImageService::op::clear() {
 	mKey.clear();
-	mSurface.reset();
+	mSurface = nullptr;
 	mFlags = 0;
 	mIpFunction.clear();
 }

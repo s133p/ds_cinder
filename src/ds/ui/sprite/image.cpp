@@ -107,7 +107,7 @@ void Image::updateServer(const UpdateParams& up) {
 void Image::drawLocalClient() {
 	if (!inBounds()) return;
 
-	const ci::gl::Texture*		tex = mImageSource.getImage();
+	const ci::gl::TextureRef		tex = mImageSource.getImage();
 	if (!tex) return;
 
 	// Do texture-based initialization.
