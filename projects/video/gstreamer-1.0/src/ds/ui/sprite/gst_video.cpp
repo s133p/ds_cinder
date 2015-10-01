@@ -235,7 +235,6 @@ void GstVideo::drawLocalClient() {
 	if ( mFrameTextureRef ) {
 		{
 			ci::gl::pushMatrices();
-			mSpriteShader.getShader().unbind();
 			ci::gl::setViewport(mFrameTextureRef->getBounds());
 			ci::CameraOrtho camera;
 			camera.setOrtho(float(mFrameTextureRef->getBounds().getX1()), float(mFrameTextureRef->getBounds().getX2()), float(mFrameTextureRef->getBounds().getY2()), float(mFrameTextureRef->getBounds().getY1()), -1.0f, 1.0f);
@@ -243,11 +242,12 @@ void GstVideo::drawLocalClient() {
 			// bind the framebuffer - now everything we draw will go there
 			mFbo.bindFramebuffer();
 
-			glPushAttrib( GL_TRANSFORM_BIT | GL_ENABLE_BIT );
+			//glPushAttrib( GL_TRANSFORM_BIT | GL_ENABLE_BIT );
 			for (int i = 0; i < 4; ++i) {
 				glDisable( GL_CLIP_PLANE0 + i );
 			}
 
+			ci::gl::bindStockShader(ci::gl::ShaderDef().color());
 			if(mIsTransparent){
 				ci::gl::clear(ci::ColorA(0.0f, 0.0f, 0.0f, 0.0f));
 			} else {
@@ -258,7 +258,7 @@ void GstVideo::drawLocalClient() {
 			ci::gl::draw(mFrameTextureRef);
 			DS_REPORT_GL_ERRORS();
 
-			glPopAttrib();
+			//glPopAttrib();
 
 			mFbo.unbindFramebuffer();
 			mSpriteShader.getShader().bind();

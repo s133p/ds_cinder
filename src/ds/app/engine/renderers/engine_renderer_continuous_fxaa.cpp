@@ -67,7 +67,7 @@ void EngineRendererContinuousFxaa::drawClient()
 		ci::gl::drawSolidRect(mRenderRect);
 
 		mFbo.unbindTexture();
-		mFxaaShader.unbind();
+		ci::gl::bindStockShader(ci::gl::ShaderDef().color());
 	}
 	else {
 		ci::gl::draw(mFbo.getTexture2d()), mRenderRect);

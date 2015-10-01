@@ -2711,7 +2711,7 @@ namespace OGLFT {
     // later when the list is actually called. So, the client should be alerted
     // to this fact: unpack alignment must be 1
 
-    glPushAttrib( GL_PIXEL_MODE_BIT );
+    //glPushAttrib( GL_PIXEL_MODE_BIT );
     glPixelTransferf( GL_RED_SCALE, foreground_color_[R] - background_color_[R] );
     glPixelTransferf( GL_GREEN_SCALE, foreground_color_[G] - background_color_[G] );
     glPixelTransferf( GL_BLUE_SCALE, foreground_color_[B] - background_color_[B] );
@@ -2741,7 +2741,7 @@ namespace OGLFT {
 
     FT_Done_Glyph( glyph );
 
-    glPopAttrib();
+    //glPopAttrib();
 
     delete[] inverted_pixmap;
   }
@@ -2849,7 +2849,7 @@ namespace OGLFT {
 
     GLubyte* inverted_pixmap = invertPixmapWithAlpha( bitmap_glyph->bitmap );
 
-    glPushAttrib( GL_PIXEL_MODE_BIT );
+    //glPushAttrib( GL_PIXEL_MODE_BIT );
     glPixelTransferf( GL_RED_SCALE, foreground_color_[R] - background_color_[R] );
     glPixelTransferf( GL_GREEN_SCALE, foreground_color_[G] -background_color_[G] );
     glPixelTransferf( GL_BLUE_SCALE, foreground_color_[B] - background_color_[B] );
@@ -2882,7 +2882,7 @@ namespace OGLFT {
 
     FT_Done_Glyph( glyph );
 
-    glPopAttrib();
+    //glPopAttrib();
 
     delete[] inverted_pixmap;
   }
@@ -4796,7 +4796,7 @@ namespace OGLFT {
     GLubyte* inverted_pixmap =
       invertPixmap( face->glyph->bitmap, &width, &height );
 
-    glPushAttrib( GL_PIXEL_MODE_BIT );
+    //glPushAttrib( GL_PIXEL_MODE_BIT );
     glPixelTransferf( GL_RED_SCALE, foreground_color_[R] - background_color_[R] );
     glPixelTransferf( GL_GREEN_SCALE, foreground_color_[G]-background_color_[G] );
     glPixelTransferf( GL_BLUE_SCALE, foreground_color_[B]-background_color_[B] );
@@ -4809,7 +4809,7 @@ namespace OGLFT {
     glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height,
 		  0, GL_LUMINANCE, GL_UNSIGNED_BYTE, inverted_pixmap );
 
-    glPopAttrib();
+    //glPopAttrib();
     // Save a good bit of the data about this glyph
     texture_info.left_bearing_ = face->glyph->bitmap_left;
     texture_info.bottom_bearing_ = -( face->glyph->bitmap.rows
@@ -4901,7 +4901,7 @@ namespace OGLFT {
     GLubyte* inverted_pixmap =
       invertPixmap( face->glyph->bitmap, &width, &height );
 
-    glPushAttrib( GL_PIXEL_MODE_BIT );
+    //glPushAttrib( GL_PIXEL_MODE_BIT );
     glPixelTransferf( GL_RED_SCALE, foreground_color_[R] - background_color_[R] );
     glPixelTransferf( GL_GREEN_SCALE, foreground_color_[G]-background_color_[G] );
     glPixelTransferf( GL_BLUE_SCALE, foreground_color_[B]-background_color_[B] );
@@ -4914,7 +4914,7 @@ namespace OGLFT {
     glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height,
 		  0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, inverted_pixmap );
 
-    glPopAttrib();
+    //glPopAttrib();
 
     // Save a good bit of the data about this glyph
     texture_info.left_bearing_ = face->glyph->bitmap_left;

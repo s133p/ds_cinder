@@ -20,7 +20,7 @@ namespace ui {
 
 void enableClipping( float x0, float y0, float x1, float y1 )
 {
-  glPushAttrib( GL_TRANSFORM_BIT | GL_ENABLE_BIT );
+  //glPushAttrib( GL_TRANSFORM_BIT | GL_ENABLE_BIT );
   //glEnable(GL_SCISSOR_TEST);
   //glScissor(x0, y0, x1, y1);
   glm::vec3 clippingPoints[4];
@@ -62,7 +62,7 @@ void enableClipping( float x0, float y0, float x1, float y1 )
 
 void disableClipping()
 {
-  glPopAttrib();
+  //glPopAttrib();
   //glDisable(GL_SCISSOR_TEST);
 }
 

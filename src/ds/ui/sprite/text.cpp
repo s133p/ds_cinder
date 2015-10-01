@@ -193,13 +193,12 @@ void Text::updateClient(const UpdateParams& p)
 void Text::drawLocalClient()
 {
 	if (mDebugShowFrame) {
-		ci::gl::SaveColorState		scs;
-		mSpriteShader.getShader().unbind();
-		glPushAttrib(GL_COLOR);
+		ci::gl::bindStockShader(ci::gl::ShaderDef().color());
 		ci::gl::color(0.25f, 0, 0, 0.5f);
 		ci::gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, mWidth, mHeight));
-		glPopAttrib();
+		
 		mSpriteShader.getShader().bind();
+		ci::gl::color(getColorA());
 	}
 
 	// NOTE: This won't work here. The font will draw nothing. Don't know OpenGL well
@@ -249,7 +248,7 @@ if (mTextString == L"2012") {
 			ci::gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, static_cast<float>(mTestTexture.getWidth()), static_cast<float>(mTestTexture.getHeight())));
 		else
 			ci::gl::drawSolidRect(ci::Rectf(0.0f, static_cast<float>(mTestTexture.getHeight()), static_cast<float>(mTestTexture.getWidth()), 0.0f));
-		mTestTexture.unbind();
+		ci::gl::bindStockShader(ci::gl::ShaderDef().color());
 	}
 #endif
 

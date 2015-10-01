@@ -192,12 +192,6 @@ void RenderTextService::_run()
 					FboGeneral::AutoRun	run(fbo);
 					ci::gl::clear(ci::ColorA(1.0f, 0.0f, 1.0f, 1.0f));
 
-					#if 0
-					glPushAttrib(GL_COLOR);
-					ci::gl::color(ci::ColorA(0.0f, 1.0f, 0.0f, 1.0f));
-					ci::gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, size, size));
-					glPopAttrib();
-					#endif
 #if 1
 //					FontPtr font = FontPtr(new OGLFT::Translucent(worker->mFontFilename.c_str(), worker->mFontSize));
 					if (TMP_FONT->isValid()) {

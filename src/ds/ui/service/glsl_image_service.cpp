@@ -251,7 +251,7 @@ void ImageService::renderInput(op& input) {
 		input.mKey.getUnifom().applyTo(shader);
 		ci::gl::color(ci::ColorA(1.0f, 1.0f, 1.0f, 1.0f));
 		ci::gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, static_cast<float>(w), static_cast<float>(h)));
-		shader.unbind();
+		ci::gl::bindStockShader(ci::gl::ShaderDef().color());
 
 		ci::gl::popMatrices();
 	}

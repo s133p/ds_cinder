@@ -252,9 +252,7 @@ void Sprite::drawClient( const glm::mat4 &trans, const DrawParams &drawParams ) 
 
 		drawLocalClient();
 
-		if (shaderBase) {
-			shaderBase.unbind();
-		}
+		ci::gl::bindStockShader(ci::gl::ShaderDef().color());
 	}
 	
 	if ((mSpriteFlags&CLIP_F) != 0) {

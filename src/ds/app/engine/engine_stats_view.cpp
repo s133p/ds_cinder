@@ -78,9 +78,7 @@ void EngineStatsView::drawLocalClient() {
 
 	if (!mFont) return;
 
-	ci::gl::GlslProg&	shader = mSpriteShader.getShader();
-	if (shader) shader.unbind();
-
+	ci::gl::bindStockShader(ci::gl::ShaderDef().color());
 	ci::gl::color(1, 1, 1, 1);
 
 	float				y = mLT.y + mBorder.y;
