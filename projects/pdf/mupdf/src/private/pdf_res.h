@@ -4,7 +4,7 @@
 #include <mutex>
 
 #include <cinder/Surface.h>
-#include <cinder/gl/Texture.h>
+#include "cinder/gl/platform.h"
 
 #include <ds/thread/gl_thread.h>
 #include <ds/ui/sprite/pdf.h>
@@ -98,7 +98,7 @@ private:
 	mutable std::mutex			mMutex;
 
 	// MAIN THREAD
-	ci::gl::Texture				mTexture;
+	ci::gl::TextureRef			mTextureRef;
 	
 	// WORKER THREAD
 

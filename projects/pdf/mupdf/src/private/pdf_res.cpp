@@ -312,7 +312,9 @@ ci::Surface8u PdfRes::renderPage(const std::string& path) {
 PdfRes::PdfRes(ds::GlThread& t)
 		: ds::GlThreadClient<PdfRes>(t)
 		, mPageCount(0)
-		, mPixelsChanged(false) {
+		, mPixelsChanged(false)
+		, mTextureRef(nullptr)
+{
 	mDrawState.mPageNum = 0;
 }
 
@@ -346,13 +348,13 @@ bool PdfRes::loadPDF(const std::string& fileName, const ds::ui::Pdf::PageSizeMod
 }
 
 float PdfRes::getTextureWidth() const {
-	if (!mTexture) return 0.0f;
-	return mTexture.getWidth();
+	if (!mTextureRef) return 0.0f;
+	return mTextureRef->getWidth();
 }
 
 float PdfRes::getTextureHeight() const {
-	if (!mTexture) return 0.0f;
-	return mTexture.getHeight();
+	if (!mTextureRef) return 0.0f;
+	return mTextureRef->getHeight();
 }
 
 #if 0
@@ -376,8 +378,8 @@ void Pdf::resetAnchor() {
 #endif
 
 void PdfRes::draw(float x, float y) {
-	if (mPageCount > 0 && mTexture) {
-		ci::gl::draw(mTexture, glm::vec2(x, y));
+	if (mPageCount > 0 && mTextureRef) {
+		ci::gl::draw(mTextureRef, glm::vec2(x, y));
 	}
 }
 
@@ -390,12 +392,12 @@ void PdfRes::goToPreviousPage() {
 }
 
 float PdfRes::getWidth() const {
-	if (mTexture) return mTexture.getWidth();
+	if (mTextureRef) return mTextureRef->getWidth();
 	return (float)mState.mWidth;
 }
 
 float PdfRes::getHeight() const {
-	if (mTexture) return mTexture.getHeight();
+	if (mTextureRef) return mTextureRef->getHeight();
 	return (float)mState.mHeight;
 }
 
@@ -446,24 +448,23 @@ void PdfRes::update() {
 		if (mPixelsChanged) {
 			mPixelsChanged = false;
 			if (mPixels.empty()) {
-				mTexture = ci::gl::Texture();
+				mTextureRef = nullptr;
 			} else {
-				if (!mTexture || mTexture.getWidth() != mPixels.getWidth() || mTexture.getHeight() != mPixels.getHeight()) {
-					mTexture = ci::gl::Texture(mPixels.getWidth(), mPixels.getHeight());
-					if (!mTexture) return;
+				if (!mTextureRef || mTextureRef->getWidth() != mPixels.getWidth() || mTextureRef->getHeight() != mPixels.getHeight()) {
+					mTextureRef = ci::gl::Texture2d::create(mPixels.getWidth(), mPixels.getHeight());
+					if (!mTextureRef) return;
 				}
 
-				GLsizei width = mTexture.getWidth(),
-						height = mTexture.getHeight();
+				GLsizei width = mTextureRef->getWidth(),
+						height = mTextureRef->getHeight();
 				std::vector<GLubyte> emptyData(width * height * 4, 0);
 
-				mTexture.enableAndBind();
+				mTextureRef->bind();
 				// Cinder Texture doesn't seem to support accessing the data type. I checked the code
 				// and it seems to always use GL_UNSIGNED_BYTE, so hopefully that's safe.
-				glTexSubImage2D(mTexture.getTarget(), 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, &emptyData[0]);
-				glTexSubImage2D(mTexture.getTarget(), 0, 0, 0, mPixels.getWidth(), mTexture.getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, mPixels.getData());
-				mTexture.unbind();
-				mTexture.disable();
+				glTexSubImage2D(mTextureRef->getTarget(), 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, &emptyData[0]);
+				glTexSubImage2D(mTextureRef->getTarget(), 0, 0, 0, mPixels.getWidth(), mPixels.getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, mPixels.getData());
+				mTextureRef->unbind();
 				glFinish();
 			}
 		}
