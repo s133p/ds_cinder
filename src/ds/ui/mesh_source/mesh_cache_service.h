@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <string>
 #include <cinder/gl/Vbo.h>
+#include <cinder/gl/VboMesh.h>
 #include <cinder/Thread.h>
 #include <cinder/TriMesh.h>
 #include <ds/app/engine/engine_service.h>
@@ -23,12 +24,12 @@ public:
 
 	virtual void			start();
 
-	ci::gl::VboMesh			get(const std::string& key,
+	ci::gl::VboMeshRef		get(const std::string& key,
 								const std::function<ci::TriMesh(void)>& generate_fn);
 
 private:
 	std::mutex				mMutex;
-	std::unordered_map<std::string, ci::gl::VboMesh>
+	std::unordered_map<std::string, ci::gl::VboMeshRef>
 							mCache;
 };
 

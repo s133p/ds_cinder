@@ -17,15 +17,15 @@ MeshCacheService::MeshCacheService() {
 void MeshCacheService::start() {
 }
 
-ci::gl::VboMesh MeshCacheService::get(	const std::string& key,
+ci::gl::VboMeshRef MeshCacheService::get(	const std::string& key,
 										const std::function<ci::TriMesh(void)>& generate_fn) {
 	std::unique_lock<std::mutex>	lock(mMutex);
 	if (!mCache.empty()) {
 		auto f = mCache.find(key);
 		if (f != mCache.end()) return f->second;
 	}
-	if (!generate_fn) return ci::gl::VboMesh();
-	ci::gl::VboMesh		vbo(generate_fn());
+	if (!generate_fn) return nullptr;
+	ci::gl::VboMeshRef		vbo = ci::gl::VboMesh::create(generate_fn());
 	mCache[key] = vbo;
 	return vbo;
 }

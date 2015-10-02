@@ -51,7 +51,7 @@ private:
 	std::function<void(const Status&)>
 								mStatusFn;
 
-	cinder::gl::VboMesh			mVboMesh;
+	cinder::gl::VboMeshRef		mVboMesh;
 
 	// Initialization
 public:

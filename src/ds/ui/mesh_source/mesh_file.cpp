@@ -18,10 +18,10 @@ public:
 		return mFilename == ds->mFilename;
 	}
 
-	virtual const ci::gl::VboMesh*	getMesh() {
+	virtual const ci::gl::VboMeshRef	getMesh() {
 		if (!mMeshBuilt) buildMesh();
-		if (mMesh.getNumIndices() < 1) return nullptr;
-		return &mMesh;
+		if (mMesh->getNumIndices() < 1) return nullptr;
+		return mMesh;
 	}
 
 	virtual void					setEngine(SpriteEngine* e) {
@@ -31,7 +31,7 @@ public:
 private:
 	void						buildMesh() {
 		mMeshBuilt = true;
-		mMesh = ci::gl::VboMesh();
+		mMesh = nullptr;
 		
 		ci::TriMesh							mesh;
 	
@@ -74,20 +74,20 @@ private:
 			}
 		}
 		if ( vertices.size() > 0 ) {
-			mesh.appendVertices( &vertices[ 0 ], vertices.size() );
+			mesh.appendPositions( &vertices[ 0 ], vertices.size() );
 		}
 		if ( texCoords.size() > 0 ) {
 			for ( auto iter = texCoords.begin(); iter != texCoords.end(); ++iter ) {
 				mesh.appendTexCoord( *iter );
 			}
 		}
-		mMesh = ci::gl::VboMesh(mesh);
+		mMesh = ci::gl::VboMesh::create(mesh);
 	}
 
 	ds::ui::SpriteEngine*	mEngine;
 	std::string				mFilename;
 	// Building
-	ci::gl::VboMesh			mMesh;
+	ci::gl::VboMeshRef		mMesh;
 	bool					mMeshBuilt;
 };
 

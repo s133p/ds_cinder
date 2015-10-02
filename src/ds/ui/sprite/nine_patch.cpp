@@ -2,6 +2,8 @@
 
 #include <map>
 #include <cinder/ImageIo.h>
+#include <cinder/gl/gl.h>
+
 #include "ds/app/blob_reader.h"
 #include "ds/app/blob_registry.h"
 #include "ds/data/data_buffer.h"
@@ -97,9 +99,14 @@ void NinePatch::drawLocalClient() {
 	}
 
 	if (getPerspective()) {
+		/*
 		tex->bind();
 		ci::gl::drawSolidRect(ci::Rectf(0.0f, static_cast<float>(tex->getHeight()), static_cast<float>(tex->getWidth()), 0.0f));
 		tex->unbind();
+		*/
+		Rectf destRect = Rectf(tex->getBounds());
+		ci::gl::draw(tex, destRect);
+
 	} else {
 //			tex->bind();
 //      ci::gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, static_cast<float>(mTexture.getWidth()), static_cast<float>(mTexture.getHeight())));

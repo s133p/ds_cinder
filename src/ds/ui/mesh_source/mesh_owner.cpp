@@ -26,7 +26,7 @@ void MeshOwner::clearMesh() {
 	setMesh(MeshSource());
 }
 
-const ci::gl::VboMesh* MeshOwner::getMesh() {
+const ci::gl::VboMeshRef MeshOwner::getMesh() {
 	return mMeshSource.getMesh();
 }
 

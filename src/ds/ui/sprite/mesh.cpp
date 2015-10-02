@@ -1,6 +1,9 @@
 #include "mesh.h"
 
 #include <map>
+
+#include <cinder/gl/gl.h>
+
 #include "ds/app/blob_reader.h"
 #include "ds/app/blob_registry.h"
 #include "ds/data/data_buffer.h"
@@ -77,9 +80,9 @@ void Mesh::drawLocalClient() {
 	if (!tex) return;
 
 	if (!mVboMesh) {
-		const ci::gl::VboMesh*	mesh = getMesh();
+		const ci::gl::VboMeshRef	mesh = getMesh();
 		if (!mesh) return;
-		mVboMesh = *mesh;
+		mVboMesh = mesh;
 		if (!mVboMesh) return;
 	}
 

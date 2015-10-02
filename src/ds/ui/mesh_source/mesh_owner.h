@@ -17,7 +17,7 @@ public:
 
 	void					setMesh(const MeshSource&);
 	void					clearMesh();
-	const ci::gl::VboMesh*	getMesh();
+	const ci::gl::VboMeshRef	getMesh();
 
 	void					setSphereMesh(const float radius, const int x_res=36, const int y_res=12);
 	void					setFileMesh(const std::string& filename);

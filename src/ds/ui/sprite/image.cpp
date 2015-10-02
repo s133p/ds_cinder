@@ -2,6 +2,8 @@
 
 #include <map>
 #include <cinder/ImageIo.h>
+#include "cinder/gl/gl.h"
+
 #include "ds/app/blob_reader.h"
 #include "ds/app/blob_registry.h"
 #include "ds/data/data_buffer.h"
@@ -126,12 +128,18 @@ void Image::drawLocalClient() {
 		}
 	}
 
+	/*
 	tex->bind();
-	if (getPerspective())
+	if (getPerspective()) {
 		ci::gl::drawSolidRect(ci::Rectf(0.0f, static_cast<float>(tex->getHeight()), static_cast<float>(tex->getWidth()), 0.0f));
-	else
+	} else {
 		ci::gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, static_cast<float>(tex->getWidth()), static_cast<float>(tex->getHeight())));
+	}
 	tex->unbind();
+	*/
+
+	Rectf destRect = Rectf(tex->getBounds());
+	ci::gl::draw(tex, destRect);
 }
 
 void Image::setSizeAll( float width, float height, float depth ) {

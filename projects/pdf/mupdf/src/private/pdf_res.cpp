@@ -1,5 +1,7 @@
 #include "private/pdf_res.h"
 
+#include <cinder/gl/gl.h>
+
 #include <ds/debug/logger.h>
 
 extern "C" {

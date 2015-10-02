@@ -3,6 +3,8 @@
 #include <cinder/Camera.h>
 #include <cinder/ImageIo.h>
 #include <cinder/gl/Shader.h>
+#include <cinder/gl/draw.h>
+
 #include "ds/debug/debug_defines.h"
 #include "ds/debug/logger.h"
 #include "ds/ui/sprite/fbo/auto_fbo.h"
@@ -250,8 +252,8 @@ void ImageService::renderInput(op& input) {
 		input.mKey.getUnifom().applyTo(shader);
 		ci::gl::color(ci::ColorA(1.0f, 1.0f, 1.0f, 1.0f));
 		ci::gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, static_cast<float>(w), static_cast<float>(h)));
-		ci::gl::bindStockShader(ci::gl::ShaderDef().color());
 
+		ci::gl::bindStockShader(ci::gl::ShaderDef().color());
 		ci::gl::popMatrices();
 	}
 	ci::gl::popMatrices();

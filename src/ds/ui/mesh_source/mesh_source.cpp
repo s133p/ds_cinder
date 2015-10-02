@@ -27,7 +27,7 @@ bool MeshSource::empty() const {
 	return !mData;
 }
 
-const ci::gl::VboMesh* MeshSource::getMesh() {
+const ci::gl::VboMeshRef MeshSource::getMesh() {
 	if (!mData) return nullptr;
 	return mData->getMesh();
 }

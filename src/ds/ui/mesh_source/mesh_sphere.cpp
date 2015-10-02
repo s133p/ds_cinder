@@ -26,7 +26,7 @@ ci::TriMesh createTriMesh(
 		}
 	}
 	if ( positions.size() > 0 ) {
-		mesh.appendVertices( &positions[ 0 ], positions.size() );
+		mesh.appendPositions( &positions[ 0 ], positions.size() );
 	}
 	if ( texCoords.size() > 0 ) {
 		for ( auto iter = texCoords.begin(); iter != texCoords.end(); ++iter ) {
@@ -107,10 +107,10 @@ public:
 		return mRadius == ds->mRadius && mXRes == ds->mXRes && mYRes == ds->mYRes;
 	}
 
-	virtual const ci::gl::VboMesh*	getMesh() {
+	virtual const ci::gl::VboMeshRef	getMesh() {
 		if (!mMeshBuilt) buildMesh();
-		if (mMesh.getNumIndices() < 1) return nullptr;
-		return &mMesh;
+		if (mMesh->getNumIndices() < 1) return nullptr;
+		return mMesh;
 	}
 
 	virtual void					setEngine(SpriteEngine* e) {
@@ -124,7 +124,7 @@ private:
 		if (!mMesh) {
 			ci::TriMesh			mesh;
 			mesh = createSphere(mRadius, mXRes, mYRes);
-			mMesh = ci::gl::VboMesh(mesh);
+			mMesh = ci::gl::VboMesh::create(mesh);
 		}
 	}
 
@@ -143,7 +143,7 @@ private:
 	float					mRadius;
 	int						mXRes, mYRes;
 	// Building
-	ci::gl::VboMesh			mMesh;
+	ci::gl::VboMeshRef		mMesh;
 	bool					mMeshBuilt;
 };
 
