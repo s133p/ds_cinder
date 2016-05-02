@@ -66,8 +66,8 @@ void LayoutSprite::runSizeLayout(){
 				ds::ui::Image* img = dynamic_cast<ds::ui::Image*>(chillin);
 				ds::ui::ScrollArea* sa = dynamic_cast<ds::ui::ScrollArea*>(chillin);
 				if(mt){
-					mt->setSize(chillin->mLayoutSize.x, chillin->mLayoutSize.y);
 					mt->setResizeLimit(chillin->mLayoutSize.x, chillin->mLayoutSize.y);
+					mt->setSize(chillin->mLayoutSize.x, chillin->mLayoutSize.y);
 				} else if(img){
 					// restore position after calculating the box size
 					ci::Vec3f prePos = img->getPosition();
@@ -88,8 +88,8 @@ void LayoutSprite::runSizeLayout(){
 			LayoutSprite* ls = dynamic_cast<LayoutSprite*>(chillin);
 			ds::ui::ScrollArea* sa = dynamic_cast<ds::ui::ScrollArea*>(chillin);
 			if(mt){
-				mt->setSize(fixedW, fixedH);
 				mt->setResizeLimit(fixedW, fixedH);
+				mt->setSize(fixedW, fixedH);
 			} else if(img){
 				// restore position after calculating the box size
 				ci::Vec3f prePos = img->getPosition();
@@ -150,8 +150,8 @@ void LayoutSprite::runFlowLayout(const bool vertical){
 					// see if we need to force a particular size, since images and text might resize themselves
 					if(chillin->mLayoutSize.x > 0.0f && chillin->mLayoutSize.y > 0.0f){
 						if(mt){
-							mt->setSize(chillin->mLayoutSize.x, chillin->mLayoutSize.y);
 							mt->setResizeLimit(chillin->mLayoutSize.x, chillin->mLayoutSize.y);
+							mt->setSize(chillin->mLayoutSize.x, chillin->mLayoutSize.y);
 						} else if(img){
 							fitInside(img, ci::Rectf(0.0f, 0.0f, chillin->mLayoutSize.x, chillin->mLayoutSize.y), true);
 						} else if(sa){
@@ -166,11 +166,11 @@ void LayoutSprite::runFlowLayout(const bool vertical){
 					float fixedH = layoutHeight - chillin->mLayoutTPad - chillin->mLayoutBPad;
 					if(mt){
 						if(vertical){
-							mt->setSize(fixedW, mt->getHeight());
 							mt->setResizeLimit(fixedW);
+							mt->setSize(fixedW, mt->getHeight());
 						} else {
-							mt->setSize(mt->getWidth(), fixedH);
 							mt->setResizeLimit(mt->getResizeLimitWidth(), fixedH);
+							mt->setSize(mt->getWidth(), fixedH);
 						}
 					} else if(img){
 						if(vertical){
@@ -271,8 +271,8 @@ void LayoutSprite::runFlowLayout(const bool vertical){
 			LayoutSprite* ls = dynamic_cast<LayoutSprite*>(chillin);
 			ds::ui::ScrollArea* sa = dynamic_cast<ds::ui::ScrollArea*>(chillin);
 			if(mt){
-				mt->setSize(stretchW, stretchH);
 				mt->setResizeLimit(stretchW, stretchH);
+				mt->setSize(stretchW, stretchH);
 			} else if(img){
 				fitInside(img, ci::Rectf(0.0f, 0.0f, stretchW, stretchH), true);
 			} else if(ls){
@@ -335,8 +335,8 @@ void LayoutSprite::runFlowLayout(const bool vertical){
 				LayoutSprite* ls = dynamic_cast<LayoutSprite*>(chillin);
 				ds::ui::ScrollArea* sa = dynamic_cast<ds::ui::ScrollArea*>(chillin);
 				if(mt){
-					mt->setSize(fixedW, fixedH);
 					mt->setResizeLimit(fixedW, fixedH);
+					mt->setSize(fixedW, fixedH);
 				} else if(img){
 					fitInside(img, ci::Rectf(0.0f, 0.0f, fixedW, fixedH), false);
 				} else if(ls){

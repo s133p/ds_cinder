@@ -505,11 +505,11 @@ void Text::makeLayout()
 			ci::Vec2f	size(mWidth-mBorder.x1-mBorder.x2, mHeight-mBorder.y1-mBorder.y2);
 			// If we're auto resizing, then the area to perform the layout should be unlimited.
 			if ((mResizeToTextF&RESIZE_W) != 0) {
-				size.x = 100000;
+				size.x = 0;
 				if (mResizeLimitWidth > 0) size.x = mResizeLimitWidth;
 			}
 			if ((mResizeToTextF&RESIZE_H) != 0) {
-				size.y = 100000;
+				size.y = 0;
 				if (mResizeLimitHeight > 0) size.y = mResizeLimitHeight;
 			}
 			TextLayout::Input	in(*this, mFont, size, mTextString);

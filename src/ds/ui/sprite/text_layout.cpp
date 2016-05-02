@@ -61,7 +61,12 @@ public:
 
 	inline bool outOfBounds(const float y) const
 	{
-		return (y + mLineHeight > mMaxY);
+		// only out of bounds if we actually try to limit to height, and we have a limit greater than zero
+		return (
+			mLimitToHeight && (mMaxY > 0.0f) ?
+			y + mLineHeight > mMaxY :
+			false
+		);
 	}
 
 private:
@@ -428,7 +433,10 @@ void TextLayoutVertical::run(TextLayout::Input& in, TextLayout& out)
 		addLine(in.mFont, lineText);
 	}
 
-	if(mMaxWidth > in.mSize.x){
+	if(
+		(in.mSize.x > 0.0f) &&
+		(mMaxWidth > in.mSize.x)
+	){
 		mMaxWidth = in.mSize.x;
 	}
 
