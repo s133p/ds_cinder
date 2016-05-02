@@ -66,6 +66,7 @@ void LayoutSprite::runSizeLayout(){
 				ds::ui::Image* img = dynamic_cast<ds::ui::Image*>(chillin);
 				ds::ui::ScrollArea* sa = dynamic_cast<ds::ui::ScrollArea*>(chillin);
 				if(mt){
+					mt->setSize(chillin->mLayoutSize.x, chillin->mLayoutSize.y);
 					mt->setResizeLimit(chillin->mLayoutSize.x, chillin->mLayoutSize.y);
 				} else if(img){
 					// restore position after calculating the box size
@@ -87,6 +88,7 @@ void LayoutSprite::runSizeLayout(){
 			LayoutSprite* ls = dynamic_cast<LayoutSprite*>(chillin);
 			ds::ui::ScrollArea* sa = dynamic_cast<ds::ui::ScrollArea*>(chillin);
 			if(mt){
+				mt->setSize(fixedW, fixedH);
 				mt->setResizeLimit(fixedW, fixedH);
 			} else if(img){
 				// restore position after calculating the box size
@@ -148,6 +150,7 @@ void LayoutSprite::runFlowLayout(const bool vertical){
 					// see if we need to force a particular size, since images and text might resize themselves
 					if(chillin->mLayoutSize.x > 0.0f && chillin->mLayoutSize.y > 0.0f){
 						if(mt){
+							mt->setSize(chillin->mLayoutSize.x, chillin->mLayoutSize.y);
 							mt->setResizeLimit(chillin->mLayoutSize.x, chillin->mLayoutSize.y);
 						} else if(img){
 							fitInside(img, ci::Rectf(0.0f, 0.0f, chillin->mLayoutSize.x, chillin->mLayoutSize.y), true);
@@ -163,8 +166,10 @@ void LayoutSprite::runFlowLayout(const bool vertical){
 					float fixedH = layoutHeight - chillin->mLayoutTPad - chillin->mLayoutBPad;
 					if(mt){
 						if(vertical){
+							mt->setSize(fixedW, mt->getHeight());
 							mt->setResizeLimit(fixedW);
 						} else {
+							mt->setSize(mt->getWidth(), fixedH);
 							mt->setResizeLimit(mt->getResizeLimitWidth(), fixedH);
 						}
 					} else if(img){
@@ -266,6 +271,7 @@ void LayoutSprite::runFlowLayout(const bool vertical){
 			LayoutSprite* ls = dynamic_cast<LayoutSprite*>(chillin);
 			ds::ui::ScrollArea* sa = dynamic_cast<ds::ui::ScrollArea*>(chillin);
 			if(mt){
+				mt->setSize(stretchW, stretchH);
 				mt->setResizeLimit(stretchW, stretchH);
 			} else if(img){
 				fitInside(img, ci::Rectf(0.0f, 0.0f, stretchW, stretchH), true);
@@ -329,6 +335,7 @@ void LayoutSprite::runFlowLayout(const bool vertical){
 				LayoutSprite* ls = dynamic_cast<LayoutSprite*>(chillin);
 				ds::ui::ScrollArea* sa = dynamic_cast<ds::ui::ScrollArea*>(chillin);
 				if(mt){
+					mt->setSize(fixedW, fixedH);
 					mt->setResizeLimit(fixedW, fixedH);
 				} else if(img){
 					fitInside(img, ci::Rectf(0.0f, 0.0f, fixedW, fixedH), false);

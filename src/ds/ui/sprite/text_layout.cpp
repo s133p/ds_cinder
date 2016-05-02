@@ -315,7 +315,7 @@ void TextLayoutVertical::run(TextLayout::Input& in, TextLayout& out)
 	mCurInputIndex = 0;
 	mCurXPosition = 0.0f;
 	mCurLineIndexPositions.clear();
-	mMaxWidth = 0.0f;
+	mMaxWidth = in.mSize.x;
 	mGenerateIndices = in.mGenerateIndex;
 
 	LimitCheck			check(in, mLineHeight);
